@@ -22,10 +22,10 @@ import socket
 import struct
 import ctypes
 import requests
-
 import traceback
+from _utils import get_macaddress
+from _volume_device import VolumeDevice
 
-# from utils import get_macaddress, get_hardware_address # NOQA
 
 HEADER = dict(
     SOAPACTION='"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"'
@@ -63,26 +63,6 @@ NUMBERS = [
 ]
 
 
-def get_mac_address(ip_address):
-    send_arp = ctypes.windll.Iphlpapi.SendARP
-    inetaddr = ctypes.windll.wsock32.inet_addr(ip_address)
-
-    hw_address = ctypes.c_buffer(6)
-    addlen = ctypes.c_ulong(ctypes.sizeof(hw_address))
-
-    send_arp(inetaddr, 0, ctypes.byref(hw_address), ctypes.byref(addlen))
-
-    for val in struct.unpack('BBBBBB', hw_address):
-        if val > 15:
-            replace_str = '0x'
-        else:
-            replace_str = 'x'
-
-        yield hex(val).replace(replace_str, '').upper()
-
-    return
-
-
 class _LOGGER:
     file_writer = False
 
@@ -105,67 +85,6 @@ class _LOGGER:
             cls.file_writer.write(
                 '%s: DEBUG: %s\n' % (__name__, str(data))
             )
-
-
-class VolumeDevice(object):
-
-    def __init__(self, parent, target):
-        self._parent = parent
-        self._target = target
-
-    @property
-    def _volume_info(self):
-        return self._parent.get_volume_data(self._target)
-
-    @property
-    def min_volume(self):
-        return ['minVolume']
-
-    @property
-    def max_volume(self):
-        return self._volume_info['maxVolume']
-
-    @property
-    def volume_up(self):
-        if self._parent.power:
-            self.volume = self.volume + 1
-        return self.volume
-
-    @property
-    def volume_down(self):
-        if self._parent.power:
-            self.volume = self.volume - 1
-        return self.volume
-
-    @property
-    def volume(self):
-        if self._parent.power:
-            return self._volume_info['volume']
-
-    @volume.setter
-    def volume(self, volume):
-        if volume < self.min_volume:
-            volume = self.min_volume
-
-        if volume > self.max_volume:
-            volume = self.max_volume
-
-        if self._parent.power:
-            json_data = self._parent.build_json(
-                "setAudioVolume",
-                dict(target=target, volume=volume)
-            )
-            self._parent.send("sony/audio", json_data)
-
-    @property
-    def mute(self):
-        if self._parent.power:
-            return self._volume_info['mute']
-
-    @mute.setter
-    def mute(self, state):
-        if self._parent.power and state != self.mute:
-            self._parent.ircc(self._parent.command('Mute'))
 
 
 class SonyAPIError(Exception):
