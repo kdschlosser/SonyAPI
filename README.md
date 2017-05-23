@@ -16,7 +16,7 @@ When changing the volume you will reference the device you want to control the v
 
 gets the volume
 
-    instance.speakers.volume
+    volume = instance.speakers.volume
     
 sets the volume
     
@@ -24,7 +24,7 @@ sets the volume
     
 gets the mute state
 
-    instance.speakers.mute
+    mute = instance.speakers.mute
     
 sets the mute state
 
@@ -32,9 +32,9 @@ sets the mute state
     
 gets the minimum volume    
 
-    instance.speakers.min_volume
+    min_volume = instance.speakers.min_volume
     
 gets the maximum volume
 
-    instance.speakers.max_volume
+    max_folume = instance.speakers.max_volume
 
