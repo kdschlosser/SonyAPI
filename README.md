@@ -36,5 +36,5 @@ gets the minimum volume
     
 gets the maximum volume
 
-    max_folume = instance.speakers.max_volume
+    max_volume = instance.speakers.max_volume
 
