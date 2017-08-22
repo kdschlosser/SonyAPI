@@ -15,10 +15,11 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-class VolumeDevice(object):
+class Volume(object):
 
     def __init__(self, parent, target):
         self._parent = parent
+        self.name = target
         self._target = target
 
     @property
