@@ -104,31 +104,47 @@ class SonyAPIError(Exception):
         return self.msg
 
 
+class PinError(SonyAPIError):
+    pass
+
+
+class RegisterTimeoutError(SonyAPIError):
+    pass
+
+
+class JSONRequestError(SonyAPIError):
+    pass
+
+
+class CommandError(SonyAPIError):
+    pass
+
+
+class VolumeDeviceError(SonyAPIError):
+    pass
+
+
+class RegisterError(SonyAPIError):
+    pass
+
+
+class IRCCError(SonyAPIError):
+    pass
+
+
+class SendError(SonyAPIError):
+    pass
+
+
 class SonyAPI(object):
-
-    class PinError(SonyAPIError):
-        pass
-
-    class RegisterTimeoutError(SonyAPIError):
-        pass
-
-    class JSONRequestError(SonyAPIError):
-        pass
-
-    class CommandError(SonyAPIError):
-        pass
-
-    class VolumeDeviceError(SonyAPIError):
-        pass
-
-    class RegisterError(SonyAPIError):
-        pass
-
-    class IRCCError(SonyAPIError):
-        pass
-
-    class SendError(SonyAPIError):
-        pass
+    PinError = PinError
+    RegisterTimeoutError = RegisterTimeoutError
+    JSONRequestError = JSONRequestError
+    CommandError = CommandError
+    VolumeDeviceError = VolumeDeviceError
+    RegisterError = RegisterError
+    IRCCError = IRCCError
+    SendError = SendError
 
     def __init__(self, ip_address, pin=0000, psk=None, debug=None):
         _LOGGER.file_writer = debug
@@ -1014,7 +1030,7 @@ class SonyAPI(object):
 
     @property
     def source(self):
-        return self.playing_content.source
+        return self.playing_content.title
 
     @source.setter
     def source(self, source):
