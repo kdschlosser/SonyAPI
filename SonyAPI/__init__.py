@@ -1,4 +1,6 @@
-# SonyAPI
+# -*- coding: utf-8 -*-
+#
+#  SonyAPI
 # Copyright (C) 2017 Kevin Schlosser
 
 # This program is free software: you can redistribute it and/or modify
@@ -14,18 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
 import threading
 import base64
-import collections
 import json
 import socket
 import struct
 import requests
 import traceback
-from volume import Volume
-from media import Media
-
+import application
+import volume
+import media
+import recording
+import browser
+import inputs
+from datetime import datetime
 
 VOLUME_EVENT = 0x1
 MUTE_EVENT = 0x2
@@ -63,7 +67,7 @@ NUMBERS = [
 ]
 
 
-class _LOGGER:
+class _LOGGER(object):
     file_writer = None
 
     @classmethod
@@ -135,10 +139,13 @@ class SonyAPI(object):
         self._thread = None
         self._thread_event = threading.Event()
         self._callbacks = []
+        self._speaker = None
+        self._headphone = None
         self._cookies = None
         self._commands = []
         self._content_mapping = []
         self._pin_timer = None
+        self._timeout_event = None
         self._guid = '24F26C67-5A50-4B08-8754-80EBAF880379'
         self._pin = None
         self.media = None
@@ -152,13 +159,12 @@ class SonyAPI(object):
     @pin.setter
     def pin(self, pin):
         if self._psk is not None:
-            self.media = Media(self)
             self._refresh_volume_devices()
             return
 
         nickname = socket.gethostbyaddr(socket.gethostname())[0]
         client_id = nickname + ':' + self._guid
-        _LOGGER.debug(clientid)
+        _LOGGER.debug(client_id)
 
         authorization = json.dumps({
             'method': 'actRegister',
@@ -178,7 +184,8 @@ class SonyAPI(object):
 
         if pin:
             if self._pin_timer is not None:
-                self._pin_timer.Stop()
+                self._timeout_event.set()
+                self._pin_timer.join(1.0)
                 self._pin_timer = None
 
             base64string = base64.encodestring(
@@ -211,7 +218,6 @@ class SonyAPI(object):
 
             self._cookies = response.cookies
             self._pin = pin
-            self.media = Media(self)
             self._refresh_volume_devices()
 
         except requests.exceptions.HTTPError as exception_instance:
@@ -224,18 +230,23 @@ class SonyAPI(object):
                     )
                 else:
                     timed_out = False
+                    self._timeout_event = threading.Event()
 
                     def register_timeout():
                         global timed_out
+                        self._timeout_event.wait(60000)
 
-                        timed_out = True
+                        if not self._timeout_event.isSet():
+                            timed_out = True
 
-                        raise SonyAPI.RegisterTimeoutError(
-                            'Registration time has expired'
-                        )
+                            raise SonyAPI.RegisterTimeoutError(
+                                'Registration time has expired'
+                            )
 
-                    self._pin_timer = wx.CallLater(60000, register_timeout)
-                    self._pin_timer.Start()
+                    threading.Thread(target=register_timeout)
+
+                    self._pin_timer = threading.Thread(target=register_timeout)
+                    self._pin_timer.start()
                     pin = raw_input('Enter the pin that is seen on the TV')
 
                     if pin and not timed_out:
@@ -259,7 +270,7 @@ class SonyAPI(object):
         address_byte = tuple(
             int(b, 16) for b in self.mac_address.split(':')
         )
-        _LOGGER.debug(addr_byte)
+        _LOGGER.debug(address_byte)
 
         hw_address = struct.pack('BBBBBB', *address_byte)
         msg = b'\xff' * 6 + hw_address * 16
@@ -314,131 +325,615 @@ class SonyAPI(object):
 
             if response.get('error'):
                 raise SonyAPI.JSONRequestError(response)
-            return response
+            if isinstance(response['result'], list):
+                return response['result'][0]
+            else:
+                return response['result']
 
         except requests.exceptions.RequestException:
             raise SonyAPI.SendError(traceback.format_exc())
 
+    def mhl_power_feed_mode(self, enabled):
+        self.send('sony/cec', 'setMhlPowerFeedMode', enabled=enabled)
+
+    mhl_power_feed_mode = property(fset=mhl_power_feed_mode)
+
+    def mhl_auto_input_change_mode(self, enabled):
+        self.send('sony/cec', 'setMhlAutoInputChangeMode', enabled=enabled)
+
+    mhl_auto_input_change_mode = property(fset=mhl_auto_input_change_mode)
+
+    def cec_control_mode(self, enabled):
+        self.send('sony/cec', 'setCecControlMode', enabled=enabled)
+
+    cec_control_mode = property(fset=cec_control_mode)
+
+    def cec_power_sync_mode(self, (on_sync, off_sync)):
+        self.send(
+            'sony/cec',
+            'setPowerSyncMode',
+            sourcePowerOnSync=on_sync,
+            sinkPowerOffSync=off_sync
+        )
+
+    cec_power_sync_mode = property(fset=cec_power_sync_mode)
+
     @property
-    def system_info(self):
-        response = self.send('sony/system', 'getSystemInformation')
-        return response['result'][0]
+    def _date_time_format(self):
+        return self.send('sony/system', 'getDateTimeFormat')
+
+    @property
+    def time_format(self):
+        return self._date_time_format['timeFormat']
+
+    @property
+    def date_format(self):
+        return self._date_time_format['dateFormat']
+
+    @property
+    def time(self):
+        t = self.send('sony/system', 'getCurrentTime')
+        version = self.send('sony/system', 'getVersions')[-1]
+
+        if version == '1.0':
+            return t
+
+        if version == '1.1':
+            return t['dateTime']
+
+    @time.setter
+    def time(self, date_time=datetime.now()):
+        self.send(
+            'sony/system',
+            'setCurrentTime',
+            dateTime=date_time.strftime('%Y-%M-%DT%H:%M:%S%z')
+        )
+
+    @property
+    def postal_code(self):
+        return self.send(
+            'sony/system',
+            'getPostalCode'
+        )['postalCode']
+
+    @postal_code.setter
+    def postal_code(self, code):
+        self.send('sony/system', 'setPostalCode', postalCode=code)
+
+    @property
+    def power_saving_mode(self):
+        return self.send(
+            'sony/system',
+            'getPowerSavingMode'
+        )['mode']
+
+    @power_saving_mode.setter
+    def power_saving_mode(self, mode):
+        self.send('sony/system', 'setPowerSavingMode', mode=mode)
+
+    @property
+    def _interface_information(self):
+        return self.send('sony/system', 'getInterfaceInformation')
+
+    @property
+    def interface_server_name(self):
+        return self._interface_information['serverName']
+
+    @property
+    def interface_model_name(self):
+        return self._interface_information['modelName']
+
+    @property
+    def interface_product_name(self):
+        return self._interface_information['productName']
+
+    @property
+    def interface_product_category(self):
+        return self._interface_information['productCategory']
+
+    @property
+    def interface_version(self):
+        return self._interface_information['interfaceVersion']
+
+    @property
+    def remote_model(self):
+        return self.send(
+            'sony/system',
+            'getRemoteControllerInfo'
+        )['type']
+
+    @property
+    def _system_information(self):
+        return self.send('sony/system', 'getSystemInformation')
+
+    @property
+    def product(self):
+        return self._system_information['product']
+
+    @property
+    def mac(self):
+        return self._system_information['macAddr']
 
     @property
     def name(self):
-        return self.system_info['name']
-
-    @property
-    def model(self):
-        return self.system_info['model']
+        return self._system_information['name']
 
     @property
     def language(self):
-        return self.system_info['language']
+        return self._system_information['language']
+
+    @language.setter
+    def language(self, lang):
+        self.send('sony/system', 'setLanguage', language=lang)
 
     @property
-    def network_settings(self):
-        resp = self.send('sony/system', 'getNetworkSettings')
-        if resp is not None and not resp.get('error'):
-            network_content_data = resp.get('result')[0]
-            return network_content_data[0]
+    def cid(self):
+        return self._system_information['language']
 
     @property
-    def mac_address(self):
-        return self.network_settings['hwAddr']
+    def generation(self):
+        return self._system_information['generation']
 
     @property
-    def ip_address(self):
-        return self.network_settings['ipAddrV4']
-
-    '/sony/IRCC'
-    '/sony/accessControl'
-    '/sony/system'
-    '/sony/avContent'
-    '/sony/audio'
-    '/sony/recording'
-    '/sony/browser'
-    '/sony/appControl'
-
-    def _get_source(self, source):
-        original_content_list = []
-        content_index = 0
-        while True:
-            try:
-                response = self.send(
-                    'sony/avContent',
-                    'getContentList',
-                    source=source,
-                    stIdx=content_index
-                )
-            except SonyAPI.JSONRequestError:
-                break
-
-            else:
-                result = response['result'][0]
-                if not len(result):
-                    break
-
-                _LOGGER.debug(result)
-                content_index = result[-1]['index'] + 1
-                original_content_list += result
-
-        return original_content_list
+    def region(self):
+        return self._system_information['region']
 
     @property
-    def channel_linup(self):
-        result = {}
-        for source in ['tv:dvbc', 'tv:dvbt']:
-            content = self._get_source(source)
-            if content:
-                result[source] = content
-        return result
+    def area(self):
+        return self._system_information['area']
+
+    @property
+    def model(self):
+        return self._system_information['model']
+
+    @property
+    def serial(self):
+        return self._system_information['serial']
+
+    @property
+    def wol_mode(self):
+        return self.send('sony/system', 'getWolMode')['enabled']
+
+    @wol_mode.setter
+    def wol_mode(self, enabled):
+        self.send('sony/system', 'setWolMode', enabled=enabled)
+
+    @property
+    def color_keys_layout(self):
+        return self.send(
+            'sony/system',
+            'getColorKeysLayout'
+        )['colorKeysLayout']
+
+    def led_indicator_status(self, (status, mode)):
+        self.send(
+            'sony/system',
+            'setLEDIndicatorStatus',
+            status=status,
+            mode=mode
+        )
+
+    led_indicator_status = property(fset=led_indicator_status)
+
+    @property
+    def _network_settings(self):
+        return self.send(
+            'sony/system',
+            'getNetworkSettings',
+            netif=str
+        )
+
+    @property
+    def network_ipv4(self):
+        return self._network_settings['ipAddrV4']
+
+    @property
+    def network_netif(self):
+        return self._network_settings['netif']
+
+    @property
+    def network_ipv6(self):
+        return self._network_settings['ipAddrV6']
+
+    @property
+    def network_subnet_mask(self):
+        return self._network_settings['netmask']
+
+    @property
+    def network_dns(self):
+        return self._network_settings['dns']
+
+    @property
+    def network_mac(self):
+        return self._network_settings['hwAddr']
+
+    @property
+    def network_gateway(self):
+        return self._network_settings['gateway']
+
+    @property
+    def _system_supported_function(self):
+        return self.send(
+            'sony/system',
+            'getSystemSupportedFunction'
+        )
+
+    @property
+    def wol_mac(self):
+        for option in self._system_supported_function:
+            if option['option'] == 'WOL':
+                return option['value']
+
+    @property
+    def chinese_software_keyboard_suypported(self):
+        for option in self._system_supported_function:
+            if option['option'] == 'SupportedChineseSoftwareKeyboard':
+                if option['value'] != 'no':
+                    return True
+
+        return False
+
+    @property
+    def pip_sub_screen_position(self):
+        return self.send(
+            'sony/videoScreen',
+            'getPipSubScreenPosition'
+        )['position']
+
+    @pip_sub_screen_position.setter
+    def pip_sub_screen_position(self, position):
+        self.send(
+            'sony/videoScreen',
+            'setPipSubScreenPosition',
+            position=position
+        )
+
+    @property
+    def audio_source_screen(self):
+        return self.send(
+            'sony/videoScreen',
+            'getAudioSourceScreen'
+        )['screen']
+
+    @audio_source_screen.setter
+    def audio_source_screen(self, screen):
+        self.send('sony/videoScreen', 'setAudioSourceScreen', screen=screen)
+
+    def pap_screen_size(self, (screen, size)):
+        self.send(
+            'sony/videoScreen',
+            'setPapScreenSize',
+            screen=screen,
+            size=size
+        )
+
+    pap_screen_size = property(fset=pap_screen_size)
+
+    @property
+    def multi_screen_mode(self):
+        version = self.send('sony/videoScreen', 'getVersions')[-1]
+
+        if version == '1.1':
+            return self.send(
+                'sony/videoScreen',
+                'getMultiScreenMode'
+            )['mode']
+
+    @multi_screen_mode.setter
+    def multi_screen_mode(self, mode):
+        self.send(
+            'sony/videoScreen',
+            'setMultiScreenMode',
+            mode=mode,
+            option=dict(internetTVMode=self.multi_screen_internet_mode)
+        )
+
+    @property
+    def multi_screen_internet_mode(self):
+        version = self.send('sony/videoScreen', 'getVersions')[-1]
+
+        if version == '1.1':
+            return self.send(
+                'sony/videoScreen',
+                'getMultiScreenMode'
+            )['option']['internetTVMode']
+
+    @multi_screen_internet_mode.setter
+    def multi_screen_internet_mode(self, mode):
+        self.send(
+            'sony/videoScreen',
+            'setMultiScreenMode',
+            mode=self.multi_screen_mode,
+            option=dict(internetTVMode=mode)
+        )
+
+    @property
+    def external_input_status(self):
+        results = self.send(
+            'sony/avContent',
+            'getCurrentExternalInputsStatus'
+        )
+
+        for result in results:
+            yield inputs.InputItem(self, **result)
+
+    @property
+    def _parental_rating_settings(self):
+        return self.send(
+            'sony/avContent',
+            'getParentalRatingSettings'
+        )
+
+    @property
+    def parental_rating_setting_country(self):
+        return self._parental_rating_settings['ratingCountry']
+
+    @property
+    def parental_rating_setting_unrated(self):
+        return self._parental_rating_settings['unratedLock']
+
+    @property
+    def parental_rating_setting_age(self):
+        return self._parental_rating_settings['ratingTypeAge']
+
+    @property
+    def parental_rating_setting_sony(self):
+        return self._parental_rating_settings['ratingTypeSony']
+
+    @property
+    def parental_rating_setting_tv(self):
+        return self._parental_rating_settings['ratingCustomTypeTV']
+
+    @property
+    def parental_rating_setting_mpaa(self):
+        return self._parental_rating_settings['ratingCustomTypeMpaa']
+
+    @property
+    def parental_rating_setting_french(self):
+        return self._parental_rating_settings['ratingCustomTypeCaFrench']
+
+    @property
+    def parental_rating_setting_english(self):
+        return self._parental_rating_settings['ratingCustomTypeCaEnglish']
+
+    def play_tv_content(self, content_item=None, channel=None):
+        if channel is not None:
+            self.send(
+                'sony/avContent',
+                'setPlayTvContent',
+                channel=str(channel)
+            )
+        elif content_item.source.startswith('tv'):
+            self.send(
+                'sony/avContent',
+                'setPlayTvContent',
+                channel=content_item.display_num
+            )
+
+    @property
+    def scheme_list(self):
+        schemes = self.send('sony/avContent', 'getSchemeList')
+        for scheme in schemes:
+            yield scheme['scheme']
 
     @property
     def source_list(self):
-        original_content_list = []
-
-        try:
-            response = self.send(
+        for scheme in self.scheme_list:
+            sources = self.send(
                 'sony/avContent',
                 'getSourceList',
-                scheme='tv'
+                scheme=scheme
             )
-            results = response['result'][0]
-            _LOGGER.debug(results)
+            for source in sources:
+                yield source['source']
 
-            for result in results:
-                if result['source'] in ['tv:dvbc', 'tv:dvbt']:
-                    original_content_list += self._get_source(result['source'])
-        except SonyAPI.JSONRequestError:
-            pass
+    @property
+    def playing_content(self):
+        res = self.send(
+            'sony/avContent',
+            'getPlayingContentInfo'
+        )
+        if len(res):
+            return media.NowPlaying(self, **res)
 
-        try:
-            response = self.send(
+    @property
+    def content_count(self):
+        for source in self.source_list:
+            count = self.send(
                 'sony/avContent',
-                'getSourceList',
-                scheme='extInput'
-            )
-            results = response['result'][0]
-            _LOGGER.debug(results)
-            for result in results:
-                if result['source'] == 'extInput:hdmi':
-                    try:
-                        response = self.send(
-                            'sony/avContent',
-                            'getContentList',
-                            source='extInput:hdmi'
-                        )
-                        original_content_list += response['result'][0]
-                    except SonyAPI.JSONRequestError:
-                        continue
-        except SonyAPI.JSONRequestError:
-            pass
+                'getContentCount',
+                source=source
+            )['count']
+            yield count
 
-        return_value = collections.OrderedDict()
-        for content_item in original_content_list:
-            return_value[content_item['title']] = content_item['uri']
-        return return_value
+    def favorite_content_list(self, source='', contents=('',)):
+        self.send(
+            'sony/avContent',
+            'setFavoriteContentList',
+            favSource=source,
+            contents=list(contents)
+        )
+
+    @property
+    def application_status_list(self):
+        statuses = self.send('sony/appControl', 'getApplicationStatusList')
+        for status in statuses:
+            yield (status['name']. status['status'])
+
+    @property
+    def application_list(self):
+        applications = self.send('sony/appControl', 'getApplicationList')
+        for app in applications:
+            yield application.Application(**app)
+
+    def terminate_applications(self):
+        self.send('sony/appControl', 'terminateApps')
+
+    def active_application(self, name):
+        for app in self.application_list:
+            if app.title == name:
+                self.send(
+                    'sony/appControl',
+                    'setActiveApp',
+                    data=app.data,
+                    uri=app.uri
+                )
+
+    active_application = property(fset=active_application)
+
+    @property
+    def application_text_form(self):
+        # 1.0
+        #   command: self.send('sony/appControl', 'getTextForm')
+        #   results: [str]
+        # 1.1
+        #   command: self.send(
+        # 'sony/appControl',
+        #  'getTextForm',
+        #  encKey=str
+        # )
+        #   results: [str]
+        raise NotImplementedError
+
+    @application_text_form.setter
+    def application_text_form(self, params):
+        # 1.0
+        #   command: self.send(
+        # 'sony/appControl',
+        #  'setTextForm',
+        # 1)
+        #   results: [int]
+        # 1.1
+        #   command: self.send(
+        # 'sony/appControl',
+        # 'setTextForm',
+        #  text=str,
+        #  encKey=str
+        # )
+        #   results: []
+        raise NotImplementedError
+
+    def application_csx_account(self, params):
+        # 1.0
+        #   command: self.send(
+        # 'sony/appControl',
+        # 'setCsxUserAccount',
+        # userName=str,
+        # encKey=str,
+        #  userID=str,
+        # accessToken=str
+        # )
+        #   results: []
+        raise NotImplementedError
+
+    application_csx_account = property(fset=application_csx_account)
+
+    @property
+    def browser_text_url(self):
+        result = self.send('sony/browser', 'getTextUrl')
+        if len(result):
+            return browser.UrlItem(self, **result[0])
+
+    @browser_text_url.setter
+    def browser_text_url(self, browser_item=None, url=None):
+        if url is not None:
+            self.send('sony/browser', 'setTextUrl', url=url)
+        else:
+            self.send('sony/browser', 'setTextUrl', url=browser_item.url)
+
+    @property
+    def browser_bookmark_list(self):
+        result = self.send('sony/browser', 'getBrowserBookmarkList')
+        for item in result:
+            yield browser.BookmarkItem(self, **item)
+
+    def act_browser_control(self, control):
+        # 1.0
+        #   command: self.send(
+        # 'sony/browser',
+        #  'actBrowserControl',
+        #  control=str
+        # )
+        #   results: [int]
+        raise NotImplementedError
+
+    @property
+    def recording_status(self):
+        return self.send(
+            'sony/recording',
+            'getRecordingStatus'
+        )['status']
+
+    @property
+    def recording_supported_repeat_type(self):
+        return self.send(
+            'sony/recording',
+            'getSupportedRepeatType'
+        )[0]
+
+    @property
+    def recording_history_list(self):
+        count = 0
+
+        while True:
+            try:
+                result = self.send(
+                    'sony/recording',
+                    'getHistoryList',
+                    stIdx=count
+                )
+                if not len(result):
+                    break
+                count += 1
+                yield recording.HistoryItem(**result[0])
+            except SonyAPI.JSONRequestError:
+                break
+
+    @property
+    def recording_schedule_list(self):
+        count = 0
+
+        while True:
+            try:
+                result = self.send(
+                    'sony/recording',
+                    'getScheduleList',
+                    stIdx=count
+                )
+                if not len(result):
+                    break
+                count += 1
+                yield recording.ScheduleItem(self, **result[0])
+            except SonyAPI.JSONRequestError:
+                break
+        return
+
+    @property
+    def recording_conflict_list(self):
+        return (
+            item for item in self.recording_schedule_list
+            if item.overlap_status
+        )
+
+    @property
+    def content_list(self):
+        for source, count in self.content_count:
+            for idx in range(count):
+                content = self.send(
+                    'sony/avContent',
+                    'getContentList',
+                    source=source,
+                    stIdx=idx
+                )[0]
+                content['source'] = source
+                _LOGGER.debug(content)
+                yield media.ContentItem(self, **content)
+
+    @property
+    def channel_linup(self):
+        for item in self.content_list:
+            if item.source.startswith('tv'):
+                yield item
 
     @property
     def command_list(self):
@@ -446,12 +941,11 @@ class SonyAPI(object):
 
     @property
     def _command_list(self):
-
-        response = self.send('sony/system', 'getRemoteControllerInfo')
+        result = self.send('sony/system', 'getRemoteControllerInfo')
 
         return dict(list(
             (command['name'], command['value'])
-            for command in response['result'][1]
+            for command in result['result'][1]
         ))
 
     def send_command(self, command_name):
@@ -462,36 +956,36 @@ class SonyAPI(object):
                 'This device does not support command ' + command_name
             )
 
-    def get_volume_data(self, device_name=None):
-        response = self.send('sony/audio', 'getVolumeInformation')
+    @property
+    def volume_data(self):
+        results = self.send('sony/audio', 'getVolumeInformation')
+        for result in results:
+            yield volume.VolumeDevice(self, result['target'])
 
-        devices = dict(list(
-            (device['target'], device)
-            for device in response['result'][0]
-        ))
+    @property
+    def speaker(self):
+        if self._speaker is not None:
+            return self._speaker
 
-        if device_name is None:
-            return devices
+        for device in self.volume_data:
+            if device.target == 'speaker':
+                self._speaker = device
+                return self._speaker
 
-        try:
-            return devices[device_name]
-        except KeyError:
-            raise SonyAPI.VolumeDeviceError(
-                'Device %s does not exist.' % device_name
-            )
+    @property
+    def headphone(self):
+        if self._headphone is not None:
+            return self._headphone
 
-    def _refresh_volume_devices(self):
-        for target in self.get_volume_data().keys():
-            setattr(self, target, Volume(self, target))
+        for device in self.volume_data:
+            if device.target == 'headphone':
+                self._headphone = device
+                return self._headphone
 
     @property
     def power(self):
         response = self.send('sony/system', 'getPowerStatus')
-
-        if response is None:
-            raise SonyAPI.UnknownError()
-
-        return response['result'][0]['status'] == 'active'
+        return response['status'] == 'active'
 
     @power.setter
     def power(self, state):
@@ -503,6 +997,8 @@ class SonyAPI(object):
                 pass
 
             if not self.power:
+                if not self.wol_mode:
+                    self.wol_mode = True
                 self._wake_on_lan()
 
         elif not state and self.power:
@@ -510,25 +1006,21 @@ class SonyAPI(object):
 
     @property
     def channel(self):
-        return self.media.title
+        return self.playing_content.display_num
 
     @channel.setter
     def channel(self, channel):
-        channel = str(channel)
-        for char in channel:
-            if char == '.':
-                self.send_command('DOT')
-
-            elif char.isdigit():
-                self.send_command(NUMBERS[int(char)])
+        self.play_tv_content(channel=channel)
 
     @property
     def source(self):
-        return self.media.source
+        return self.playing_content.source
 
     @source.setter
     def source(self, source):
-        self.media.source = source
+        for inpt in self.external_input_status:
+            if inpt.title == source or inpt.uri == source:
+                inpt.set()
 
     def __getattr__(self, item):
         if item in self.__dict__:
@@ -583,7 +1075,7 @@ class SonyAPI(object):
             new_title = self.media.title
 
             if new_title != old_title:
-                events +=[MEDIA_EVENT]
+                events += [MEDIA_EVENT]
                 old_title = new_title
 
             new_volume_data = get_volume_data()
@@ -625,7 +1117,8 @@ class SonyAPI(object):
             self._thread_event.set()
             self._thread.join(1.0)
 
-    def discover(self):
+    @staticmethod
+    def discover():
         result = []
         sock = socket.socket(
             socket.AF_INET,
@@ -660,14 +1153,14 @@ class SonyAPI(object):
         ]
 
         sock.sendto('\r\n'.join(d_request), (MCAST_ADDR, MCAST_PORT))
-
+        import time
         start_time = int(time.time())
 
         sock.setblocking(0)
 
         while (int(time.time()) - start_time) <= 30:
             try:
-                data, addr = sock.recvfrom(4096)
+                data, address = sock.recvfrom(4096)
             except socket.error:
                 pass
             else:
@@ -677,20 +1170,3 @@ class SonyAPI(object):
                     data_dict[key] = value
                 result += [data_dict]
         return result
-
-
-# (@"http://" + mDev.IPAddress + @"/sony/system" "{\"id\":19,\"method\":\"getSystemSupportedFunction\",\"version\":\"1.0\",\"params\":[]}\""
-
-
-
-# import SonyAPI
-#
-# sony_api = SonyAPI.SonyAPI('IP ADDRESS')
-# sony_api.pin = 0000
-# sony_api.pin = int(input('Enter Pin displayed on TV'))
-#
-# SonyAPI.run_tests(sony_api)
-
-
-
-

@@ -1,4 +1,6 @@
-# SonyAPI
+# -*- coding: utf-8 -*-
+#
+#  SonyAPI
 # Copyright (C) 2017 Kevin Schlosser
 
 # This program is free software: you can redistribute it and/or modify
@@ -15,161 +17,167 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-import time
-from datetime import datetime
-
-DATE = '%Y-%m-%dT%H:%M:%S'
+from utils import PlayTimeMixin
 
 
-class Media(object):
+class ContentBase(PlayTimeMixin):
+    source = ''
+    _sony_api = None
+    uri = ''
+    title = ''
 
-    def __init__(self, handler):
-        self._handler = handler
+    def tv_content_visibility(
+        self,
+        visibility='',
+        surfing_visibility='',
+        epg_visibility=''
+    ):
+        if self.source.startswith('tv'):
+            self._sony_api.send(
+                'sony/avContent',
+                'setTvContentVisibility',
+                channelSurfingVisibility=surfing_visibility,
+                uri=self.uri,
+                visibility=visibility,
+                epgVisibility=epg_visibility
+            )
+        else:
+            raise NotImplementedError
 
-    def __getitem__(self, item):
-        return self._playing_info(item)
-
-    def _playing_info(self, key):
-        response = self._handler.send(
-            "sony/avContent",
-            "getPlayingContentInfo"
+    def delete_protection(self, enable):
+        self._sony_api.send(
+            'sony/avContent',
+            'setDeleteProtection',
+            isProtected=enable,
+            uri=self.uri
         )
-        playing_content_data = response['result'][0]
 
-        return playing_content_data[key]
+    property(fset=delete_protection)
 
-    @property
-    def now_playing(self):
-        return dict(
+    def add_recording_schedule(self, quality='', repeat_type=''):
+        self._sony_api.send(
+            'sony/recording',
+            'addSchedule',
             title=self.title,
-            program_title=self.program_title,
-            source=self.source
+            quality=quality,
+            durationSec=self._duration,
+            uri=self.uri,
+            startDateTime=self._start_date_time,
+            repeatType=repeat_type,
         )
 
-    @property
-    def program_title(self):
-        return self._playing_info('programTitle')
+        for item in self._sony_api.recording_schedule_list:
+            if (
+                self.title == item.title and
+                self.uri == item.uri and
+                str(self.start_time) == str(item.start_time)
+            ):
+                return item
 
-    @property
-    def title(self):
-        return self._playing_info('title')
+    def remove_recording_schedule(self):
+        for item in self._sony_api.recording_schedule_list:
+            if (
+                self.title == item.title and
+                self.uri == item.uri and
+                str(self.start_time) == str(item.start_time)
+            ):
+                item.delete()
 
-    @title.setter
-    def title(self, title):
-        for source in self._handler.source_list:
-            if source['title'] == title:
-                self._handler.send(
-                    "sony/avContent",
-                    "setPlayContent",
-                    uri=source['uri']
-                )
 
-    @property
-    def type(self):
-        return self._playing_info('programMediaType')
+class ContentItem(ContentBase):
 
-    @property
-    def display_number(self):
-        return self._playing_info('dispNum')
+    def __init__(
+        self,
+        sony_api,
+        index,
+        tripletStr,
+        title,
+        directRemoteNum,
+        isProtected,
+        isAlreadyPlayed,
+        durationSec,
+        uri,
+        programNum,
+        dispNum,
+        originalDispNum,
+        startDateTime,
+        programMediaType,
+        channelName,
+        source
+    ):
 
-    @property
-    def source(self):
-        return self._playing_info('source')
+        self._sony_api = sony_api
+        self.index = index
+        self.triplet_str = tripletStr
+        self.title = title
+        self.direct_remote_num = directRemoteNum
+        self.is_protected = isProtected
+        self.is_already_played = isAlreadyPlayed
+        self._duration = durationSec
+        self.uri = uri
+        self.program_num = programNum
+        self.display_num = dispNum
+        self.original_display_num = originalDispNum
+        self._start_date_time = startDateTime
+        self.program_media_type = programMediaType
+        self.channel_name = channelName
+        self.source = source
 
-    @source.setter
-    def source(self, source):
-        self._handler.power = True
-        source_list = self._handler.source_list
-        if source in source_list:
-            self.uri = source_list[source]
+    def watch(self):
+        self._sony_api.send('sony/avContent', 'setPlayContent', uri=self.uri)
 
-    @property
-    def uri(self):
-        return self._playing_info('uri')
+    def delete(self):
+        self._sony_api.send('sony/avContent', 'deleteContent', uri=self.uri)
 
-    @uri.setter
-    def uri(self, uri):
-        self._handler.send(
-            "sony/avContent",
-            "setPlayContent",
-            uri=uri
-        )
 
-    @property
-    def duration(self):
-        duration = time.gmtime(self._playing_info('durationSec'))
+class NowPlaying(ContentBase):
 
-        def __str__():
-            return time.strftime('%H:%M:%S', duration)
+    def __init__(
+        self,
+        sony_api,
+        programTitle,
+        tripletStr,
+        title,
+        bivl_provider,
+        durationSec,
+        uri,
+        programNum,
+        mediaType,
+        source,
+        dispNum,
+        originalDispNum,
+        startDateTime,
+        bivl_assetId,
+        bivl_serviceId,
+        playSpeed
+    ):
+        self._sony_api = sony_api
+        self.program_title = programTitle
+        self.triplet_str = tripletStr
+        self.title = title
+        self.bivl_provider = bivl_provider
+        self._duration = durationSec
+        self.uri = uri
+        self.program_num = programNum
+        self.media_type = mediaType
+        self.source = source
+        self.display_num = dispNum
+        self.original_display_num = originalDispNum
+        self._start_date_time = startDateTime
+        self.bivl_asset_id = bivl_assetId
+        self.bivl_service_id = bivl_serviceId
+        self.play_speed = playSpeed
 
-        duration.__str__ = __str__
-        return duration
 
-    @property
-    def start_time(self):
-        start_time = self._playing_info('startDateTime')
-        try:
-            start_time = (
-                datetime.time(datetime.strptime(start_time[:-5], DATE))
-            )
-        except TypeError:
-            start_time = datetime.time(
-                datetime(*(time.strptime(start_time[:-5], DATE)[0:6]))
-            )
 
-        def __str__():
-            return time.strftime('%H:%M:%S', start_time)
-
-        start_time.__str__ = __str__
-        return start_time
-
-    @property
-    def remaining(self):
-        remaining = self.duration - self.elapsed
-
-        def __str__():
-            return time.strftime('%H:%M:%S', remaining)
-
-        remaining.__str__ = __str__
-        return remaining
-
-    @property
-    def elapsed(self):
-        start_time = self._playing_info('startDateTime')
-        try:
-            elapsed = datetime.now() - datetime.strptime(start_time[:-5], DATE)
-        except TypeError:
-            elapsed = (
-                datetime.now() -
-                datetime(*(time.strptime(start_time[:-5], DATE)[0:6]))
-            )
-
-        def __str__():
-            return time.strftime('%H:%M:%S', elapsed)
-
-        elapsed.__str__ = __str__
-        return elapsed
-
-    @property
-    def percent_elapsed(self):
-        rounded_elapsed = (
-            round(((self.elapsed.seconds / self.duration.seconds) * 100), 0)
-        )
-        percent_elapsed = int(rounded_elapsed)
-
-        def __str__():
-            return str(int(rounded_elapsed)) + '%'
-
-        percent_elapsed.__str__ = __str__
-        return percent_elapsed
-
-    @property
-    def end_time(self):
-        end_time = self.start_time + self.duration
-
-        def __str__():
-            return time.strftime('%H:%M', end_time)
-
-        end_time.__str__ = __str__
-        return end_time
-
+# {
+# u'programTitle': u'program title',
+#  u'tripletStr': u'8835.11.2010',
+#  u'title': u'some title',
+#  u'durationSec': 6300,
+#  u'uri': u'tv:dvbt?trip=8835.11.2010&srvName=11%20%D0%A0%D0%95%D0%9D%20%D0%A2%D0%92',
+# u'source': u'tv:dvbt',
+#  u'dispNum': u'011',
+# u'startDateTime': u'2014-10-16T01:45:00+0400',
+#  u'programMediaType': u'tv'
+# }

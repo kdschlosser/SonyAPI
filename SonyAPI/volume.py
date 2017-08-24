@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # SonyAPI
 # Copyright (C) 2017 Kevin Schlosser
 
@@ -15,20 +17,23 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-class Volume(object):
+class VolumeDevice(object):
 
-    def __init__(self, parent, target):
-        self._parent = parent
-        self.name = target
-        self._target = target
+    def __init__(self, sony_api, target):
+        self._sony_api = sony_api
+        self.target = target
 
     @property
     def _volume_info(self):
-        return self._parent.get_volume_data(self._target)
+        results = self._sony_api.send('sony/audio', 'getVolumeInformation')
+
+        for result in results:
+            if result['target'] == self.target:
+                return result
 
     @property
     def min_volume(self):
-        return ['minVolume']
+        return self._volume_info['minVolume']
 
     @property
     def max_volume(self):
@@ -36,19 +41,19 @@ class Volume(object):
 
     @property
     def volume_up(self):
-        if self._parent.power:
+        if self._sony_api.power:
             self.volume = self.volume + 1
         return self.volume
 
     @property
     def volume_down(self):
-        if self._parent.power:
+        if self._sony_api.power:
             self.volume = self.volume - 1
         return self.volume
 
     @property
     def volume(self):
-        if self._parent.power:
+        if self._sony_api.power:
             return self._volume_info['volume']
 
     @volume.setter
@@ -59,19 +64,20 @@ class Volume(object):
         if volume > self.max_volume:
             volume = self.max_volume
 
-        if self._parent.power:
-            json_data = self._parent.build_json(
-                "setAudioVolume",
-                dict(target=target, volume=volume)
+        if self._sony_api.power:
+            self._sony_api.send(
+                'sony/audio',
+                'setAudioVolume',
+                target=self.target,
+                volume=volume
             )
-            self._parent.send("sony/audio", json_data)
 
     @property
     def mute(self):
-        if self._parent.power:
+        if self._sony_api.power:
             return self._volume_info['mute']
 
     @mute.setter
-    def mute(self, state):
-        if self._parent.power and state != self.mute:
-            self._parent.ircc(self._parent.command('Mute'))
+    def mute(self, status):
+        if self._sony_api.power:
+            self._sony_api.send('sony/audio', 'setAudioMute', status=status)
