@@ -17,15 +17,45 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-class VolumeDevice(object):
+class VolumeBase(object):
+    target = ''
+    _sony_api = None
 
-    def __init__(self, sony_api, target):
-        self._sony_api = sony_api
-        self.target = target
+    def __get__(self, instance, owner):
+        self._sony_api = instance
+        return self
+
+    def __set__(self, instance, value):
+        self._sony_api = instance
+        self._set_volume(value)
+
+    def _set_volume(self, value):
+        if self._sony_api.power:
+            volume = int(value)
+            if volume < self.min_volume:
+                volume = self.min_volume
+
+            if volume > self.max_volume:
+                volume = self.max_volume
+
+            if self._sony_api.power:
+                self._sony_api.send(
+                    'audio',
+                    'setAudioVolume',
+                    target=self.target,
+                    volume=volume
+                )
+
+    @property
+    def _volume(self):
+        if self._sony_api.power:
+            return int(self._volume_info['volume'])
+        else:
+            return 0
 
     @property
     def _volume_info(self):
-        results = self._sony_api.send('sony/audio', 'getVolumeInformation')
+        results = self._sony_api.send('audio', 'getVolumeInformation')
 
         for result in results:
             if result['target'] == self.target:
@@ -39,38 +69,13 @@ class VolumeDevice(object):
     def max_volume(self):
         return self._volume_info['maxVolume']
 
-    @property
-    def volume_up(self):
-        if self._sony_api.power:
-            self.volume = self.volume + 1
-        return self.volume
+    def up(self):
+        self._set_volume(self._volume + 1)
+        return self._volume
 
-    @property
-    def volume_down(self):
-        if self._sony_api.power:
-            self.volume = self.volume - 1
-        return self.volume
-
-    @property
-    def volume(self):
-        if self._sony_api.power:
-            return self._volume_info['volume']
-
-    @volume.setter
-    def volume(self, volume):
-        if volume < self.min_volume:
-            volume = self.min_volume
-
-        if volume > self.max_volume:
-            volume = self.max_volume
-
-        if self._sony_api.power:
-            self._sony_api.send(
-                'sony/audio',
-                'setAudioVolume',
-                target=self.target,
-                volume=volume
-            )
+    def down(self):
+        self._set_volume(self._volume - 1)
+        return self._volume
 
     @property
     def mute(self):
@@ -80,4 +85,74 @@ class VolumeDevice(object):
     @mute.setter
     def mute(self, status):
         if self._sony_api.power:
-            self._sony_api.send('sony/audio', 'setAudioMute', status=status)
+            self._sony_api.send('audio', 'setAudioMute', status=status)
+
+    def __lt__(self, other):
+        return self._volume < int(other)
+
+    def __le__(self, other):
+        return self._volume <= int(other)
+
+    def __eq__(self, other):
+        return self._volume == int(other)
+
+    def __ne__(self, other):
+        return self._volume != int(other)
+
+    def __gt__(self, other):
+        return self._volume > int(other)
+
+    def __ge__(self, other):
+        return self._volume >= int(other)
+
+    def __add__(self, other):
+        return self._volume + int(other)
+
+    def __sub__(self, other):
+        return self._volume - int(other)
+
+    def __mul__(self, other):
+        return self._volume * int(other)
+
+    def __div__(self, other):
+        return self._volume / int(other)
+
+    def __iadd__(self, other):
+        self._set_volume(self._volume + int(other))
+
+    def __isub__(self, other):
+        self._set_volume(self._volume - int(other))
+
+    def __imul__(self, other):
+        self._set_volume(self._volume * int(other))
+
+    def __idiv__(self, other):
+        self._set_volume(self._volume / int(other))
+
+    def __float__(self):
+        return float(self._volume)
+
+    def __int__(self):
+        return self._volume
+
+    def __str__(self):
+        return str(self._volume)
+
+    def __unicode__(self):
+        return unicode(str(self))
+
+
+class Speaker(VolumeBase):
+    target = 'speaker'
+
+
+class Headphone(VolumeBase):
+    target = 'headphone'
+
+
+class Volume(VolumeBase):
+    speaker = Speaker()
+    headphone = Headphone()
+
+
+

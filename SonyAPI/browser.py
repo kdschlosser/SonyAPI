@@ -33,7 +33,7 @@ class BrowserItem(object):
         self.icon = icon
 
     def load(self):
-        self._sony_api.send('sony/browser', 'setTextUrl', url=self.url)
+        self._sony_api.send('browser', 'setTextUrl', url=self.url)
 
 
 class UrlItem(BrowserItem):

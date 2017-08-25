@@ -34,7 +34,7 @@ class ContentBase(PlayTimeMixin):
     ):
         if self.source.startswith('tv'):
             self._sony_api.send(
-                'sony/avContent',
+                'avContent',
                 'setTvContentVisibility',
                 channelSurfingVisibility=surfing_visibility,
                 uri=self.uri,
@@ -46,7 +46,7 @@ class ContentBase(PlayTimeMixin):
 
     def delete_protection(self, enable):
         self._sony_api.send(
-            'sony/avContent',
+            'avContent',
             'setDeleteProtection',
             isProtected=enable,
             uri=self.uri
@@ -56,7 +56,7 @@ class ContentBase(PlayTimeMixin):
 
     def add_recording_schedule(self, quality='', repeat_type=''):
         self._sony_api.send(
-            'sony/recording',
+            'recording',
             'addSchedule',
             title=self.title,
             quality=quality,
@@ -124,10 +124,10 @@ class ContentItem(ContentBase):
         self.source = source
 
     def watch(self):
-        self._sony_api.send('sony/avContent', 'setPlayContent', uri=self.uri)
+        self._sony_api.send('avContent', 'setPlayContent', uri=self.uri)
 
     def delete(self):
-        self._sony_api.send('sony/avContent', 'deleteContent', uri=self.uri)
+        self._sony_api.send('avContent', 'deleteContent', uri=self.uri)
 
 
 class NowPlaying(ContentBase):

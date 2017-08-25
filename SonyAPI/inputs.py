@@ -34,4 +34,4 @@ class InputItem(object):
         self.icon = icon
 
     def set(self):
-        self._sony_api.send('sony/avContent', 'setPlayContent', uri=self.uri)
+        self._sony_api.send('avContent', 'setPlayContent', uri=self.uri)

@@ -71,7 +71,7 @@ class ScheduleItem(PlayTimeMixin):
 
     def delete(self):
         self._sony_api.send(
-            'sony/recording',
+            'recording',
             'deleteSchedule',
             title=self.title,
             durationSec=self._duration,
