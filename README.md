@@ -1,8 +1,8 @@
 ## SonyAPI
 
-This is the initial release of a python connector to Sony generation 3 TV's.
+This is the initial release of a python connector for Sony Bravia generation 3 TV's.
 
-The API is pretty simple. This API will automatically get the MAC address of the TV to create the WOL packet  so you will be able to wake it from standby. It also automatically will get the FQDN of the computer running this lib and grab the mac adress from the network card and use that information to create a client id and nickname. This is done so the use of the same pin and hostname cannot be used to access the TV. This adds a little bit of extra security.
+The API is pretty simple. This API will automatically get the MAC address of the TV to create the WOL packet  so you will be able to wake it from standby. It also automatically will get the FQDN of the computer running this lib and use that information to create a client id and nickname. This is done so the use of the same pin and hostname cannot be used to access the TV. This adds a little bit of extra security.
 
 ***Constructor:***
 

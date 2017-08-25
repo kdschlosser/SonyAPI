@@ -319,7 +319,7 @@ class SonyAPI(object):
         except requests.exceptions.RequestException:
             raise SonyAPI.IRCCError(traceback.format_exc())
 
-    def send(self, url, method, **params):
+    def send(self, url, method, return_index=0, **params):
         if not params:
             params = []
         else:
@@ -347,7 +347,7 @@ class SonyAPI(object):
             if response.get('error'):
                 raise SonyAPI.JSONRequestError(response)
             if isinstance(response['result'], list):
-                return response['result'][0]
+                return response['result'][return_index]
             else:
                 return response['result']
 
@@ -956,11 +956,11 @@ class SonyAPI(object):
 
     @property
     def _command_list(self):
-        result = self.send('system', 'getRemoteControllerInfo')
+        result = self.send('system', 'getRemoteControllerInfo', return_index=1)
 
         return dict(list(
             (command['name'], command['value'])
-            for command in result['result'][1]
+            for command in result
         ))
 
     def send_command(self, command_name):
