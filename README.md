@@ -33,57 +33,63 @@ A couple of things about how the power works. With the Android based TV's they d
 
 When changing the volume you will reference the device you want to control the volume for, This is found in the audio output settings of your TV.
 
-***Volume***
+***Volume:***
   * Get
 
-        volume = instance.speakers.volume
+        speaker_volume = int(instance.volume.speaker)
+        headphone_volume = int(instance.volume.headphone)
 
   * Set
 
-        instance.speakers.volume = 50
+        instance.volume.speaker = 50
+        instance.volume.headphone = 50
 
-***Mute***
+***Mute:***
   * Get
 
-        mute = instance.speakers.mute
+        speaker_mute = instance.volume.speaker.mute
+        headphone_mute = instance.volume.headphone.mute
 
   * Set
 
-        instance.speakers.mute = True/False
+        instance.volume.speaker.mute = True/False
+        instance.volume.headphone.mute = True/False
 
-***Minimum Volume***
-
-  * Get
-
-        min_volume = instance.speakers.min_volume
-
-***Maximum Volume***
+***Minimum Volume:***
 
   * Get
 
-        max_volume = instance.speakers.max_volume
+        min_speaker = instance.volume.speaker.min_volume
+        min_headphone = instance.volume.headphone.min_volume
+***Maximum Volume:***
+
+  * Get
+
+        max_speaker = instance.volume.speaker.max_volume
+        max_headphone = instance.volume.headphone.max_volume
+
+***Volume Up:***
+
+    instance.volume.speaker.up()
+    instance.volume.headphone.up()
 
 
+***Volume Down:***
+
+    instance.volume.speaker.down()
+    instance.volume.headphone.down()
+
+
+ I have also set this up to allow for the use of some of the rich comparison and augmented arithmetic operators += -= *= /= > < == >= <= !=
+
+    instance.volume.speaker += 1
+    instance.volume.headphone += 1
+
+    instance.volume.speaker -= 1
+    instance.volume.headphone -= 1
 ## Channels
 
-***Channel***
-
-  * Get
-
-      channel = instance.channel
-
-  * Set
-
-      instance.channel = 2
-
-***Channel Up***
-
-    instance.ChannelUp()
-
-
-***Channel Down***
-
-    instance.ChannelDown()
+Channels work the same way the volume does but without the speaker or headphone. There is also the property lineup which will return a list of ContentItem instances.
 
 
 
