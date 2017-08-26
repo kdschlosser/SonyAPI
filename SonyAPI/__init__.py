@@ -39,6 +39,8 @@ CHANNEL_EVENT = 0x4
 POWER_EVENT = 0x5
 MEDIA_EVENT = 0x6
 
+
+
 ANY = '0.0.0.0'
 MCAST_ADDR = '239.255.255.250'
 MCAST_PORT = 1900
@@ -167,10 +169,13 @@ class SonyAPI(object):
         self._pin_timer = None
         self._timeout_event = None
         self._guid = '24F26C67-5A50-4B08-8754-80EBAF880379'
-        self._pin = None
         self.media = None
         self._psk = psk
-        self.pin = pin
+        if psk:
+            self._pin = pin
+        else:
+            self._pin = None
+            self.pin = pin
 
     @property
     def pin(self):
@@ -178,10 +183,6 @@ class SonyAPI(object):
 
     @pin.setter
     def pin(self, pin):
-        if self._psk is not None:
-            self._refresh_volume_devices()
-            return
-
         nickname = socket.gethostbyaddr(socket.gethostname())[0]
         client_id = nickname + ':' + self._guid
         _LOGGER.debug(client_id)
@@ -238,7 +239,6 @@ class SonyAPI(object):
 
             self._cookies = response.cookies
             self._pin = pin
-            self._refresh_volume_devices()
 
         except requests.exceptions.HTTPError as exception_instance:
             if '401' in str(exception_instance):
@@ -354,6 +354,9 @@ class SonyAPI(object):
         except requests.exceptions.RequestException:
             raise SonyAPI.SendError(traceback.format_exc())
 
+    def reboot(self):
+        self.send('guide', 'requestReboot')
+
     def mhl_power_feed_mode(self, enabled):
         self.send('cec', 'setMhlPowerFeedMode', enabled=enabled)
 
@@ -420,6 +423,7 @@ class SonyAPI(object):
     @postal_code.setter
     def postal_code(self, code):
         self.send('system', 'setPostalCode', postalCode=code)
+
 
     @property
     def power_saving_mode(self):
@@ -526,6 +530,14 @@ class SonyAPI(object):
             'getColorKeysLayout'
         )['colorKeysLayout']
 
+    @property
+    def led_indicator_status(self):
+        return self.send(
+            'guide',
+            'getLEDIndicatorStatus'
+        )
+
+    @led_indicator_status.setter
     def led_indicator_status(self, (status, mode)):
         self.send(
             'system',
@@ -534,14 +546,32 @@ class SonyAPI(object):
             mode=mode
         )
 
-    led_indicator_status = property(fset=led_indicator_status)
+    @property
+    def remote_device_settings(self):
+        # return list(
+        #   dict(
+        #       target=str,
+        #       currentValue=str,
+        #       deviceUIInfo":"string",
+        #       title=str,
+        #       titleTextID=str,
+        #       type=str,
+        #       isAvailable=bool,
+        #       candidate=GeneralSettingsCandidate[]
+        #   )
+        # )
+        return self.send(
+            'guide',
+            'getRemoteDeviceSettings',
+            target=''
+        )
 
     @property
     def _network_settings(self):
         return self.send(
             'system',
             'getNetworkSettings',
-            netif=str
+            netif=''
         )
 
     @property
@@ -717,19 +747,21 @@ class SonyAPI(object):
     def parental_rating_setting_english(self):
         return self._parental_rating_settings['ratingCustomTypeCaEnglish']
 
-    def play_tv_content(self, content_item=None, channel=None):
-        if channel is not None:
-            self.send(
-                'avContent',
-                'setPlayTvContent',
-                channel=str(channel)
-            )
-        elif content_item.source.startswith('tv'):
-            self.send(
-                'avContent',
-                'setPlayTvContent',
-                channel=content_item.display_num
-            )
+    def play_tv_content(self, channel=None):
+
+        if isinstance(channel, media.ContentItem):
+            if channel.source.startswith('tv'):
+                self.send(
+                    'avContent',
+                    'setPlayTvContent',
+                    channel=channel.display_num
+                )
+        elif isinstance(channel, (int, str, unicode)):
+                self.send(
+                    'avContent',
+                    'setPlayTvContent',
+                    channel=str(channel)
+                )
 
     @property
     def scheme_list(self):
@@ -765,7 +797,7 @@ class SonyAPI(object):
                 'getContentCount',
                 source=source
             )['count']
-            yield count
+            yield (source, count)
 
     def favorite_content_list(self, source='', contents=('',)):
         self.send(

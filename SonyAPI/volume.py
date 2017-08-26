@@ -87,6 +87,10 @@ class VolumeBase(object):
         if self._sony_api.power:
             self._sony_api.send('audio', 'setAudioMute', status=status)
 
+    def toggle_mute(self):
+        if self._sony_api.power:
+            self.mute = not self.mute
+
     def __lt__(self, other):
         return self._volume < int(other)
 
