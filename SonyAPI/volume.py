@@ -18,15 +18,10 @@
 
 
 class VolumeBase(object):
-    target = ''
-    _sony_api = None
+    target = 'speaker'
 
-    def __get__(self, instance, owner):
-        self._sony_api = owner
-        return self
-
-    def __set__(self, instance, value):
-        self._set_volume(value)
+    def __init__(self, sony_api):
+        self._sony_api = sony_api
 
     def _set_volume(self, value):
         if self._sony_api.power:
@@ -154,8 +149,34 @@ class Headphone(VolumeBase):
 
 
 class Volume(VolumeBase):
-    speaker = Speaker()
-    headphone = Headphone()
+    def __init__(self, sony_api):
+        self._sony_api = sony_api
+        self._speaker = None
+        self._headphone = None
+        VolumeBase.__init__(self, sony_api)
+
+    @property
+    def speaker(self):
+        if self._speaker is None:
+            self._speaker = Speaker(self._sony_api)
+        return self._speaker
+
+    @speaker.setter
+    def speaker(self, value):
+        self.speaker._set_volume(value)
+
+    @property
+    def headphone(self):
+        if self._headphone is None:
+            self._headphone = Headphone(self._sony_api)
+        return self._headphone
+
+    @headphone.setter
+    def headphone(self, value):
+        self.headphone._set_volume(value)
+
+
+
 
 
 

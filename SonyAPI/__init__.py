@@ -149,7 +149,6 @@ class SonyAPI(object):
     IRCCError = IRCCError
     SendError = SendError
 
-    volume = volume.Volume()
     channel = channel.Channel()
 
     def __init__(self, ip_address, pin=0000, psk=None, debug=None):
@@ -161,8 +160,7 @@ class SonyAPI(object):
         self._thread = None
         self._thread_event = threading.Event()
         self._callbacks = []
-        self._speaker = None
-        self._headphone = None
+        self._volume = None
         self._cookies = None
         self._commands = []
         self._content_mapping = []
@@ -173,6 +171,7 @@ class SonyAPI(object):
         self._psk = psk
         if psk:
             self._pin = pin
+
         else:
             self._pin = None
             self.pin = pin
@@ -353,6 +352,16 @@ class SonyAPI(object):
 
         except requests.exceptions.RequestException:
             raise SonyAPI.SendError(traceback.format_exc())
+
+    @property
+    def volume(self):
+        if self._volume is None:
+            self._volume = volume.Volume(self)
+        return self._volume
+
+    @volume.setter
+    def volume(self, value):
+        self.volume.speaker = value
 
     def reboot(self):
         self.send('guide', 'requestReboot')
