@@ -22,11 +22,10 @@ class VolumeBase(object):
     _sony_api = None
 
     def __get__(self, instance, owner):
-        self._sony_api = instance
+        self._sony_api = owner
         return self
 
     def __set__(self, instance, value):
-        self._sony_api = instance
         self._set_volume(value)
 
     def _set_volume(self, value):
