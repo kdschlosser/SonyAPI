@@ -123,8 +123,15 @@ class ContentItem(ContentBase):
         self.channel_name = channelName
         self.source = source
 
-    def play(self):
-        self._sony_api.send('avContent', 'setPlayContent', uri=self.uri)
+    def set(self):
+        if 'tv' in self.uri:
+            self._sony_api.send(
+                'avContent',
+                'setPlayTvContent',
+                channel=str(self.display_num)
+            )
+        else:
+            self._sony_api.send('avContent', 'setPlayContent', uri=self.uri)
 
     def delete(self):
         self._sony_api.send('avContent', 'deleteContent', uri=self.uri)

@@ -185,8 +185,6 @@ class SonyAPI(object):
     IRCCError = IRCCError
     SendError = SendError
 
-    channel = channel.Channel()
-
     def __init__(self, ip_address, pin=0000, psk=None, debug=None):
         _LOGGER.file_writer = debug
 
@@ -198,6 +196,7 @@ class SonyAPI(object):
         self._thread_event = threading.Event()
         self._callbacks = []
         self._volume = None
+        self._channel = 0
         self._cookies = None
         self._commands = []
         self._content_mapping = []
@@ -418,6 +417,26 @@ class SonyAPI(object):
     @volume.setter
     def volume(self, value):
         self.volume.speaker = value
+
+    @property
+    def channel(self):
+        if not self._channel:
+            self._channel = channel.Channels(self)
+        return self._channel
+
+    @channel.setter
+    def channel(self, value):
+        if isinstance(value, media.ContentItem):
+            if 'tv' in value.uri:
+                value.set()
+        else:
+            value = int(value)
+            channel = int(self.channel._channel)
+
+            if value > channel:
+                self.channel._set_channel('up', int(value))
+            else:
+                self.channel._set_channel('down', int(value))
 
     def reboot(self):
         self.send('guide', 'requestReboot')
