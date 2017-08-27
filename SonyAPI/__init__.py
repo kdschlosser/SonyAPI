@@ -85,6 +85,7 @@ def cache_icons(sony_api):
                     pass
             threading.Thread(target=g_icon).start()
 
+
 def convert(d):
     if isinstance(d, dict):
         try:
@@ -219,7 +220,10 @@ class SonyAPI(object):
 
     @pin.setter
     def pin(self, pin):
-        nickname = socket.gethostbyaddr(socket.gethostname())[0].replace('-', '')
+        nickname = socket.gethostbyaddr(
+            socket.gethostname()
+        )[0].replace('-', '')
+
         client_id = nickname + ':' + self._guid
         _LOGGER.debug('||', client_id=client_id)
 
@@ -258,7 +262,12 @@ class SonyAPI(object):
             headers = dict()
 
         _LOGGER.debug('||', headers=headers)
-        _LOGGER.debug('<<', access_url=self._access_url, authorization=authorization, headers=headers)
+        _LOGGER.debug(
+            '<<',
+            access_url=self._access_url,
+            authorization=authorization,
+            headers=headers
+        )
 
         try:
             response = requests.post(
@@ -431,9 +440,9 @@ class SonyAPI(object):
                 value.set()
         else:
             value = int(value)
-            channel = int(self.channel._channel)
+            chan = int(self.channel._channel)
 
-            if value > channel:
+            if value > chan:
                 self.channel._set_channel('up', int(value))
             else:
                 self.channel._set_channel('down', int(value))
@@ -755,7 +764,7 @@ class SonyAPI(object):
 
     @property
     def multi_screen_mode(self):
-         return self.send(
+        return self.send(
             'videoScreen',
             'getMultiScreenMode'
         )['mode']
