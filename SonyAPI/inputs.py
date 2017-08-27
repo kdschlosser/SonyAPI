@@ -17,21 +17,45 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from utils import get_icon
-
-
 class InputItem(object):
-    def __init__(self,  sony_api, connection, label, uri, icon, title):
+    def __init__(self,  sony_api, source):
         self._sony_api = sony_api
-        self.title = title
-        self.connection = connection
-        self.uri = uri
-        self.label = label
-        if icon:
-            self.display_icon = get_icon(icon)
-        else:
-            self.display_icon = None
-        self.icon = icon
+        self._source = source
 
     def set(self):
         self._sony_api.send('avContent', 'setPlayContent', uri=self.uri)
+
+    @property
+    def label(self):
+        status = self._status
+        if not status['label']:
+            return status['title']
+        else:
+            return status['label']
+
+    @property
+    def title(self):
+        return self._status['title']
+
+    @property
+    def connection(self):
+        return self._status['connection']
+
+    @property
+    def uri(self):
+        return self._status['uri']
+
+    @property
+    def icon(self):
+        return self._status['icon']
+
+    @property
+    def _status(self):
+        results = self._sony_api.send(
+            'avContent',
+            'getCurrentExternalInputsStatus'
+        )
+
+        for result in results:
+            if result.uri == self._source:
+                return result

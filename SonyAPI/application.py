@@ -21,12 +21,21 @@ from utils import get_icon
 
 
 class Application(object):
-    def __init__(self, title, uri, data, icon):
+    def __init__(self, sony_api, title='', uri='', data='', icon=''):
+        self._sony_api = sony_api
         self.title = title
         self.data = data
         self.uri = uri
-        if icon:
+        if (
+            icon and
+            sony_api._ip_address.split(':')[0] not in icon and
+            icon not in sony_api.icon_cache
+        ):
             self.display_icon = get_icon(icon)
+            sony_api.icon_cache[icon] = self.display_icon
         else:
             self.display_icon = None
         self.icon = icon
+
+    def active(self):
+        self._sony_api.send('appControl', 'setActiveApp', uri=self.uri)

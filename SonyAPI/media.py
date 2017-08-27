@@ -89,21 +89,21 @@ class ContentItem(ContentBase):
     def __init__(
         self,
         sony_api,
-        index,
-        tripletStr,
-        title,
-        directRemoteNum,
-        isProtected,
-        isAlreadyPlayed,
-        durationSec,
-        uri,
-        programNum,
-        dispNum,
-        originalDispNum,
-        startDateTime,
-        programMediaType,
-        channelName,
-        source
+        index=0,
+        tripletStr='',
+        title='',
+        directRemoteNum='',
+        isProtected=False,
+        isAlreadyPlayed=False,
+        durationSec=0,
+        uri='',
+        programNum='',
+        dispNum='',
+        originalDispNum='',
+        startDateTime='',
+        programMediaType='',
+        channelName='',
+        source=''
     ):
 
         self._sony_api = sony_api
@@ -123,7 +123,7 @@ class ContentItem(ContentBase):
         self.channel_name = channelName
         self.source = source
 
-    def watch(self):
+    def play(self):
         self._sony_api.send('avContent', 'setPlayContent', uri=self.uri)
 
     def delete(self):
@@ -135,21 +135,21 @@ class NowPlaying(ContentBase):
     def __init__(
         self,
         sony_api,
-        programTitle,
-        tripletStr,
-        title,
-        bivl_provider,
-        durationSec,
-        uri,
-        programNum,
-        mediaType,
-        source,
-        dispNum,
-        originalDispNum,
-        startDateTime,
-        bivl_assetId,
-        bivl_serviceId,
-        playSpeed
+        programTitle='',
+        tripletStr='',
+        title='',
+        bivl_provider='',
+        durationSec=0,
+        uri='',
+        programNum='',
+        mediaType='',
+        source='',
+        dispNum='',
+        originalDispNum='',
+        startDateTime='',
+        bivl_assetId='',
+        bivl_serviceId='',
+        playSpeed=''
     ):
         self._sony_api = sony_api
         self.program_title = programTitle
@@ -160,7 +160,6 @@ class NowPlaying(ContentBase):
         self.uri = uri
         self.program_num = programNum
         self.media_type = mediaType
-        self.source = source
         self.display_num = dispNum
         self.original_display_num = originalDispNum
         self._start_date_time = startDateTime
@@ -168,7 +167,11 @@ class NowPlaying(ContentBase):
         self.bivl_service_id = bivl_serviceId
         self.play_speed = playSpeed
 
-
+        self.source = source
+        for s in sony_api.source_list:
+            if s.uri == source or s.uri == uri:
+                self.source = s
+                break
 
 # {
 # u'programTitle': u'program title',

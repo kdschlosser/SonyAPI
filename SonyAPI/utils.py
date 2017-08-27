@@ -31,85 +31,63 @@ def get_icon(url):
     icon.seek(0)
     return icon
 
-
 class PlayTimeMixin(object):
     _duration = 0
     _start_date_time = ''
 
     @property
     def duration(self):
-        duration = time.gmtime(self._duration)
-
-        def __str__():
-            return time.strftime('%H:%M:%S', duration)
-
-        duration.__str__ = __str__
-        return duration
+        return time.gmtime(self._duration)
 
     @property
     def start_time(self):
         start_time = self._start_date_time
-        try:
-            start_time = (
-                datetime.time(datetime.strptime(start_time[:-5], DATE))
-            )
-        except TypeError:
-            start_time = datetime.time(
-                datetime(*(time.strptime(start_time[:-5], DATE)[0:6]))
-            )
+        if start_time:
+            try:
+                start_time = (
+                    datetime.time(datetime.strptime(start_time[:-5], DATE))
+                )
+            except TypeError:
+                start_time = datetime.time(
+                    datetime(*(time.strptime(start_time[:-5], DATE)[0:6]))
+                )
 
-        def __str__():
-            return time.strftime('%H:%M:%S', start_time)
-
-        start_time.__str__ = __str__
-        return start_time
+            return start_time
 
     @property
     def remaining(self):
-        remaining = self.duration - self.elapsed
+        elapsed = self.elapsed
+        if elapsed is not None:
+            return self.duration - elapsed
 
-        def __str__():
-            return time.strftime('%H:%M:%S', remaining)
-
-        remaining.__str__ = __str__
-        return remaining
 
     @property
     def elapsed(self):
         start_time = self._start_date_time
-        try:
-            elapsed = datetime.now() - datetime.strptime(start_time[:-5], DATE)
-        except TypeError:
-            elapsed = (
-                datetime.now() -
-                datetime(*(time.strptime(start_time[:-5], DATE)[0:6]))
-            )
-
-        def __str__():
-            return time.strftime('%H:%M:%S', elapsed)
-
-        elapsed.__str__ = __str__
-        return elapsed
+        if start_time:
+            try:
+                elapsed = datetime.now() - datetime.strptime(start_time[:-5], DATE)
+            except TypeError:
+                elapsed = (
+                    datetime.now() -
+                    datetime(*(time.strptime(start_time[:-5], DATE)[0:6]))
+                )
+            return elapsed
 
     @property
     def percent_elapsed(self):
-        rounded_elapsed = (
-            round(((self.elapsed.seconds / self.duration.seconds) * 100), 0)
-        )
-        percent_elapsed = int(rounded_elapsed)
+        elapsed = self.elapsed
+        if elapsed is not None:
+            rounded_elapsed = (
+                round(((elapsed.seconds / self.duration.seconds) * 100), 0)
+            )
+            percent_elapsed = int(rounded_elapsed)
 
-        def __str__():
-            return str(int(rounded_elapsed)) + '%'
-
-        percent_elapsed.__str__ = __str__
-        return percent_elapsed
+            return percent_elapsed
 
     @property
     def end_time(self):
-        end_time = self.start_time + self.duration
+        start_time = self.start_time
+        if start_time is not None:
+            return start_time + self.duration
 
-        def __str__():
-            return time.strftime('%H:%M', end_time)
-
-        end_time.__str__ = __str__
-        return end_time

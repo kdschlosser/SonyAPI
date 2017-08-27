@@ -31,6 +31,7 @@ import browser
 import inputs
 import channel
 from datetime import datetime
+from utils import get_icon
 
 VOLUME_EVENT = 0x1
 MUTE_EVENT = 0x2
@@ -38,8 +39,6 @@ SOURCE_EVENT = 0x3
 CHANNEL_EVENT = 0x4
 POWER_EVENT = 0x5
 MEDIA_EVENT = 0x6
-
-
 
 ANY = '0.0.0.0'
 MCAST_ADDR = '239.255.255.250'
@@ -70,27 +69,64 @@ NUMBERS = [
 ]
 
 
+def cache_icons(sony_api):
+    applications = sony_api.send('appControl', 'getApplicationList')
+    for app in applications:
+        icon = app['icon']
+        if (
+            icon and
+            sony_api._ip_address.split(':')[0] not in icon and
+            icon not in sony_api.icon_cache
+        ):
+            def g_icon():
+                try:
+                    sony_api.icon_cache[icon] = get_icon(icon)
+                except:
+                    pass
+            threading.Thread(target=g_icon).start()
+
+def convert(d):
+    if isinstance(d, dict):
+        try:
+            d = json.dumps(d, indent=4)
+        except TypeError:
+            pass
+    return str(d)
+
+
+def debug_data(*args, **kwargs):
+    data = []
+    for arg in args:
+        data += [convert(arg)]
+
+    for key, value in kwargs.items():
+        data += [key + ': ' + convert(value)]
+    return '\n'.join(data)
+
+
 class _LOGGER(object):
     file_writer = None
 
     @classmethod
-    def error(cls, err, data):
-        if isinstance(data, dict):
-            data = json.dumps(data, indent=4)
+    def error(cls, *args, **kwargs):
+
+        if 'err' in kwargs:
+            err = kwargs.pop('err')
+        else:
+            err = traceback.format_exc()
 
         if cls.file_writer:
             cls.file_writer.write(
-                '%s.%s: %s\n' % (__name__, err, str(data))
+                '%s.%s: %s\n' % (__name__, err, debug_data(*args, **kwargs))
             )
 
     @classmethod
-    def debug(cls, data):
-        if isinstance(data, dict):
-            data = json.dumps(data, indent=4)
+    def debug(cls, direction, *args, **kwargs):
 
         if cls.file_writer:
             cls.file_writer.write(
-                '%s: DEBUG: %s\n' % (__name__, str(data))
+                '%s: DEBUG: %s  %s\n' %
+                (__name__, direction, debug_data(*args, **kwargs))
             )
 
 
@@ -157,6 +193,7 @@ class SonyAPI(object):
         self._ircc_url = 'http://%s/sony/IRCC' % ip_address
         self._access_url = 'http://%s/sony/accessControl' % ip_address
         self._ip_address = ip_address
+        self.icon_cache = {}
         self._thread = None
         self._thread_event = threading.Event()
         self._callbacks = []
@@ -169,9 +206,10 @@ class SonyAPI(object):
         self._guid = '24F26C67-5A50-4B08-8754-80EBAF880379'
         self.media = None
         self._psk = psk
+        self._icon_thread = threading.Thread(target=cache_icons, args=(self,))
         if psk:
             self._pin = pin
-
+            self._icon_thread.start()
         else:
             self._pin = None
             self.pin = pin
@@ -182,9 +220,9 @@ class SonyAPI(object):
 
     @pin.setter
     def pin(self, pin):
-        nickname = socket.gethostbyaddr(socket.gethostname())[0]
+        nickname = socket.gethostbyaddr(socket.gethostname())[0].replace('-', '')
         client_id = nickname + ':' + self._guid
-        _LOGGER.debug(client_id)
+        _LOGGER.debug('||', client_id=client_id)
 
         authorization = json.dumps({
             'method': 'actRegister',
@@ -200,7 +238,7 @@ class SonyAPI(object):
             ],
         }).encode('utf-8')
 
-        _LOGGER.debug(authorization)
+        _LOGGER.debug('||', authorization=authorization)
 
         if pin:
             if self._pin_timer is not None:
@@ -220,7 +258,8 @@ class SonyAPI(object):
         else:
             headers = dict()
 
-        _LOGGER.debug(headers)
+        _LOGGER.debug('||', headers=headers)
+        _LOGGER.debug('<<', access_url=self._access_url, authorization=authorization, headers=headers)
 
         try:
             response = requests.post(
@@ -230,18 +269,20 @@ class SonyAPI(object):
             )
             response.raise_for_status()
             json_data = response.json()
-            _LOGGER.debug(json_data)
+            _LOGGER.debug('>>', json_data)
 
             if json_data and json_data.get('error'):
-                _LOGGER.debug(json_data)
+                _LOGGER.error(json_data, err='JSONRequestError')
                 raise SonyAPI.JSONRequestError(json_data)
 
             self._cookies = response.cookies
             self._pin = pin
+            self._icon_thread.start()
 
         except requests.exceptions.HTTPError as exception_instance:
             if '401' in str(exception_instance):
                 if pin:
+                    _LOGGER.error(traceback.format_exc(), err='PinError')
                     raise SonyAPI.PinError(
                         'This device is not registered or the PIN is '
                         'invalid.\n\n' +
@@ -257,7 +298,7 @@ class SonyAPI(object):
 
                         if not self._timeout_event.isSet():
                             timed_out = True
-
+                            _LOGGER.error(err='RegisterTimeoutError')
                             raise SonyAPI.RegisterTimeoutError(
                                 'Registration time has expired'
                             )
@@ -271,11 +312,13 @@ class SonyAPI(object):
                     if pin and not timed_out:
                         self.pin = pin
             else:
+                _LOGGER.error(traceback.format_exc(), err='RegisterError')
                 raise SonyAPI.RegisterError(
                     'Unknown HTTP Error: ' + traceback.format_exc()
                 )
 
         except requests.exceptions.RequestException:
+            _LOGGER.error(traceback.format_exc(), err='RegisterError')
             raise SonyAPI.RegisterError(
                 'Unknown Request Error: ' + traceback.format_exc()
             )
@@ -313,12 +356,21 @@ class SonyAPI(object):
                 data=(BODY % code).encode('UTF-8')
             )
             content = response.content
+            _LOGGER.debug('>>', content)
             return content
 
         except requests.exceptions.RequestException:
             raise SonyAPI.IRCCError(traceback.format_exc())
 
     def send(self, url, method, return_index=0, **params):
+        """
+        "error": [7, "Illegal State"]
+        "error": [7, "Clock is not set"]
+        "error": [15, "unsupported"]
+        "error": [12, "getLEDIndicatorStatus"]
+        "error":[501,"Not Implemented"]
+        """
+
         if not params:
             params = []
         else:
@@ -327,6 +379,7 @@ class SonyAPI(object):
         json_data = json.dumps(
             {'method': method, 'params': params, 'id': 1, 'version': '1.0'}
         )
+        _LOGGER.debug('||', json_data=json_data)
 
         try:
 
@@ -337,13 +390,15 @@ class SonyAPI(object):
 
             header['data'] = json_data.encode('UTF-8')
 
-            response = requests.post(
-                'http://%s/sony/%s' % (self._ip_address, url),
-                **header
-                )
+            _LOGGER.debug('||', header=header)
+            url = 'http://%s/sony/%s' % (self._ip_address, url)
+            _LOGGER.debug('<<', url=url, header=header)
+            response = requests.post(url, **header)
             response = json.loads(response.content.decode('utf-8'))
+            _LOGGER.debug('>>', response=response)
 
             if response.get('error'):
+                _LOGGER.error(response, err='JSONRequestError')
                 raise SonyAPI.JSONRequestError(response)
             if isinstance(response['result'], list):
                 return response['result'][return_index]
@@ -351,6 +406,7 @@ class SonyAPI(object):
                 return response['result']
 
         except requests.exceptions.RequestException:
+            _LOGGER.error(traceback.format_exc(), err='SendError')
             raise SonyAPI.SendError(traceback.format_exc())
 
     @property
@@ -433,16 +489,25 @@ class SonyAPI(object):
     def postal_code(self, code):
         self.send('system', 'setPostalCode', postalCode=code)
 
-
     @property
     def power_saving_mode(self):
-        return self.send(
+        mode = self.send(
             'system',
             'getPowerSavingMode'
         )['mode']
 
+        if mode == 'off':
+            return False
+        else:
+            return mode
+
     @power_saving_mode.setter
     def power_saving_mode(self, mode):
+        if mode is False:
+            mode = 'off'
+        if mode is True:
+            mode = 'on'
+
         self.send('system', 'setPowerSavingMode', mode=mode)
 
     @property
@@ -625,7 +690,7 @@ class SonyAPI(object):
                 return option['value']
 
     @property
-    def chinese_software_keyboard_suypported(self):
+    def chinese_software_keyboard_supported(self):
         for option in self._system_supported_function:
             if option['option'] == 'SupportedChineseSoftwareKeyboard':
                 if option['value'] != 'no':
@@ -671,13 +736,10 @@ class SonyAPI(object):
 
     @property
     def multi_screen_mode(self):
-        version = self.send('videoScreen', 'getVersions')[-1]
-
-        if version == '1.1':
-            return self.send(
-                'videoScreen',
-                'getMultiScreenMode'
-            )['mode']
+         return self.send(
+            'videoScreen',
+            'getMultiScreenMode'
+        )['mode']
 
     @multi_screen_mode.setter
     def multi_screen_mode(self, mode):
@@ -690,13 +752,10 @@ class SonyAPI(object):
 
     @property
     def multi_screen_internet_mode(self):
-        version = self.send('videoScreen', 'getVersions')[-1]
-
-        if version == '1.1':
-            return self.send(
-                'videoScreen',
-                'getMultiScreenMode'
-            )['option']['internetTVMode']
+        return self.send(
+            'videoScreen',
+            'getMultiScreenMode'
+        )['option']['internetTVMode']
 
     @multi_screen_internet_mode.setter
     def multi_screen_internet_mode(self, mode):
@@ -708,16 +767,6 @@ class SonyAPI(object):
         )
 
     @property
-    def external_input_status(self):
-        results = self.send(
-            'avContent',
-            'getCurrentExternalInputsStatus'
-        )
-
-        for result in results:
-            yield inputs.InputItem(self, **result)
-
-    @property
     def _parental_rating_settings(self):
         return self.send(
             'avContent',
@@ -726,51 +775,51 @@ class SonyAPI(object):
 
     @property
     def parental_rating_setting_country(self):
-        return self._parental_rating_settings['ratingCountry']
+        ratings = self._parental_rating_settings
+        if 'ratingCountry' in ratings:
+            return ratings['ratingCountry']
 
     @property
     def parental_rating_setting_unrated(self):
-        return self._parental_rating_settings['unratedLock']
+        ratings = self._parental_rating_settings
+        if 'unratedLock' in ratings:
+            return ratings['unratedLock']
 
     @property
     def parental_rating_setting_age(self):
-        return self._parental_rating_settings['ratingTypeAge']
+        ratings = self._parental_rating_settings
+        if 'ratingTypeAge' in ratings:
+            return ratings['ratingTypeAge']
 
     @property
     def parental_rating_setting_sony(self):
-        return self._parental_rating_settings['ratingTypeSony']
+        ratings = self._parental_rating_settings
+        if 'ratingTypeSony' in ratings:
+            return ratings['ratingTypeSony']
 
     @property
     def parental_rating_setting_tv(self):
-        return self._parental_rating_settings['ratingCustomTypeTV']
+        ratings = self._parental_rating_settings
+        if 'ratingCustomTypeTV' in ratings:
+            return ratings['ratingCustomTypeTV']
 
     @property
     def parental_rating_setting_mpaa(self):
-        return self._parental_rating_settings['ratingCustomTypeMpaa']
+        ratings = self._parental_rating_settings
+        if 'ratingCustomTypeMpaa' in ratings:
+            return ratings['ratingCustomTypeMpaa']
 
     @property
     def parental_rating_setting_french(self):
-        return self._parental_rating_settings['ratingCustomTypeCaFrench']
+        ratings = self._parental_rating_settings
+        if 'ratingCustomTypeCaFrench' in ratings:
+            return ratings['ratingCustomTypeCaFrench']
 
     @property
     def parental_rating_setting_english(self):
-        return self._parental_rating_settings['ratingCustomTypeCaEnglish']
-
-    def play_tv_content(self, channel=None):
-
-        if isinstance(channel, media.ContentItem):
-            if channel.source.startswith('tv'):
-                self.send(
-                    'avContent',
-                    'setPlayTvContent',
-                    channel=channel.display_num
-                )
-        elif isinstance(channel, (int, str, unicode)):
-                self.send(
-                    'avContent',
-                    'setPlayTvContent',
-                    channel=str(channel)
-                )
+        ratings = self._parental_rating_settings
+        if 'ratingCustomTypeCaEnglish' in ratings:
+            return ratings['ratingCustomTypeCaEnglish']
 
     @property
     def scheme_list(self):
@@ -787,7 +836,7 @@ class SonyAPI(object):
                 scheme=scheme
             )
             for source in sources:
-                yield source['source']
+                yield inputs.InputItem(self, **source)
 
     @property
     def playing_content(self):
@@ -801,14 +850,23 @@ class SonyAPI(object):
     @property
     def content_count(self):
         for source in self.source_list:
-            count = self.send(
-                'avContent',
-                'getContentCount',
-                source=source
-            )['count']
-            yield (source, count)
+            try:
+                count = self.send(
+                    'avContent',
+                    'getContentCount',
+                    source=source.uri
+                )['count']
+                yield (source, count)
+            except JSONRequestError:
+                continue
 
-    def favorite_content_list(self, source='', contents=('',)):
+    def favorite_content_list(self, source=None, contents=('',)):
+
+        if source is None:
+            source = ''
+        elif isinstance(source, inputs.InputItem):
+            source = source.uri
+
         self.send(
             'avContent',
             'setFavoriteContentList',
@@ -820,28 +878,16 @@ class SonyAPI(object):
     def application_status_list(self):
         statuses = self.send('appControl', 'getApplicationStatusList')
         for status in statuses:
-            yield (status['name']. status['status'])
+            yield (status['name'], status['status'])
 
     @property
     def application_list(self):
         applications = self.send('appControl', 'getApplicationList')
         for app in applications:
-            yield application.Application(**app)
+            yield application.Application(self, **app)
 
     def terminate_applications(self):
         self.send('appControl', 'terminateApps')
-
-    def active_application(self, name):
-        for app in self.application_list:
-            if app.title == name:
-                self.send(
-                    'appControl',
-                    'setActiveApp',
-                    data=app.data,
-                    uri=app.uri
-                )
-
-    active_application = property(fset=active_application)
 
     @property
     def application_text_form(self):
@@ -935,40 +981,30 @@ class SonyAPI(object):
 
     @property
     def recording_history_list(self):
-        count = 0
+        results = self.send(
+            'recording',
+            'getHistoryList',
+        )
+        results = list(
+            recording.HistoryItem(**result)
+            for result in results
+        )
 
-        while True:
-            try:
-                result = self.send(
-                    'recording',
-                    'getHistoryList',
-                    stIdx=count
-                )
-                if not len(result):
-                    break
-                count += 1
-                yield recording.HistoryItem(**result[0])
-            except SonyAPI.JSONRequestError:
-                break
+        return results
 
     @property
     def recording_schedule_list(self):
-        count = 0
 
-        while True:
-            try:
-                result = self.send(
-                    'recording',
-                    'getScheduleList',
-                    stIdx=count
-                )
-                if not len(result):
-                    break
-                count += 1
-                yield recording.ScheduleItem(self, **result[0])
-            except SonyAPI.JSONRequestError:
-                break
-        return
+        results = self.send(
+            'recording',
+            'getScheduleList'
+        )
+        results = list(
+            recording.ScheduleItem(self, **result)
+            for result in results
+        )
+
+        return results
 
     @property
     def recording_conflict_list(self):
@@ -979,17 +1015,30 @@ class SonyAPI(object):
 
     @property
     def content_list(self):
-        for source, count in self.content_count:
-            for idx in range(count):
-                content = self.send(
-                    'avContent',
-                    'getContentList',
-                    source=source,
-                    stIdx=idx
-                )[0]
-                content['source'] = source
-                _LOGGER.debug(content)
-                yield media.ContentItem(self, **content)
+        results = []
+        sources = list(self.source_list)
+
+        for source in sources[:]:
+            def get(s):
+                try:
+                    content_list = self.send(
+                        'avContent',
+                        'getContentList',
+                        source=s.uri
+                    )
+                    for content in content_list:
+                        content['source'] = s
+                        results.append(media.ContentItem(self, **content))
+                except JSONRequestError:
+                    pass
+                sources.remove(s)
+
+            threading.Thread(target=get, args=(source,)).start()
+
+        while sources:
+            pass
+
+        return results
 
     @property
     def command_list(self):
@@ -1045,7 +1094,11 @@ class SonyAPI(object):
     @source.setter
     def source(self, source):
         for inpt in self.external_input_status:
-            if inpt.title == source or inpt.uri == source:
+            if (
+                inpt.title == source or
+                inpt.uri == source or
+                source.lower() in inpt.uri
+            ):
                 inpt.set()
 
     def __getattr__(self, item):
