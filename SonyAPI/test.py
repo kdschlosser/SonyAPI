@@ -2,6 +2,8 @@ import traceback
 
 
 def run(sony_api):
+    print sony_api.discover()
+
     def Print(attr_name):
         try: print attr_name + ':', repr(getattr(sony_api, attr_name))
         except: print attr_name + ':', traceback.format_exc()
