@@ -72,7 +72,6 @@ def run(sony_api):
     Print('language')
     Print('cid')
     Print('generation')
-    Print('mhl_power_feed_mode')
     Print('model')
     Print('serial')
     Print('wol_mode')

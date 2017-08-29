@@ -18,6 +18,7 @@
 
 
 from utils import get_icon
+import requests
 
 
 class Application(object):
@@ -36,6 +37,25 @@ class Application(object):
         else:
             self.display_icon = None
         self.icon = icon
+
+    def start(self):
+        self._send(requests.post, '')
+
+    def stop(self):
+        self._send(requests.delete, '/run')
+
+    def status(self):
+        return self._send(requests.get, '')
+
+    def _send(self, func, url):
+        ip = self._sony_api._ip_address
+        headers = {
+            'Origin': 'package:com.google.android.youtube',
+            'Host':   ip
+        }
+
+        response = func('http://' + ip + ':80/DIAL/apps/' + self.title + url, **headers)
+        return response.read()
 
     def active(self):
         self._sony_api.send('appControl', 'setActiveApp', uri=self.uri)

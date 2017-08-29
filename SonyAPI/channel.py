@@ -24,16 +24,16 @@ class Channels(object):
 
     @property
     def _channel(self):
-        if self._sony_api.power:
-            return self._sony_api.playing_content.display_num
-        else:
-            return None
+        return self._sony_api.playing_content.display_num
 
     @property
     def lineup(self):
+        results = []
         for item in self._sony_api.content_list:
             if item.uri.startswith('tv'):
-                yield item
+                results += [item]
+
+        return results
 
     def _set_channel(self, direction, channel):
         for chan in self.lineup:

@@ -18,6 +18,7 @@
 
 import threading
 import base64
+import re
 import json
 import socket
 import struct
@@ -30,6 +31,7 @@ import recording
 import browser
 import inputs
 import channel
+import speaker
 from datetime import datetime
 from utils import get_icon
 
@@ -40,9 +42,19 @@ CHANNEL_EVENT = 0x4
 POWER_EVENT = 0x5
 MEDIA_EVENT = 0x6
 
-ANY = '0.0.0.0'
-MCAST_ADDR = '239.255.255.250'
-MCAST_PORT = 1900
+SSDP_ADDR = "239.255.255.250"
+SSDP_PORT = 1900
+SSDP_MX = 1
+SSDP_ST = "urn:schemas-sony-com:service:ScalarWebAPI:1"
+
+SSDP_REQUEST = (
+    'M-SEARCH * HTTP/1.1\r\n'
+    'HOST: %s:%d\r\n'
+    'MAN: "ssdp:discover"\r\n'
+    'MX: %d\r\n'
+    'ST: %s\r\n'
+    '\r\n' % (SSDP_ADDR, SSDP_PORT, SSDP_MX, SSDP_ST)
+)
 
 HEADER = dict(
     SOAPACTION='"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"'
@@ -152,8 +164,30 @@ class RegisterTimeoutError(SonyAPIError):
     pass
 
 
-class JSONRequestError(SonyAPIError):
+class NotImplementedError(SonyAPIError):
+    # 501,"Not Implemented"
     pass
+
+
+class UnsupportedError(SonyAPIError):
+    # 15, "unsupported"
+    pass
+
+
+class JSONRequestError(SonyAPIError):
+    # 7, "Illegal State"
+    # 7, "Clock is not set"
+    # 12, "getLEDIndicatorStatus"
+
+    def __init__(self, num, msg):
+        self._num = num
+        self._msg = msg
+
+    def __str__(self):
+        return 'error: %d, %s' % (self._num, self._msg)
+
+    def __eq__(self, other):
+        return other in (self._num, self._msg)
 
 
 class CommandError(SonyAPIError):
@@ -283,9 +317,11 @@ class SonyAPI(object):
             json_data = response.json()
             _LOGGER.debug('>>', json_data)
 
-            if json_data and json_data.get('error'):
-                _LOGGER.error(json_data, err='JSONRequestError')
-                raise SonyAPI.JSONRequestError(json_data)
+            if json_data:
+                err = json_data.get('error')
+                if err:
+                    _LOGGER.error(json_data, err='JSONRequestError')
+                    raise SonyAPI.JSONRequestError(*err)
 
             self._cookies = response.cookies
             self._pin = pin
@@ -375,14 +411,6 @@ class SonyAPI(object):
             raise SonyAPI.IRCCError(traceback.format_exc())
 
     def send(self, url, method, return_index=0, **params):
-        """
-        "error": [7, "Illegal State"]
-        "error": [7, "Clock is not set"]
-        "error": [15, "unsupported"]
-        "error": [12, "getLEDIndicatorStatus"]
-        "error":[501,"Not Implemented"]
-        """
-
         if not params:
             params = []
         else:
@@ -394,7 +422,6 @@ class SonyAPI(object):
         _LOGGER.debug('||', json_data=json_data)
 
         try:
-
             if self._psk is None:
                 header = dict(cookies=self._cookies)
             else:
@@ -409,9 +436,21 @@ class SonyAPI(object):
             response = json.loads(response.content.decode('utf-8'))
             _LOGGER.debug('>>', response=response)
 
-            if response.get('error'):
-                _LOGGER.error(response, err='JSONRequestError')
-                raise SonyAPI.JSONRequestError(response)
+            err = response.get('error')
+
+            if err:
+                err_num, err_msg = err
+                if err_num == 501:
+                    _LOGGER.error(err, err='NotImplementedError')
+                    raise NotImplementedError(err_msg)
+
+                elif err_num == 15:
+                    _LOGGER.error(err, err='UnsupportedError')
+                    raise UnsupportedError(err_msg)
+                else:
+                    _LOGGER.error(err, err='JSONRequestError')
+                    raise SonyAPI.JSONRequestError(err_num, err_msg)
+
             if isinstance(response['result'], list):
                 return response['result'][return_index]
             else:
@@ -429,7 +468,7 @@ class SonyAPI(object):
 
     @volume.setter
     def volume(self, value):
-        self.volume.speaker = value
+        self.volume.speaker += int(value)
 
     @property
     def channel(self):
@@ -443,13 +482,7 @@ class SonyAPI(object):
             if 'tv' in value.uri:
                 value.set()
         else:
-            value = int(value)
-            chan = int(self.channel._channel)
-
-            if value > chan:
-                self.channel._set_channel('up', int(value))
-            else:
-                self.channel._set_channel('down', int(value))
+            self.channel += int(value)
 
     def reboot(self):
         self.send('guide', 'requestReboot')
@@ -480,6 +513,19 @@ class SonyAPI(object):
     cec_power_sync_mode = property(fset=cec_power_sync_mode)
 
     @property
+    def speaker_settings(self):
+        settings = {}
+
+        try:
+            results = self.send('audio', 'getSpeakerSettings')
+            for result in results:
+                settings[result['target']] = result['currentValue']
+        except:
+            pass
+
+        return speaker.Settings(self, **settings)
+
+    @property
     def _date_time_format(self):
         return self.send('system', 'getDateTimeFormat')
 
@@ -493,14 +539,20 @@ class SonyAPI(object):
 
     @property
     def time(self):
-        t = self.send('system', 'getCurrentTime')
-        version = self.send('system', 'getVersions')[-1]
+        try:
+            t = self.send('system', 'getCurrentTime')
+            version = self.send('system', 'getVersions')[-1]
 
-        if version == '1.0':
-            return t
+            if version == '1.0':
+                return t
 
-        if version == '1.1':
-            return t['dateTime']
+            if version == '1.1':
+                return t['dateTime']
+        except JSONRequestError as err:
+            if err == 'Clock is not set':
+                return None
+            else:
+                raise
 
     @time.setter
     def time(self, date_time=datetime.now()):
@@ -512,10 +564,13 @@ class SonyAPI(object):
 
     @property
     def postal_code(self):
-        return self.send(
-            'system',
-            'getPostalCode'
-        )['postalCode']
+        try:
+            return self.send(
+                'system',
+                'getPostalCode'
+            )['postalCode']
+        except UnsupportedError:
+            return None
 
     @postal_code.setter
     def postal_code(self, code):
@@ -639,7 +694,7 @@ class SonyAPI(object):
     @property
     def led_indicator_status(self):
         return self.send(
-            'guide',
+            'system',
             'getLEDIndicatorStatus'
         )
 
@@ -667,17 +722,17 @@ class SonyAPI(object):
         #   )
         # )
         return self.send(
-            'guide',
+            'system',
             'getRemoteDeviceSettings',
             target=''
         )
 
     @property
     def _network_settings(self):
+        # have to get the network interface name from the TV
         return self.send(
             'system',
             'getNetworkSettings',
-            netif=''
         )
 
     @property
@@ -877,7 +932,7 @@ class SonyAPI(object):
             'getPlayingContentInfo'
         )
         if len(res):
-            return media.NowPlaying(self, **res)
+            return media.NowPlaying(self, **res[0])
 
     @property
     def content_count(self):
@@ -1050,8 +1105,12 @@ class SonyAPI(object):
         results = []
         sources = list(self.source_list)
 
-        for source in sources[:]:
-            def get(s):
+        lock = threading.Lock()
+        lock.acquire()
+
+        while sources:
+            def get(s, s_num):
+
                 try:
                     content_list = self.send(
                         'avContent',
@@ -1063,12 +1122,16 @@ class SonyAPI(object):
                         results.append(media.ContentItem(self, **content))
                 except JSONRequestError:
                     pass
-                sources.remove(s)
 
-            threading.Thread(target=get, args=(source,)).start()
+                if s_num == 1:
+                    lock.release()
 
-        while sources:
-            pass
+            threading.Thread(
+                target=get,
+                args=(sources.pop(0), len(sources))
+            ).start()
+
+        lock.acquire()
 
         return results
 
@@ -1230,54 +1293,45 @@ class SonyAPI(object):
 
     @staticmethod
     def discover():
-        result = []
-        sock = socket.socket(
-            socket.AF_INET,
-            socket.SOCK_DGRAM,
-            socket.IPPROTO_UDP
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.settimeout(5.0)
+        dest = socket.gethostbyname(SSDP_ADDR)
+        sock.sendto(SSDP_REQUEST, (dest, SSDP_PORT))
+        sock.settimeout(5.0)
+        try:
+            data = sock.recv(1000)
+        except socket.timeout:
+            return None
+        response = data.decode('utf-8')
+        match = re.search(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", response)
+        if match:
+            return match.group()
+        else:
+            return None
+
+    def register_callback(self):
+        url = 'http://%s:52323/upnp/event/RenderingControl' % self._ip_address
+
+        local_host_name = socket.gethostbyaddr(socket.gethostname())[0]
+
+        headers = dict(
+            NT='upnp:event',
+            Callback='<http://%s:8000/>' % local_host_name,
+            Timeout='Second-1800'
         )
-        sock.setsockopt(
-            socket.SOL_SOCKET,
-            socket.SO_REUSEADDR,
-            1
+        response = requests.request('SUBSCRIBE', url, headers=headers)
+        print response.status_code
+        print response.content.read()
+        print response.headers
+        return response.headers['SID']
+
+    def unregister_callback(self, sid):
+        url = 'http://%s:52323/upnp/event/RenderingControl' % self._ip_address
+
+        headers = dict(
+            SID=sid
         )
-        sock.bind((ANY, 6000))
-        sock.setsockopt(
-            socket.IPPROTO_IP,
-            socket.IP_MULTICAST_TTL,
-            2
-        )
-
-        sock.setsockopt(
-            socket.IPPROTO_IP,
-            socket.IP_ADD_MEMBERSHIP,
-            socket.inet_aton(MCAST_ADDR) + socket.inet_aton(ANY)
-        )
-
-        d_request = [
-            'M-SEARCH * HTTP/1.1',
-            'HOST: 239.255.255.250:1900',
-            'MAN: "ssdp:discover"',
-            'ST: urn:schemas-sony-com:service:IRCC:1',
-            'MX: 3',
-            ''
-        ]
-
-        sock.sendto('\r\n'.join(d_request), (MCAST_ADDR, MCAST_PORT))
-        import time
-        start_time = int(time.time())
-
-        sock.setblocking(0)
-
-        while (int(time.time()) - start_time) <= 30:
-            try:
-                data, address = sock.recvfrom(4096)
-            except socket.error:
-                pass
-            else:
-                data_dict = dict()
-                for d in data.decode('utf-8').rstrip().split('\r\n')[1:]:
-                    key, value = d.split(':', 1)
-                    data_dict[key] = value
-                result += [data_dict]
-        return result
+        response = requests.request('UNSUBSCRIBE', url, headers=headers)
+        print response.status_code
+        print response.content.read()
+        print response.headers
