@@ -214,6 +214,10 @@ class SonyAPI(object):
             self._pin = None
             self.pin = pin
 
+    def run_tests(self):
+        import test
+        test.run(self)
+
     @property
     def pin(self):
         return self._pin

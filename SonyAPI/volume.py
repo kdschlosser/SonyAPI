@@ -164,9 +164,3 @@ class Volume(VolumeBase):
     @headphone.setter
     def headphone(self, value):
         self._headphone._set_volume(value)
-
-
-
-
-
-

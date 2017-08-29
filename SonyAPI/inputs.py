@@ -22,32 +22,23 @@ class InputItem(object):
         self._sony_api = sony_api
         self._source = source
 
+        status = self._status
+
+        if not status['label']:
+            self.label = status['title']
+        else:
+            self.label = status['label']
+
+        self.title = status['title']
+        self.uri = source
+        self.icon = status['icon']
+
     def set(self):
         self._sony_api.send('avContent', 'setPlayContent', uri=self.uri)
 
     @property
-    def label(self):
-        status = self._status
-        if not status['label']:
-            return status['title']
-        else:
-            return status['label']
-
-    @property
-    def title(self):
-        return self._status['title']
-
-    @property
     def connection(self):
         return self._status['connection']
-
-    @property
-    def uri(self):
-        return self._status['uri']
-
-    @property
-    def icon(self):
-        return self._status['icon']
 
     @property
     def _status(self):
