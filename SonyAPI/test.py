@@ -108,32 +108,14 @@ def run(sony_api):
     Print('command_list')
 
     print '============================================================'
-    content = sony_api.playing_content
-    print 'playing_content:'
-    print '    media.NowPlaying.program_title:', repr(content.program_title)
-    print '    media.NowPlaying.triplet_str:', repr(content.triplet_str)
-    print '    media.NowPlaying.title:', repr(content.title)
-    print '    media.NowPlaying.bivl_provider:', repr(content.bivl_provider)
-    print '    media.NowPlaying.uri:', repr(content.uri)
-    print '    media.NowPlaying.program_num:', repr(content.program_num)
-    print '    media.NowPlaying.media_type:', repr(content.media_type)
-    print '    media.NowPlaying.source:', repr(content.source)
-    print '    media.NowPlaying.display_num:', repr(content.display_num)
-    print '    media.NowPlaying.original_display_num:', repr(content.original_display_num)
-    print '    media.NowPlaying.bivl_asset_id:', repr(content.bivl_asset_id)
-    print '    media.NowPlaying.bivl_service_id:', repr(content.bivl_service_id)
-    print '    media.NowPlaying.play_speed:', repr(content.play_speed)
 
-    try: print '    media.NowPlaying.start_time:', repr(content.start_time)
-    except: print '    media.NowPlaying.start_time:', traceback.format_exc()
-    try: print '    media.NowPlaying.remaining:', repr(content.remaining)
-    except: print '    media.NowPlaying.remaining:', traceback.format_exc()
-    try: print '    media.NowPlaying.elapsed:', repr(content.elapsed)
-    except: print '    media.NowPlaying.elapsed:', traceback.format_exc()
-    try: print '    media.NowPlaying.percent_elapsed:', repr(content.percent_elapsed)
-    except: print '    media.NowPlaying.percent_elapsed:', traceback.format_exc()
-    try: print '    media.NowPlaying.end_time:', repr(content.end_time)
-    except: print '    media.NowPlaying.end_time:', traceback.format_exc()
+    bookmarks = sony_api.browser_bookmark_list
+    print 'browser_bookmark_list:'
+    for bookmark in bookmarks:
+        print '    browser.BookmarkItem.title:', repr(bookmark.title)
+        print '    browser.BookmarkItem.url:', repr(bookmark.url)
+        print '    browser.BookmarkItem.icon:', repr(bookmark.icon)
+        print '    browser.BookmarkItem.display_icon:', repr(bookmark.display_icon)
 
     print '============================================================'
     print 'scheme_list:'
@@ -261,3 +243,31 @@ def run(sony_api):
         try: print '    media.ContentItem.end_time:', repr(item.end_time)
         except: print '    media.ContentItem.end_time:', traceback.format_exc()
         print '------------------------------------------------------------'
+
+    print '============================================================'
+    content = sony_api.now_playing
+    print 'now_playing:'
+    print '    media.NowPlaying.program_title:', repr(content.program_title)
+    print '    media.NowPlaying.triplet_str:', repr(content.triplet_str)
+    print '    media.NowPlaying.title:', repr(content.title)
+    print '    media.NowPlaying.bivl_provider:', repr(content.bivl_provider)
+    print '    media.NowPlaying.uri:', repr(content.uri)
+    print '    media.NowPlaying.program_num:', repr(content.program_num)
+    print '    media.NowPlaying.media_type:', repr(content.media_type)
+    print '    media.NowPlaying.source:', repr(content.source)
+    print '    media.NowPlaying.display_num:', repr(content.display_num)
+    print '    media.NowPlaying.original_display_num:', repr(content.original_display_num)
+    print '    media.NowPlaying.bivl_asset_id:', repr(content.bivl_asset_id)
+    print '    media.NowPlaying.bivl_service_id:', repr(content.bivl_service_id)
+    print '    media.NowPlaying.play_speed:', repr(content.play_speed)
+
+    try: print '    media.NowPlaying.start_time:', repr(content.start_time)
+    except: print '    media.NowPlaying.start_time:', traceback.format_exc()
+    try: print '    media.NowPlaying.remaining:', repr(content.remaining)
+    except: print '    media.NowPlaying.remaining:', traceback.format_exc()
+    try: print '    media.NowPlaying.elapsed:', repr(content.elapsed)
+    except: print '    media.NowPlaying.elapsed:', traceback.format_exc()
+    try: print '    media.NowPlaying.percent_elapsed:', repr(content.percent_elapsed)
+    except: print '    media.NowPlaying.percent_elapsed:', traceback.format_exc()
+    try: print '    media.NowPlaying.end_time:', repr(content.end_time)
+    except: print '    media.NowPlaying.end_time:', traceback.format_exc()

@@ -678,7 +678,13 @@ class SonyAPI(object):
 
     @property
     def led_indicator_status(self):
-        return self.send('system', 'getLEDIndicatorStatus')
+        try:
+            return self.send('system', 'getLEDIndicatorStatus')
+        except JSONRequestError as err:
+            if err == 'getLEDIndicatorStatus':
+                return None
+            else:
+                raise
 
     @led_indicator_status.setter
     def led_indicator_status(self, (status, mode)):
@@ -703,7 +709,14 @@ class SonyAPI(object):
         #       candidate=GeneralSettingsCandidate[]
         #   )
         # )
-        return self.send('system', 'getRemoteDeviceSettings')
+
+        try:
+            return self.send('system', 'getRemoteDeviceSettings')
+        except JSONRequestError as err:
+            if err == 'getRemoteDeviceSettings':
+                return None
+            else:
+                raise
 
     @property
     def _network_settings(self):
@@ -717,6 +730,7 @@ class SonyAPI(object):
                     ipAddrV4=None,
                     ipAddrV6=None,
                     netmask=None,
+                    hwAddr=None,
                     dns=None,
                     gateway=None
                 )
@@ -894,7 +908,7 @@ class SonyAPI(object):
                 yield inputs.InputItem(self, **source)
 
     @property
-    def playing_content(self):
+    def now_playing(self):
         res = self.send('avContent', 'getPlayingContentInfo')
         if res:
             return media.NowPlaying(self, **res)

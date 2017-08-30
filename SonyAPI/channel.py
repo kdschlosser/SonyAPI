@@ -24,7 +24,7 @@ class Channels(object):
 
     @property
     def _channel(self):
-        return self._sony_api.playing_content.display_num
+        return self._sony_api.now_playing.display_num
 
     @property
     def lineup(self):
