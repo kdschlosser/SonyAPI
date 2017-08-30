@@ -83,7 +83,7 @@ NUMBERS = [
 
 def cache_icons(sony_api):
     applications = sony_api.send('appControl', 'getApplicationList')
-    for app in applications:
+    for app in applications[:]:
         icon = app['icon']
         if (
             icon and
@@ -95,8 +95,11 @@ def cache_icons(sony_api):
                     sony_api.icon_cache[icon] = get_icon(icon)
                 except:
                     pass
-            threading.Thread(target=g_icon).start()
+                applications.remove(app)
 
+            threading.Thread(target=g_icon).start()
+    while applications:
+        pass
 
 def convert(d):
     if isinstance(d, dict):
@@ -240,7 +243,6 @@ class SonyAPI(object):
         self._icon_thread = threading.Thread(target=cache_icons, args=(self,))
         if psk:
             self._pin = pin
-            self._icon_thread.start()
         else:
             self._pin = None
             self.pin = pin
@@ -322,7 +324,6 @@ class SonyAPI(object):
 
             self._cookies = response.cookies
             self._pin = pin
-            self._icon_thread.start()
 
         except requests.exceptions.HTTPError as exception_instance:
             if '401' in str(exception_instance):
@@ -456,6 +457,10 @@ class SonyAPI(object):
         except requests.exceptions.RequestException:
             _LOGGER.error(traceback.format_exc(), err='SendError')
             raise SonyAPI.SendError(traceback.format_exc())
+
+    def cache_icons(self):
+        if self._icon_thread is not None and not self._icon_thread.isAlive():
+            self._icon_thread.start()
 
     @property
     def volume(self):
@@ -895,6 +900,14 @@ class SonyAPI(object):
         return self._parental_rating_settings['ratingCustomTypeCaEnglish']
 
     @property
+    def now_playing(self):
+        res = self.send('avContent', 'getPlayingContentInfo')
+        if res:
+            return media.NowPlaying(self, **res)
+        else:
+            return media.NowPlaying(self)
+
+    @property
     def scheme_list(self):
         schemes = self.send('avContent', 'getSchemeList')
         for scheme in schemes:
@@ -906,14 +919,6 @@ class SonyAPI(object):
             sources = self.send('avContent', 'getSourceList', scheme=scheme)
             for source in sources:
                 yield inputs.InputItem(self, **source)
-
-    @property
-    def now_playing(self):
-        res = self.send('avContent', 'getPlayingContentInfo')
-        if res:
-            return media.NowPlaying(self, **res)
-        else:
-            return media.NowPlaying(self)
 
     @property
     def content_count(self):
@@ -929,7 +934,6 @@ class SonyAPI(object):
                 continue
 
     def favorite_content_list(self, source=None, contents=('',)):
-
         if source is None:
             source = ''
         elif isinstance(source, inputs.InputItem):
@@ -1160,7 +1164,7 @@ class SonyAPI(object):
         if isinstance(source, inputs.InputItem):
             source.set()
         else:
-            for inpt in self.external_input_status:
+            for inpt in self.source_list:
                 if (
                     inpt.title == source or
                     inpt.uri == source or

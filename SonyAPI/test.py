@@ -102,7 +102,6 @@ def run(sony_api):
     Print('parental_rating_setting_french')
     Print('parental_rating_setting_english')
     Print('browser_text_url')
-    Print('browser_bookmark_list')
     Print('recording_status')
     Print('recording_supported_repeat_type')
     Print('command_list')

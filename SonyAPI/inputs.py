@@ -42,11 +42,11 @@ class InputItem(object):
 
     @property
     def _status(self):
-        results = self._sony_api.send(
+        results = self._sony_api.external_inputs_status(
             'avContent',
             'getCurrentExternalInputsStatus'
         )
 
         for result in results:
-            if result.uri == self._source:
+            if result['uri'] == self._source:
                 return result
