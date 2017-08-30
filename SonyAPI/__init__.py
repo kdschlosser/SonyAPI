@@ -126,6 +126,8 @@ def cache_icons(sony_api):
     while applications:
         pass
 
+    sony_api._icon_thread = None
+
 def convert(d):
     if isinstance(d, dict):
         try:
@@ -961,11 +963,10 @@ class SonyAPI(object):
 
     @property
     def now_playing(self):
-        res = self.send('avContent', 'getPlayingContentInfo')
-        if res:
-            return media.NowPlaying(self, **res)
-        else:
-            return media.NowPlaying(self)
+        return media.NowPlaying(
+            self,
+            **self.send('avContent', 'getPlayingContentInfo')
+        )
 
     @property
     def scheme_list(self):

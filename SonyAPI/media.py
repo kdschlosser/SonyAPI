@@ -17,22 +17,39 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+import inputs
 from utils import PlayTimeMixin
 
 
 class ContentBase(PlayTimeMixin):
-    source = ''
     _sony_api = None
+    source = ''
     uri = ''
     title = ''
+    visibility = ''
+    surfing_visibility = ''
+    epg_visibility = ''
 
     def tv_content_visibility(
         self,
-        visibility='',
-        surfing_visibility='',
-        epg_visibility=''
+        visibility=None,
+        surfing_visibility=None,
+        epg_visibility=None
     ):
-        if self.source.startswith('tv'):
+
+        if isinstance(self.source, inputs.InputItem):
+            source = self.source.uri
+        else:
+            source = self.source
+
+        if source.startswith('tv'):
+            if visibility is None:
+                visibility = self.visibility
+            if surfing_visibility is None:
+                surfing_visibility = self.surfing_visibility
+            if epg_visibility is None:
+                epg_visibility = self.epg_visibility
+
             self._sony_api.send(
                 'avContent',
                 'setTvContentVisibility',
@@ -54,7 +71,7 @@ class ContentBase(PlayTimeMixin):
 
     property(fset=delete_protection)
 
-    def add_recording_schedule(self, quality='', repeat_type=''):
+    def add_recording_schedule(self, quality, repeat_type):
         self._sony_api.send(
             'recording',
             'addSchedule',
@@ -217,20 +234,9 @@ class NowPlaying(ContentBase):
         self.bivl_service_id = bivl_serviceId
         self.play_speed = playSpeed
 
-        self.source = source
         for s in sony_api.source_list:
             if s.uri == source or s.uri == uri:
                 self.source = s
                 break
-
-# {
-# u'programTitle': u'program title',
-#  u'tripletStr': u'8835.11.2010',
-#  u'title': u'some title',
-#  u'durationSec': 6300,
-#  u'uri': u'tv:dvbt?trip=8835.11.2010&srvName=11%20%D0%A0%D0%95%D0%9D%20%D0%A2%D0%92',
-# u'source': u'tv:dvbt',
-#  u'dispNum': u'011',
-# u'startDateTime': u'2014-10-16T01:45:00+0400',
-#  u'programMediaType': u'tv'
-# }
+        else:
+            self.source = source
