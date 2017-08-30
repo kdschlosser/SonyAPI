@@ -260,6 +260,7 @@ class SonyAPI(object):
         self._access_url = 'http://%s/sony/accessControl' % ip_address
 
         if ip_address is None:
+            self._ip_address = None
             ip_addresses = SonyAPI.discover()
 
             display_addresses = []
