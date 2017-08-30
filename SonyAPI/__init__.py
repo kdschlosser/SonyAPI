@@ -23,7 +23,6 @@ import json
 import time
 import socket
 import struct
-import ctypes
 import requests
 import traceback
 import application
@@ -34,8 +33,11 @@ import browser
 import inputs
 import channel
 import speaker
+from subprocess import Popen, PIPE
 from datetime import datetime
 from utils import get_icon
+
+GUID = '24F26C67-5A50-4B08-8754-80EBAF880379'
 
 VOLUME_EVENT = 0x1
 MUTE_EVENT = 0x2
@@ -83,26 +85,24 @@ NUMBERS = [
 ]
 
 
-def _get_mac_address(ip_address):
-    send_arp = ctypes.windll.Iphlpapi.SendARP
-    inetaddr = ctypes.windll.wsock32.inet_addr(ip_address)
+def _get_mac_addresses(ip_addresses):
+    for ip_address in ip_addresses:
+        Popen(["ping", "-c 1", ip_address], stdout=PIPE)
+    proc = Popen("arp -a", stdout=PIPE)
+    data = proc.communicate()[0]
 
-    hw_address = ctypes.c_buffer(6)
-    addlen = ctypes.c_ulong(ctypes.sizeof(hw_address))
+    for line in data.split('\n'):
+        if 'Interface' in line or 'Internet' in line:
+            continue
+        ip, line = line.strip().split(' ', 1)
+        if ip in ip_addresses:
+            mac, line = line.strip().split(' ', 1)
+            ip_addresses[ip_addresses.index(ip)] = [
+                ip,
+                mac.replace('-', ':').upper()
+            ]
 
-    send_arp(inetaddr, 0, ctypes.byref(hw_address), ctypes.byref(addlen))
-
-    res = []
-
-    for val in struct.unpack('BBBBBB', hw_address):
-        if val > 15:
-            replace_str = '0x'
-        else:
-            replace_str = 'x'
-
-        res.append(hex(val).replace(replace_str, '').upper())
-
-    return ':'.join(res)
+    return ip_addresses
 
 
 def cache_icons(sony_api):
@@ -253,56 +253,59 @@ class SonyAPI(object):
     UnsupportedError = UnsupportedError
     NotImplementedError = NotImplementedError
 
-    def __init__(self, ip_address=None, mac=None, pin=0000, psk=None, debug=None):
+    def __init__(
+        self,
+        ip_address=None,
+        mac=None,
+        nickname=None,
+        pin=0000,
+        psk=None,
+        debug=None
+    ):
         _LOGGER.file_writer = debug
 
         self._ircc_url = 'http://%s/sony/IRCC' % ip_address
         self._access_url = 'http://%s/sony/accessControl' % ip_address
 
         if ip_address is None:
+            display_addresses = ''
             self._ip_address = None
-            ip_addresses = SonyAPI.discover()
 
-            display_addresses = []
-            print ip_addresses
-
-            for display_ip in ip_addresses:
-                display_mac = _get_mac_address(display_ip)
-                if display_mac == mac:
-                    self._ip_address = display_ip
-                    display_addresses = []
+            ip_addresses = _get_mac_addresses(SonyAPI.discover())
+            for i, address in enumerate(ip_addresses):
+                if mac in address:
+                    self._ip_address = address[0]
                     break
-                display_addresses += [display_ip, display_mac]
-
-            print display_addresses
-
-            if display_addresses:
-                address_text = '\n'.join(
-                    '%d: %s - %s' % (i, address[0], address[1])
-                    for i, address in enumerate(display_addresses)
-                )
-                address_text += (
+                else:
+                    display_addresses += '%d: %s - %s\n' % tuple([i] + address)
+            else:
+                display_addresses += (
                     '\n\n Please input the number for '
-                    'the TV you want to control\n'
+                    'the TV you want to control.\n\n'
                 )
-                index = int(raw_input(address_text))
-                self._ip_address = display_addresses[index][0]
+
+                index = int(raw_input(display_addresses))
+                self._ip_address = ip_addresses[index][0]
         else:
             self._ip_address = ip_address
 
         if not self._ip_address:
             raise IPAddressError('')
 
-        self.icon_cache = {}
+        if nickname is None:
+            self._nickname = socket.gethostbyaddr(socket.gethostname())[0]
+        else:
+            self._nickname = nickname
+        self._client_id = self._nickname + ':' + GUID
 
+        self.icon_cache = {}
         self._volume = None
         self._channel = 0
         self._cookies = None
         self._event_threads = []
         self._pin_timer = None
         self._timeout_event = None
-        self._guid = '24F26C67-5A50-4B08-8754-80EBAF880379'
-        self.media = None
+
         self._psk = psk
         self._icon_thread = threading.Thread(target=cache_icons, args=(self,))
         if psk:
@@ -321,27 +324,19 @@ class SonyAPI(object):
 
     @pin.setter
     def pin(self, pin):
-        nickname = socket.gethostbyaddr(
-            socket.gethostname()
-        )[0].replace('-', '')
-
-        client_id = nickname + ':' + self._guid
-        _LOGGER.debug('||', client_id=client_id)
-
-        authorization = json.dumps({
+        params = [{
+            'clientid': self._client_id,
+            'nickname': self._nickname,
+            'level': 'private'
+        }]
+        params += [[{'value': 'yes', 'function': 'WOL'}]]
+        authorization = {
             'method': 'actRegister',
             'id': 1,
             'version': '1.0',
-            'params': [
-                dict(
-                    clientid=client_id,
-                    nickname=nickname,
-                    level='private'
-                ),
-                [dict(value='yes', function='WOL')]
-            ],
-        }).encode('utf-8')
-
+            'params': params
+        }
+        authorization = json.dumps(authorization).encode('utf-8')
         _LOGGER.debug('||', authorization=authorization)
 
         if pin:
