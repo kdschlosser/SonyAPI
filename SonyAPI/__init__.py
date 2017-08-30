@@ -270,10 +270,9 @@ class SonyAPI(object):
                 display_mac = _get_mac_address(display_ip)
                 if display_mac == mac:
                     self._ip_address = display_ip
+                    display_addresses = []
                     break
                 display_addresses += [display_ip, display_mac]
-            else:
-                display_addresses = []
 
             print display_addresses
 
