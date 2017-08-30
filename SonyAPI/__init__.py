@@ -275,6 +275,8 @@ class SonyAPI(object):
             else:
                 display_addresses = []
 
+            print display_addresses
+
             if display_addresses:
                 address_text = '\n'.join(
                     '%d: %s - %s' % (i, address[0], address[1])
@@ -284,7 +286,7 @@ class SonyAPI(object):
                     '\n\n Please input the number for '
                     'the TV you want to control\n'
                 )
-                index =  int(raw_input(address_text))
+                index = int(raw_input(address_text))
                 self._ip_address = display_addresses[index][0]
         else:
             self._ip_address = ip_address
