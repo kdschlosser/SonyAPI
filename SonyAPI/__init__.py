@@ -20,8 +20,10 @@ import threading
 import base64
 import re
 import json
+import time
 import socket
 import struct
+import ctypes
 import requests
 import traceback
 import application
@@ -79,6 +81,28 @@ NUMBERS = [
     'Num8'
     'Num9'
 ]
+
+
+def _get_mac_address(ip_address):
+    send_arp = ctypes.windll.Iphlpapi.SendARP
+    inetaddr = ctypes.windll.wsock32.inet_addr(ip_address)
+
+    hw_address = ctypes.c_buffer(6)
+    addlen = ctypes.c_ulong(ctypes.sizeof(hw_address))
+
+    send_arp(inetaddr, 0, ctypes.byref(hw_address), ctypes.byref(addlen))
+
+    res = []
+
+    for val in struct.unpack('BBBBBB', hw_address):
+        if val > 15:
+            replace_str = '0x'
+        else:
+            replace_str = 'x'
+
+        res.append(hex(val).replace(replace_str, '').upper())
+
+    return ':'.join(res)
 
 
 def cache_icons(sony_api):
@@ -212,6 +236,9 @@ class IRCCError(SonyAPIError):
 class SendError(SonyAPIError):
     pass
 
+class IPAddressError(SonyAPIError):
+    pass
+
 
 class SonyAPI(object):
     PinError = PinError
@@ -222,13 +249,46 @@ class SonyAPI(object):
     RegisterError = RegisterError
     IRCCError = IRCCError
     SendError = SendError
+    IPAddressError = IPAddressError
+    UnsupportedError = UnsupportedError
+    NotImplementedError = NotImplementedError
 
-    def __init__(self, ip_address, pin=0000, psk=None, debug=None):
+    def __init__(self, ip_address=None, mac=None, pin=0000, psk=None, debug=None):
         _LOGGER.file_writer = debug
 
         self._ircc_url = 'http://%s/sony/IRCC' % ip_address
         self._access_url = 'http://%s/sony/accessControl' % ip_address
-        self._ip_address = ip_address
+
+        if ip_address is None:
+            ip_addresses = SonyAPI.discover()
+
+            display_addresses = []
+            for display_ip in ip_addresses:
+                display_mac = _get_mac_address(display_ip)
+                if display_mac == mac:
+                    self._ip_address = display_ip
+                    break
+                display_addresses += [display_ip, display_mac]
+            else:
+                display_addresses = []
+
+            if display_addresses:
+                address_text = '\n'.join(
+                    '%d: %s - %s' % (i, address[0], address[1])
+                    for i, address in enumerate(display_addresses)
+                )
+                address_text += (
+                    '\n\n Please input the number for '
+                    'the TV you want to control\n'
+                )
+                index = int(raw_input(address_text))
+                self._ip_address = display_addresses[index][0]
+        else:
+            self._ip_address = ip_address
+
+        if not self._ip_address:
+            raise IPAddressError('')
+
         self.icon_cache = {}
 
         self._volume = None
@@ -1190,22 +1250,29 @@ class SonyAPI(object):
         )
 
     @staticmethod
-    def discover():
+    def discover(timeout=30):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.settimeout(5.0)
         dest = socket.gethostbyname(SSDP_ADDR)
         sock.sendto(SSDP_REQUEST, (dest, SSDP_PORT))
         sock.settimeout(5.0)
-        try:
-            data = sock.recv(1000)
-        except socket.timeout:
-            return None
-        response = data.decode('utf-8')
-        match = re.search(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", response)
-        if match:
-            return match.group()
-        else:
-            return None
+
+        start_time = time.time()
+        found_addresses = []
+        while time.time() - start_time < timeout:
+
+            try:
+                data = sock.recv(1000)
+                sock.close()
+            except socket.timeout:
+                continue
+
+            response = data.decode('utf-8')
+            match = re.search(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", response)
+            if match:
+                found_addresses += [match.group()]
+
+        return found_addresses
 
     def register_event_callback(self, callback):
         if self._event_threads:
