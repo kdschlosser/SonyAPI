@@ -1251,20 +1251,20 @@ class SonyAPI(object):
 
     @staticmethod
     def discover(timeout=30):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.settimeout(5.0)
-        dest = socket.gethostbyname(SSDP_ADDR)
-        sock.sendto(SSDP_REQUEST, (dest, SSDP_PORT))
-        sock.settimeout(5.0)
 
         start_time = time.time()
         found_addresses = []
         while time.time() - start_time < timeout:
-
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             try:
+                sock.settimeout(5.0)
+                dest = socket.gethostbyname(SSDP_ADDR)
+                sock.sendto(SSDP_REQUEST, (dest, SSDP_PORT))
+                sock.settimeout(5.0)
                 data = sock.recv(1000)
                 sock.close()
             except socket.timeout:
+                sock.close()
                 continue
 
             response = data.decode('utf-8')

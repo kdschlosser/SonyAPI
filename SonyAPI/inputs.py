@@ -30,7 +30,7 @@ class InputItem(object):
             self.label = status['label']
 
         self.title = status['title']
-        self.uri = source
+        self.uri = status['uri']
         self.icon = status['icon']
 
     def set(self):
