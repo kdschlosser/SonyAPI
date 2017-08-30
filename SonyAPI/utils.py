@@ -20,11 +20,12 @@ import re
 import time
 import requests
 import threading
+from logger import LOGGER as _LOGGER
 from subprocess import Popen, PIPE
 from datetime import datetime
 
 try:
-    from cStringIO import StringIO
+    StringIO = __import__('cStringIO.StringIO')
 except ImportError:
     from io import StringIO
 
@@ -39,6 +40,13 @@ def get_mac_addresses(ip_addresses):
 
     for line in data.split('\n'):
         for ip_address in ip_addresses:
+            _LOGGER.debug(
+                '||',
+                ip_addresses=ip_addresses,
+                line=line,
+                ip_address=ip_address
+            )
+
             if ip_address in line:
                 mac = re.search(r"(([a-f\d]{1,2}:){5}[a-f\d]{1,2})", line)
                 if mac is None:
@@ -114,7 +122,6 @@ class PlayTimeMixin(object):
         if elapsed is not None:
             return self.duration - elapsed
 
-
     @property
     def elapsed(self):
         start_time = self._start_date_time
@@ -147,4 +154,3 @@ class PlayTimeMixin(object):
         start_time = self.start_time
         if start_time is not None:
             return start_time + self.duration
-
