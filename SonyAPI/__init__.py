@@ -284,7 +284,7 @@ class SonyAPI(object):
                     '\n\n Please input the number for '
                     'the TV you want to control\n'
                 )
-                index = int(raw_input(address_text))
+                index =  int(raw_input(address_text))
                 self._ip_address = display_addresses[index][0]
         else:
             self._ip_address = ip_address
@@ -1253,30 +1253,28 @@ class SonyAPI(object):
         )
 
     @staticmethod
-    def discover(timeout=30):
+    def discover(timeout=30.0):
 
         start_time = time.time()
         found_addresses = []
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.settimeout(timeout)
+        dest = socket.gethostbyname(SSDP_ADDR)
+        sock.sendto(SSDP_REQUEST, (dest, SSDP_PORT))
+        sock.settimeout(timeout)
+
         while time.time() - start_time < timeout:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             try:
-                sock.settimeout(5.0)
-                dest = socket.gethostbyname(SSDP_ADDR)
-                sock.sendto(SSDP_REQUEST, (dest, SSDP_PORT))
-                sock.settimeout(5.0)
                 data = sock.recv(1000)
-                sock.close()
             except socket.timeout:
-                try:
-                    sock.close()
-                    continue
-                except socket.error:
-                    continue
+                break
 
             response = data.decode('utf-8')
             match = re.search(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", response)
             if match:
-                found_addresses += [match.group()]
+                address = match.group()
+                if address not in found_addresses:
+                    found_addresses += [address]
 
         return found_addresses
 
