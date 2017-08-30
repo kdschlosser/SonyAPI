@@ -132,18 +132,6 @@ def run(sony_api):
         print '------------------------------------------------------------'
 
     print '============================================================'
-    inputs = sony_api.external_input_status
-    print 'external_input_status:'
-
-    for inpt in inputs:
-        print '    inputs.InputItem.title:', repr(inpt.title)
-        print '    inputs.InputItem.connection:', repr(inpt.connection)
-        print '    inputs.InputItem.uri:', repr(inpt.uri)
-        print '    inputs.InputItem.label:', repr(inpt.label)
-        print '    inputs.InputItem.icon:', repr(inpt.icon)
-        print '------------------------------------------------------------'
-
-    print '============================================================'
     print 'content_count:'
     for item in sony_api.content_count:
         print '    inputs.InputItem, count:', item
