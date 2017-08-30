@@ -39,7 +39,7 @@ def get_mac_addresses(ip_addresses):
     data = proc.communicate()[0]
 
     for line in data.split('\n'):
-        for ip_address in ip_addresses:
+        for ip_address in ip_addresses[:]:
             _LOGGER.debug(
                 '||',
                 ip_addresses=ip_addresses,
