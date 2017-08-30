@@ -264,6 +264,8 @@ class SonyAPI(object):
             ip_addresses = SonyAPI.discover()
 
             display_addresses = []
+            print ip_addresses
+
             for display_ip in ip_addresses:
                 display_mac = _get_mac_address(display_ip)
                 if display_mac == mac:
