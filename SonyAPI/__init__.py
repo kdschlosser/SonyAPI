@@ -1157,7 +1157,7 @@ class SonyAPI(object):
 
     @property
     def source(self):
-        return self.playing_content.source
+        return self.now_playing.source
 
     @source.setter
     def source(self, source):
