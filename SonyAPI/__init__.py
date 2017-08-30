@@ -92,15 +92,16 @@ def _get_mac_addresses(ip_addresses):
     data = proc.communicate()[0]
 
     for line in data.split('\n'):
-        if 'Interface' in line or 'Internet' in line:
-            continue
-        ip, line = line.strip().split(' ', 1)
-        if ip in ip_addresses:
-            mac, line = line.strip().split(' ', 1)
-            ip_addresses[ip_addresses.index(ip)] = [
-                ip,
-                mac.replace('-', ':').upper()
-            ]
+        for ip in ip_addresses:
+            if ip in line:
+                mac = re.search(r"(([a-f\d]{1,2}:){5}[a-f\d]{1,2})", line)
+                if mac is None:
+                    mac = re.search(r"(([a-f\d]{1,2}-){5}[a-f\d]{1,2})", line)
+                if mac is not None:
+                    mac = mac.groups()[0].replace('-', ':').upper()
+                else:
+                    mac = '00:00:00:00:00:00'
+                ip_addresses[ip_addresses.index(ip)] = [ip, mac]
 
     return ip_addresses
 
