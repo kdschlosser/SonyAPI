@@ -227,14 +227,11 @@ class SonyAPI(object):
         self._access_url = 'http://%s/sony/accessControl' % ip_address
         self._ip_address = ip_address
         self.icon_cache = {}
-        self._thread = None
-        self._thread_event = threading.Event()
-        self._callbacks = []
+
         self._volume = None
         self._channel = 0
         self._cookies = None
-        self._commands = []
-        self._content_mapping = []
+        self._event_threads = []
         self._pin_timer = None
         self._timeout_event = None
         self._guid = '24F26C67-5A50-4B08-8754-80EBAF880379'
@@ -485,7 +482,7 @@ class SonyAPI(object):
             self.channel += int(value)
 
     def reboot(self):
-        self.send('guide', 'requestReboot')
+        self.send('system', 'requestReboot')
 
     def mhl_power_feed_mode(self, enabled):
         self.send('cec', 'setMhlPowerFeedMode', enabled=enabled)
@@ -565,10 +562,7 @@ class SonyAPI(object):
     @property
     def postal_code(self):
         try:
-            return self.send(
-                'system',
-                'getPostalCode'
-            )['postalCode']
+            return self.send('system', 'getPostalCode')['postalCode']
         except UnsupportedError:
             return None
 
@@ -578,10 +572,7 @@ class SonyAPI(object):
 
     @property
     def power_saving_mode(self):
-        mode = self.send(
-            'system',
-            'getPowerSavingMode'
-        )['mode']
+        mode = self.send('system', 'getPowerSavingMode')['mode']
 
         if mode == 'off':
             return False
@@ -623,10 +614,7 @@ class SonyAPI(object):
 
     @property
     def remote_model(self):
-        return self.send(
-            'system',
-            'getRemoteControllerInfo'
-        )['type']
+        return self.send('system', 'getRemoteControllerInfo')['type']
 
     @property
     def _system_information(self):
@@ -686,17 +674,11 @@ class SonyAPI(object):
 
     @property
     def color_keys_layout(self):
-        return self.send(
-            'system',
-            'getColorKeysLayout'
-        )['colorKeysLayout']
+        return self.send('system', 'getColorKeysLayout')['colorKeysLayout']
 
     @property
     def led_indicator_status(self):
-        return self.send(
-            'system',
-            'getLEDIndicatorStatus'
-        )
+        return self.send('system', 'getLEDIndicatorStatus')
 
     @led_indicator_status.setter
     def led_indicator_status(self, (status, mode)):
@@ -721,18 +703,25 @@ class SonyAPI(object):
         #       candidate=GeneralSettingsCandidate[]
         #   )
         # )
-        return self.send(
-            'system',
-            'getRemoteDeviceSettings',
-        )
+        return self.send('system', 'getRemoteDeviceSettings')
 
     @property
     def _network_settings(self):
         # have to get the network interface name from the TV
-        return self.send(
-            'system',
-            'getNetworkSettings',
-        )
+        try:
+            return self.send('system', 'getNetworkSettings')
+        except JSONRequestError as err:
+            if err == 'getNetworkSettings':
+                return dict(
+                    netif=None,
+                    ipAddrV4=None,
+                    ipAddrV6=None,
+                    netmask=None,
+                    dns=None,
+                    gateway=None
+                )
+            else:
+                raise
 
     @property
     def network_ipv4(self):
@@ -764,10 +753,7 @@ class SonyAPI(object):
 
     @property
     def _system_supported_function(self):
-        return self.send(
-            'system',
-            'getSystemSupportedFunction'
-        )
+        return self.send('system', 'getSystemSupportedFunction')
 
     @property
     def wol_mac(self):
@@ -786,85 +772,50 @@ class SonyAPI(object):
 
     @property
     def banner_mode(self):
-        return self.send(
-            'videoScreen',
-            'getBannerMode'
-        )
+        return self.send('videoScreen', 'getBannerMode')
 
     @banner_mode.setter
     def banner_mode(self, value):
-        self.send(
-            'videoScreen',
-            'setBannerMode',
-            value=value
-        )
+        self.send('videoScreen', 'setBannerMode', value=value)
 
     @property
     def scene_setting(self):
-        return self.send(
-            'videoScreen',
-            'getSceneSetting'
-        )
+        return self.send('videoScreen', 'getSceneSetting')
 
     @scene_setting.setter
     def scene_setting(self, value):
-        self.send(
-            'videoScreen',
-            'setSceneSetting',
-            value=value
-        )
+        self.send('videoScreen', 'setSceneSetting', value=value)
 
     @property
     def pip_sub_screen_position(self):
-        return self.send(
-            'videoScreen',
-            'getPipSubScreenPosition'
-        )['position']
+        return self.send('videoScreen', 'getPipSubScreenPosition')['position']
 
     @pip_sub_screen_position.setter
     def pip_sub_screen_position(self, position):
-        self.send(
-            'videoScreen',
-            'setPipSubScreenPosition',
-            position=position
-        )
+        self.send('videoScreen', 'setPipSubScreenPosition', position=position)
 
     @property
     def audio_source_screen(self):
-        return self.send(
-            'videoScreen',
-            'getAudioSourceScreen'
-        )['screen']
+        return self.send('videoScreen', 'getAudioSourceScreen')['screen']
 
     @audio_source_screen.setter
     def audio_source_screen(self, screen):
         self.send('videoScreen', 'setAudioSourceScreen', screen=screen)
 
     def pap_screen_size(self, (screen, size)):
-        self.send(
-            'videoScreen',
-            'setPapScreenSize',
-            screen=screen,
-            size=size
-        )
+        self.send('videoScreen', 'setPapScreenSize', screen=screen, size=size)
 
     pap_screen_size = property(fset=pap_screen_size)
 
     @property
     def multi_screen_mode(self):
-        return self.send(
-            'videoScreen',
-            'getMultiScreenMode'
-        )['mode']
+        return self.send('videoScreen', 'getMultiScreenMode')['mode']
 
     @multi_screen_mode.setter
     def multi_screen_mode(self, mode):
-        self.send(
-            'videoScreen',
-            'setMultiScreenMode',
-            mode=mode,
-            option=dict(internetTVMode=self.multi_screen_internet_mode)
-        )
+        self.send('videoScreen', 'setMultiScreenMode', mode=mode)
+        #     option=dict(internetTVMode=self.multi_screen_internet_mode)
+        # )
 
     @property
     def multi_screen_internet_mode(self):
@@ -878,64 +829,56 @@ class SonyAPI(object):
         self.send(
             'videoScreen',
             'setMultiScreenMode',
-            mode=self.multi_screen_mode,
+            # mode=self.multi_screen_mode,
             option=dict(internetTVMode=mode)
         )
 
     @property
     def _parental_rating_settings(self):
-        return self.send(
-            'avContent',
-            'getParentalRatingSettings'
+        default = dict(
+            ratingCountry=None,
+            unratedLock=None,
+            ratingTypeAge=None,
+            ratingTypeSony=None,
+            ratingCustomTypeTV=None,
+            ratingCustomTypeMpaa=None,
+            ratingCustomTypeCaFrench=None,
+            ratingCustomTypeCaEnglish=None
         )
+        default.update(**self.send('avContent', 'getParentalRatingSettings'))
+        return default
 
     @property
     def parental_rating_setting_country(self):
-        ratings = self._parental_rating_settings
-        if 'ratingCountry' in ratings:
-            return ratings['ratingCountry']
+        return self._parental_rating_settings['ratingCountry']
 
     @property
     def parental_rating_setting_unrated(self):
-        ratings = self._parental_rating_settings
-        if 'unratedLock' in ratings:
-            return ratings['unratedLock']
+        return self._parental_rating_settings['unratedLock']
 
     @property
     def parental_rating_setting_age(self):
-        ratings = self._parental_rating_settings
-        if 'ratingTypeAge' in ratings:
-            return ratings['ratingTypeAge']
+        return self._parental_rating_settings['ratingTypeAge']
 
     @property
     def parental_rating_setting_sony(self):
-        ratings = self._parental_rating_settings
-        if 'ratingTypeSony' in ratings:
-            return ratings['ratingTypeSony']
+        return self._parental_rating_settings['ratingTypeSony']
 
     @property
     def parental_rating_setting_tv(self):
-        ratings = self._parental_rating_settings
-        if 'ratingCustomTypeTV' in ratings:
-            return ratings['ratingCustomTypeTV']
+        return self._parental_rating_settings['ratingCustomTypeTV']
 
     @property
     def parental_rating_setting_mpaa(self):
-        ratings = self._parental_rating_settings
-        if 'ratingCustomTypeMpaa' in ratings:
-            return ratings['ratingCustomTypeMpaa']
+        return self._parental_rating_settings['ratingCustomTypeMpaa']
 
     @property
     def parental_rating_setting_french(self):
-        ratings = self._parental_rating_settings
-        if 'ratingCustomTypeCaFrench' in ratings:
-            return ratings['ratingCustomTypeCaFrench']
+        return self._parental_rating_settings['ratingCustomTypeCaFrench']
 
     @property
     def parental_rating_setting_english(self):
-        ratings = self._parental_rating_settings
-        if 'ratingCustomTypeCaEnglish' in ratings:
-            return ratings['ratingCustomTypeCaEnglish']
+        return self._parental_rating_settings['ratingCustomTypeCaEnglish']
 
     @property
     def scheme_list(self):
@@ -946,20 +889,13 @@ class SonyAPI(object):
     @property
     def source_list(self):
         for scheme in self.scheme_list:
-            sources = self.send(
-                'avContent',
-                'getSourceList',
-                scheme=scheme
-            )
+            sources = self.send('avContent', 'getSourceList', scheme=scheme)
             for source in sources:
                 yield inputs.InputItem(self, **source)
 
     @property
     def playing_content(self):
-        res = self.send(
-            'avContent',
-            'getPlayingContentInfo'
-        )
+        res = self.send('avContent', 'getPlayingContentInfo')
         if res:
             return media.NowPlaying(self, **res)
         else:
@@ -1023,7 +959,7 @@ class SonyAPI(object):
         raise __builtin__.NotImplementedError
 
     @application_text_form.setter
-    def application_text_form(self, params):
+    def application_text_form(self, _):
         # 1.0
         #   command: self.send(
         # 'appControl',
@@ -1041,7 +977,7 @@ class SonyAPI(object):
         import __builtin__
         raise __builtin__.NotImplementedError
 
-    def application_csx_account(self, params):
+    def application_csx_account(self, _):
         # 1.0
         #   command: self.send(
         # 'appControl',
@@ -1087,24 +1023,15 @@ class SonyAPI(object):
 
     @property
     def recording_status(self):
-        return self.send(
-            'recording',
-            'getRecordingStatus'
-        )['status']
+        return self.send('recording', 'getRecordingStatus')['status']
 
     @property
     def recording_supported_repeat_type(self):
-        return self.send(
-            'recording',
-            'getSupportedRepeatType'
-        )
+        return self.send('recording', 'getSupportedRepeatType')
 
     @property
     def recording_history_list(self):
-        results = self.send(
-            'recording',
-            'getHistoryList',
-        )
+        results = self.send('recording', 'getHistoryList')
         results = list(
             recording.HistoryItem(**result)
             for result in results
@@ -1115,20 +1042,15 @@ class SonyAPI(object):
     @property
     def recording_schedule_list(self):
 
-        results = self.send(
-            'recording',
-            'getScheduleList'
-        )
-        results = list(
+        results = self.send('recording', 'getScheduleList')
+        return list(
             recording.ScheduleItem(self, **result)
             for result in results
         )
 
-        return results
-
     @property
     def recording_conflict_list(self):
-        return (
+        return list(
             item for item in self.recording_schedule_list
             if item.overlap_status
         )
@@ -1217,17 +1139,20 @@ class SonyAPI(object):
 
     @property
     def source(self):
-        return self.playing_content.title
+        return self.playing_content.source
 
     @source.setter
     def source(self, source):
-        for inpt in self.external_input_status:
-            if (
-                inpt.title == source or
-                inpt.uri == source or
-                source.lower() in inpt.uri
-            ):
-                inpt.set()
+        if isinstance(source, inputs.InputItem):
+            source.set()
+        else:
+            for inpt in self.external_input_status:
+                if (
+                    inpt.title == source or
+                    inpt.uri == source or
+                    source.lower() in inpt.uri
+                ):
+                    inpt.set()
 
     def __getattr__(self, item):
         if item in self.__dict__:
@@ -1245,84 +1170,6 @@ class SonyAPI(object):
             '%s.%s does not have attribute %s' %
             (__name__, self.__class__.__name__, item)
         )
-
-    def _event_loop(self):
-        volume_devices = [
-            getattr(self, volume_name)
-            for volume_name in sorted(self.get_volume_data().keys())
-        ]
-
-        def get_volume_data():
-            res = {}
-            for volume_device in volume_devices:
-                res[volume_device.name] = dict(
-                    volume=volume_device.volume,
-                    mute=volume_device.mute
-                )
-            return res
-
-        old_power = self.power
-        old_source = self.source
-        old_title = self.media.title
-        old_volume_data = get_volume_data()
-
-        while not self._thread_event.isSet():
-            events = []
-            new_power = self.power
-
-            if new_power != old_power:
-                events += [POWER_EVENT]
-                old_power = new_power
-
-            new_source = self.source
-            if new_source != old_source:
-                events += [SOURCE_EVENT]
-                old_source = new_source
-
-            new_title = self.media.title
-
-            if new_title != old_title:
-                events += [MEDIA_EVENT]
-                old_title = new_title
-
-            new_volume_data = get_volume_data()
-            if new_volume_data != old_volume_data:
-                for name in sorted(new_volume_data.keys()):
-                    new_volume = new_volume_data[name]
-                    old_volume = old_volume_data[name]
-                    if new_volume != old_volume:
-                        if new_volume['mute'] != old_volume['mute']:
-                            events += [MUTE_EVENT]
-                        if new_volume['volume'] != old_volume['volume']:
-                            events += [VOLUME_EVENT]
-
-                old_volume_data = new_volume_data
-
-            for callback in self._callbacks:
-                for event in events:
-                    callback(event)
-
-            self._thread_event.wait(0.2)
-
-        self._thread = None
-
-    def register_event_callback(self, callback):
-        self._callbacks += [callback]
-
-        if self._thread is None:
-            self._thread_event.clear()
-            self._thread = threading.Thread(
-                target=self._event_loop,
-                name=self.name + ': ' + self.model
-            )
-
-    def unregister_event_callback(self, callback):
-        if callback in self._callbacks:
-            self._callbacks.remove(callback)
-
-        if not self._callbacks:
-            self._thread_event.set()
-            self._thread.join(1.0)
 
     @staticmethod
     def discover():
@@ -1342,29 +1189,122 @@ class SonyAPI(object):
         else:
             return None
 
-    def register_callback(self):
-        url = 'http://%s:52323/upnp/event/RenderingControl' % self._ip_address
+    def register_event_callback(self, callback):
+        if self._event_threads:
+            for thread in self._event_threads:
+                thread.add_callback(callback)
+        else:
+            rendering = EventSocketThread(
+                'RenderingControl',
+                self._ip_address,
+                8000
+            )
+            av = EventSocketThread(
+                'AvTransport',
+                self._ip_address,
+                8001
+            )
+            connection = EventSocketThread(
+                'ConnectionManager',
+                self._ip_address,
+                8002
+            )
+            ircc = EventSocketThread(
+                'IRCC',
+                self._ip_address,
+                8003
+            )
 
-        local_host_name = socket.gethostbyaddr(socket.gethostname())[0]
+            rendering.add_callback(callback)
+            av.add_callback(callback)
+            connection.add_callback(callback)
+            ircc.add_callback(callback)
 
-        headers = dict(
+            rendering.start()
+            av.start()
+            connection.start()
+            ircc.start()
+            self._event_threads = [rendering, av, connection, ircc]
+            return callback
+
+    def unregister_event_callback(self, callback):
+        for thread in self._event_threads[:]:
+            thread.remove_callback(callback)
+            if not thread.callback_count():
+                thread.stop()
+                self._event_threads.remove(thread)
+
+
+class EventSocketThread(object):
+
+    def __init__(self, service, ip, local_port):
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 0))
+        self.local_ip_address = s.getsockname()[0]
+        self.local_port = local_port
+        self.service = service
+        self.url = 'http://%s:52323/upnp/event/%s' % (ip, service)
+        self.header = dict(
             NT='upnp:event',
-            Callback='<http://%s:8000/>' % local_host_name,
-            Timeout='Second-1800'
+            CALLBACK='<http://%s:%d/>' % (self.local_ip_address, local_port),
+            TIMEOUT='Second-1800'
         )
-        response = requests.request('SUBSCRIBE', url, headers=headers)
-        print response.status_code
-        print response.content.read()
-        print response.headers
-        return response.headers['SID']
+        self.sid = None
+        self.sock = None
+        self._callbacks = []
+        self._listen_event = threading.Event()
+        self._listen_thread = threading.Thread(target=self.listen)
 
-    def unregister_callback(self, sid):
-        url = 'http://%s:52323/upnp/event/RenderingControl' % self._ip_address
+    def add_callback(self, callback):
+        if callback not in self._callbacks:
+            self._callbacks += [callback]
 
-        headers = dict(
-            SID=sid
+    def remove_callback(self, callback):
+        if callback in self._callbacks:
+            self._callbacks.remove(callback)
+
+    def callback_count(self):
+        return len(self._callbacks)
+
+    def listen(self):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.sock.settimeout(1700)
+        self.sock.bind((self.local_ip_address, self.local_port))
+
+        while not self._listen_event.isSet():
+            try:
+                self.sock.listen(3)
+                conn, address = self.sock.accept()
+                data = conn.recv(4096)
+                conn.close()
+                print data
+            except socket.timeout:
+                header = dict(
+                    SID=self.sid,
+                    TIMEOUT='Second-1800'
+                )
+                requests.request(
+                    'SUBSCRIBE',
+                    self.url,
+                    headers=header
+                )
+
+        header = dict(
+            SID=self.sid
         )
-        response = requests.request('UNSUBSCRIBE', url, headers=headers)
-        print response.status_code
-        print response.content.read()
-        print response.headers
+        requests.request('UNSUBSCRIBE', self.url, headers=header)
+
+    def start(self):
+        response = requests.request(
+            'SUBSCRIBE',
+            self.url,
+            headers=self.header
+        )
+        self.sid = response.headers['SID']
+        self._listen_thread.start()
+
+    def stop(self):
+        self._listen_event.set()
+        self.sock.shutdown(socket.SHUT_RDWR)
+        self._listen_thread.join(3.0)
