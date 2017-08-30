@@ -21,7 +21,7 @@ from utils import get_icon
 
 
 class BrowserItem(object):
-    def __init__(self, sony_api, title, url, data='', icon=''):
+    def __init__(self, sony_api, title='', url='', data='', icon=''):
         self._sony_api = sony_api
         self.title = title
         self.data = data

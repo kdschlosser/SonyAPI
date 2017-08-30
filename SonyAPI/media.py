@@ -103,9 +103,30 @@ class ContentItem(ContentBase):
         startDateTime='',
         programMediaType='',
         channelName='',
-        source=''
+        source='',
+        userContentFlag='',
+        createdTime='',
+        sizeMb='',
+        parentalCountry='',
+        parentalSystem='',
+        parentalRating='',
+        subtitleTitle='',
+        subtitleLanguage='',
+        audioChannel='',
+        audioFrequency='',
+        audioCodec='',
+        chapterCount='',
+        videoCodec='',
+        storageUri='',
+        contentType='',
+        productId='',
+        fileSizeByte='',
+        visibility='',
+        channelSurfingVisibility='',
+        epgVisibility='',
+        idx='',
+        status=''
     ):
-
         self._sony_api = sony_api
         self.index = index
         self.triplet_str = tripletStr
@@ -122,6 +143,28 @@ class ContentItem(ContentBase):
         self.program_media_type = programMediaType
         self.channel_name = channelName
         self.source = source
+        self.user_content_flag = userContentFlag
+        self.created_time = createdTime
+        self.size_mb = sizeMb
+        self.parental_country = parentalCountry
+        self.parental_system = parentalSystem
+        self.parental_rating = parentalRating
+        self.subtitle_title = subtitleTitle
+        self.subtitle_language = subtitleLanguage
+        self.audio_channel = audioChannel
+        self.audio_frequency = audioFrequency
+        self.audio_codec = audioCodec
+        self.chapter_count = chapterCount
+        self.video_codec = videoCodec
+        self.storage_uri = storageUri
+        self.content_type = contentType
+        self.product_id = productId
+        self.file_size_byte = fileSizeByte
+        self.visibility = visibility
+        self.channel_surfing_visibility = channelSurfingVisibility
+        self.epg_visibility = epgVisibility
+        self.idx = idx
+        self.status = status
 
     def set(self):
         if 'tv' in self.uri:

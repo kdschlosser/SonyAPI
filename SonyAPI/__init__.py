@@ -724,7 +724,6 @@ class SonyAPI(object):
         return self.send(
             'system',
             'getRemoteDeviceSettings',
-            target=''
         )
 
     @property
@@ -784,6 +783,36 @@ class SonyAPI(object):
                     return True
 
         return False
+
+    @property
+    def banner_mode(self):
+        return self.send(
+            'videoScreen',
+            'getBannerMode'
+        )
+
+    @banner_mode.setter
+    def banner_mode(self, value):
+        self.send(
+            'videoScreen',
+            'setBannerMode',
+            value=value
+        )
+
+    @property
+    def scene_setting(self):
+        return self.send(
+            'videoScreen',
+            'getSceneSetting'
+        )
+
+    @scene_setting.setter
+    def scene_setting(self, value):
+        self.send(
+            'videoScreen',
+            'setSceneSetting',
+            value=value
+        )
 
     @property
     def pip_sub_screen_position(self):
@@ -931,8 +960,10 @@ class SonyAPI(object):
             'avContent',
             'getPlayingContentInfo'
         )
-        if len(res):
-            return media.NowPlaying(self, **res[0])
+        if res:
+            return media.NowPlaying(self, **res)
+        else:
+            return media.NowPlaying(self)
 
     @property
     def content_count(self):
@@ -988,7 +1019,8 @@ class SonyAPI(object):
         #  encKey=str
         # )
         #   results: [str]
-        raise NotImplementedError
+        import __builtin__
+        raise __builtin__.NotImplementedError
 
     @application_text_form.setter
     def application_text_form(self, params):
@@ -1006,7 +1038,8 @@ class SonyAPI(object):
         #  encKey=str
         # )
         #   results: []
-        raise NotImplementedError
+        import __builtin__
+        raise __builtin__.NotImplementedError
 
     def application_csx_account(self, params):
         # 1.0
@@ -1019,15 +1052,22 @@ class SonyAPI(object):
         # accessToken=str
         # )
         #   results: []
-        raise NotImplementedError
+        import __builtin__
+        raise __builtin__.NotImplementedError
 
     application_csx_account = property(fset=application_csx_account)
 
     @property
     def browser_text_url(self):
-        result = self.send('browser', 'getTextUrl')
-        if len(result):
-            return browser.UrlItem(self, **result[0])
+        try:
+            result = self.send('browser', 'getTextUrl')
+            if result:
+                return browser.UrlItem(self, **result)
+        except JSONRequestError as err:
+            if err == 'Illegal State':
+                return browser.UrlItem(self)
+            else:
+                raise
 
     @browser_text_url.setter
     def browser_text_url(self, browser_item=None, url=None):
@@ -1042,15 +1082,8 @@ class SonyAPI(object):
         for item in result:
             yield browser.BookmarkItem(self, **item)
 
-    def act_browser_control(self, control):
-        # 1.0
-        #   command: self.send(
-        # 'browser',
-        #  'actBrowserControl',
-        #  control=str
-        # )
-        #   results: [int]
-        raise NotImplementedError
+    def act_browser_control(self):
+        self.send('browser', 'actBrowserControl')
 
     @property
     def recording_status(self):
@@ -1064,7 +1097,7 @@ class SonyAPI(object):
         return self.send(
             'recording',
             'getSupportedRepeatType'
-        )[0]
+        )
 
     @property
     def recording_history_list(self):
