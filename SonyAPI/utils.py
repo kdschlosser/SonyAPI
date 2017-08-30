@@ -16,12 +16,61 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import re
 import time
 import requests
+import threading
+from subprocess import Popen, PIPE
 from datetime import datetime
 from cStringIO import StringIO
 
 DATE = '%Y-%m-%dT%H:%M:%S'
+
+
+def get_mac_addresses(ip_addresses):
+    for ip_address in ip_addresses:
+        Popen(["ping", "-c 1", ip_address], stdout=PIPE)
+    proc = Popen("arp -a", stdout=PIPE)
+    data = proc.communicate()[0]
+
+    for line in data.split('\n'):
+        for ip_address in ip_addresses:
+            if ip_address in line:
+                mac = re.search(r"(([a-f\d]{1,2}:){5}[a-f\d]{1,2})", line)
+                if mac is None:
+                    mac = re.search(r"(([a-f\d]{1,2}-){5}[a-f\d]{1,2})", line)
+                if mac is not None:
+                    mac = mac.groups()[0].replace('-', ':').upper()
+                else:
+                    mac = '00:00:00:00:00:00'
+                ip_addresses[ip_addresses.index(ip_address)] = [
+                    ip_address, mac
+                ]
+
+    return ip_addresses
+
+
+def cache_icons(sony_api):
+    applications = sony_api.send('appControl', 'getApplicationList')
+    for app in applications[:]:
+        icon = app['icon']
+        if (
+            icon and
+            sony_api._ip_address.split(':')[0] not in icon and
+            icon not in sony_api.icon_cache
+        ):
+            def g_icon():
+                try:
+                    sony_api.icon_cache[icon] = get_icon(icon)
+                except:
+                    pass
+                applications.remove(app)
+
+            threading.Thread(target=g_icon).start()
+    while applications:
+        pass
+
+    sony_api._icon_thread = None
 
 
 def get_icon(url):
@@ -30,6 +79,7 @@ def get_icon(url):
     icon.write(icon_data)
     icon.seek(0)
     return icon
+
 
 class PlayTimeMixin(object):
     _duration = 0
@@ -66,7 +116,10 @@ class PlayTimeMixin(object):
         start_time = self._start_date_time
         if start_time:
             try:
-                elapsed = datetime.now() - datetime.strptime(start_time[:-5], DATE)
+                elapsed = datetime.now() - datetime.strptime(
+                    start_time[:-5],
+                    DATE
+                )
             except TypeError:
                 elapsed = (
                     datetime.now() -
