@@ -96,7 +96,9 @@ class SonyAPI(object):
         psk=None,
         debug=None
     ):
-        _LOGGER.file_writer = debug
+
+        import sys
+        _LOGGER.file_writer = sys.stdout
 
         self._ircc_url = 'http://%s/sony/IRCC' % ip_address
         self._access_url = 'http://%s/sony/accessControl' % ip_address
@@ -106,6 +108,8 @@ class SonyAPI(object):
             self._ip_address = None
 
             ip_addresses = _get_mac_addresses(SonyAPI.discover())
+            _LOGGER.debug('||', ip_addresses=ip_addresses)
+
             for i, address in enumerate(ip_addresses):
                 if mac in address:
                     self._ip_address = address[0]
@@ -113,12 +117,13 @@ class SonyAPI(object):
                 else:
                     display_addresses += '%d: %s - %s\n' % tuple([i] + address)
             else:
+                _LOGGER.debug('||', display_addresses=display_addresses)
                 display_addresses += (
                     '\n\n Please input the number for '
                     'the TV you want to control.\n\n'
                 )
 
-                index = int(raw_input(display_addresses))
+                index = int(input(display_addresses))
                 self._ip_address = ip_addresses[index][0]
         else:
             self._ip_address = ip_address
