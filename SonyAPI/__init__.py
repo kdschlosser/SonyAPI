@@ -1264,8 +1264,11 @@ class SonyAPI(object):
                 data = sock.recv(1000)
                 sock.close()
             except socket.timeout:
-                sock.close()
-                continue
+                try:
+                    sock.close()
+                    continue
+                except socket.error:
+                    continue
 
             response = data.decode('utf-8')
             match = re.search(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", response)
