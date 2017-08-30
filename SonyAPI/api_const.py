@@ -16,6 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+
+try:
+    PY2 = bool(unicode)
+except NameError:
+    PY2 = False
+
 GUID = '24F26C67-5A50-4B08-8754-80EBAF880379'
 
 VOLUME_EVENT = 0x1

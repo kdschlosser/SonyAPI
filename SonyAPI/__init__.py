@@ -74,6 +74,12 @@ from api_const import (
 )
 
 
+try:
+    __builtin__ = __import__('__builtin__')
+except ImportError:
+    __builtin__ = __import__('builtins')
+
+
 class SonyAPI(object):
     PinError = PinError
     RegisterTimeoutError = RegisterTimeoutError
@@ -251,7 +257,7 @@ class SonyAPI(object):
 
                     self._pin_timer = threading.Thread(target=register_timeout)
                     self._pin_timer.start()
-                    pin = raw_input('Enter the pin that is seen on the TV')
+                    pin = input('Enter the pin that is seen on the TV')
 
                     if pin and not timed_out:
                         self.pin = pin
@@ -870,7 +876,7 @@ class SonyAPI(object):
         #  encKey=str
         # )
         #   results: [str]
-        import __builtin__
+
         raise __builtin__.NotImplementedError
 
     @application_text_form.setter
@@ -889,7 +895,6 @@ class SonyAPI(object):
         #  encKey=str
         # )
         #   results: []
-        import __builtin__
         raise __builtin__.NotImplementedError
 
     def application_csx_account(self, _):
@@ -903,7 +908,6 @@ class SonyAPI(object):
         # accessToken=str
         # )
         #   results: []
-        import __builtin__
         raise __builtin__.NotImplementedError
 
     application_csx_account = property(fset=application_csx_account)
@@ -1112,6 +1116,7 @@ class SonyAPI(object):
                 address = match.group()
                 if address not in found_addresses:
                     found_addresses += [address]
+        _LOGGER.debug('||', found_addresses=found_addresses)
 
         return found_addresses
 

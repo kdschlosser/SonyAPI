@@ -22,7 +22,11 @@ import requests
 import threading
 from subprocess import Popen, PIPE
 from datetime import datetime
-from cStringIO import StringIO
+
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 DATE = '%Y-%m-%dT%H:%M:%S'
 

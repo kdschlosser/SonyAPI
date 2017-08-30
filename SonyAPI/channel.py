@@ -17,6 +17,9 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+from api_const import PY2
+
+
 class Channels(object):
 
     def __init__(self, sony_api):
@@ -132,5 +135,7 @@ class Channels(object):
     def __str__(self):
         return str(self._channel)
 
-    def __unicode__(self):
-        return unicode(str(self))
+    if PY2:
+        def __unicode__(self):
+            return unicode(str(self))
+

@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import time
+from api_const import PY2
 
 
 class VolumeBase(object):
@@ -133,8 +133,9 @@ class VolumeBase(object):
     def __str__(self):
         return str(self._volume)
 
-    def __unicode__(self):
-        return unicode(str(self))
+    if PY2:
+        def __unicode__(self):
+            return unicode(str(self))
 
 
 class Volume(VolumeBase):

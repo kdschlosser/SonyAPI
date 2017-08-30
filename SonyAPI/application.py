@@ -54,7 +54,10 @@ class Application(object):
             'Host':   ip
         }
 
-        response = func('http://' + ip + ':80/DIAL/apps/' + self.title + url, **headers)
+        response = func(
+            'http://' + ip + ':80/DIAL/apps/' + self.title + url,
+            **headers
+        )
         return response.read()
 
     def active(self):

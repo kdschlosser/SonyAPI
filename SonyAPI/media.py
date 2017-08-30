@@ -18,6 +18,7 @@
 
 
 import inputs
+from exception import NotImplementedError
 from utils import PlayTimeMixin
 
 
@@ -59,7 +60,7 @@ class ContentBase(PlayTimeMixin):
                 epgVisibility=epg_visibility
             )
         else:
-            raise NotImplementedError
+            raise NotImplementedError('')
 
     def delete_protection(self, enable):
         self._sony_api.send(

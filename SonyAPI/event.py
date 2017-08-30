@@ -75,7 +75,7 @@ class Base(object):
                 conn, address = self.sock.accept()
                 data = conn.recv(4096)
                 conn.close()
-                print data
+                print(data)
             except socket.timeout:
                 header = dict(
                     SID=self.sid,
