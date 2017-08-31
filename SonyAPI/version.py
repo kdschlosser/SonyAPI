@@ -20,8 +20,8 @@
 
 __author__ = 'Kevin G. Schlosser'
 __author_email__ = 'Kevin.G.Schlosser@gmail.com'
-__version__ = '0.1b'
-__version_info__ = (0, 1, 'b')
+__version__ = '0.1.1b0'
+__version_info__ = (0, 1, 1, 'b0')
 __description__ = 'Sony Bravia TV interface (generation 3)'
 __url__ = 'https://github.com/kdschlosser/SonyAPI'
 __requirements__ = ['requests>=2.18.4', 'setuptools>=36.3.0']
