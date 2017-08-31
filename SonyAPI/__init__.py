@@ -143,7 +143,7 @@ class SonyAPI(object):
                 )
 
                 index = int(input(display_addresses))
-                self._ip_address = ip_addresses[index][0]
+                self._ip_address = ip_addresses[index - 1][0]
         else:
             self._ip_address = ip_address
 
