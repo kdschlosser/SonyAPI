@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
 #
-#  SonyAPI
-# Copyright (C) 2017 Kevin Schlosser
-
-# This program is free software: you can redistribute it and/or modify
+# SonyAPI
+# External control of Sony Bravia Generation 3 TV's
+# Copyright (C) 2017  Kevin G. Schlosser
+#
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
+# the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
-
-'''
+"""
 SonyAPI - Sony Bravia TV JSON API for Python 2.x and 3.x
 This API works with generation 3 TV's. It is untested for generation 1 and 2.
 
@@ -26,9 +28,9 @@ ideas and insight on how to use some of the methods.
 aparraga / braviarc
 alanreid / bravia
 
+"""
 
-'''
-
+from __future__ import absolute_import
 import threading
 import base64
 import re
@@ -39,22 +41,25 @@ import socket
 import struct
 import requests
 import traceback
-import application
-import volume
-import media
-import recording
-import browser
-import inputs
-import channel
-import speaker
-import event
 from datetime import datetime
-from logger import LOGGER as _LOGGER
-from utils import (
+from .version import __version__, __version_info__, __author__
+from . import (
+    application,
+    volume,
+    media,
+    recording,
+    browser,
+    inputs,
+    channel,
+    speaker,
+    event
+)
+from .logger import LOGGER as _LOGGER
+from .utils import (
     get_mac_addresses as _get_mac_addresses,
     cache_icons as _cache_icons
 )
-from exception import (
+from .exception import (
     SonyAPIError,
     PinError,
     RegisterTimeoutError,
@@ -69,7 +74,7 @@ from exception import (
     IPAddressError
 )
 
-from api_const import (
+from .api_const import (
     GUID,
     VOLUME_EVENT,
     MUTE_EVENT,
@@ -87,7 +92,6 @@ from api_const import (
     NUMBERS,
     PY30_31
 )
-
 
 try:
     __builtin__ = __import__('__builtin__')
@@ -767,7 +771,8 @@ class SonyAPI(object):
     def audio_source_screen(self, screen):
         self.send('videoScreen', 'setAudioSourceScreen', screen=screen)
 
-    def pap_screen_size(self, (screen, size)):
+    def pap_screen_size(self, value=('', '')):
+        screen, size = value
         self.send('videoScreen', 'setPapScreenSize', screen=screen, size=size)
 
     pap_screen_size = property(fset=pap_screen_size)
@@ -1190,3 +1195,12 @@ class SonyAPI(object):
             if not thread.callback_count():
                 thread.stop()
                 self._event_threads.remove(thread)
+
+
+if __name__ == '__main__':
+    print(
+        "SonyAPI v%s, Copyright (C) 2017 Kevin G Schlosser.\n"
+        "SonyAPI comes with ABSOLUTELY NO WARRANTY.\n"
+        "SonyAPI is free software, and you are welcome to redistribute it"
+        "under certain conditions." % __version__
+    )

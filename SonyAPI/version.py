@@ -18,23 +18,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-import sys
-import os
-from setuptools import setup, find_packages
-from SonyAPI.version import __version__, __author__
-
-sys.path.insert(0, '.')
-CURRENT_DIR = os.path.dirname(__file__)
-
-setup(
-    name='SonyAPI',
-    version=__version__,
-    description=open(os.path.join(CURRENT_DIR, 'README.md')).read(),
-    install_requires=['requests>=2.18.4', 'setuptools>=36.3.0'],
-    maintainer=__author__,
-    zip_safe=True,
-    packages=find_packages(),
-    include_package_data=True,
-    url='https://github.com/kdschlosser/SonyAPI'
-)
+__author__ = 'Kevin G. Schlosser'
+__version__ = '0.1b'
+__version_info__ = (0, 1, 'b')
