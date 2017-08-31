@@ -38,28 +38,28 @@ def get_mac_addresses(ip_addresses):
     proc = Popen("arp -a", stdout=PIPE)
     data = proc.communicate()[0]
 
-    for line in data.split('\n'):
-        for ip_address in ip_addresses[:]:
+    results = []
+
+    for ip_address in ip_addresses[:]:
+        if ip_address in data:
+            ip_data = data[data.find(ip_address):]
+            mac = re.search(r"(([a-f\d]{1,2}:){5}[a-f\d]{1,2})", ip_data)
+            if mac is None:
+                mac = re.search(r"(([a-f\d]{1,2}-){5}[a-f\d]{1,2})", ip_data)
+            if mac is not None:
+                mac = mac.groups()[0].replace('-', ':').upper()
+            else:
+                mac = '00:00:00:00:00:00'
+            results += [[ip_address, mac]]
+            ip_addresses.remove(ip_address)
             _LOGGER.debug(
                 '||',
-                ip_addresses=ip_addresses,
-                line=line,
-                ip_address=ip_address
+                results=results,
+                ip_address=ip_address,
+                mac=mac
             )
 
-            if ip_address in line:
-                mac = re.search(r"(([a-f\d]{1,2}:){5}[a-f\d]{1,2})", line)
-                if mac is None:
-                    mac = re.search(r"(([a-f\d]{1,2}-){5}[a-f\d]{1,2})", line)
-                if mac is not None:
-                    mac = mac.groups()[0].replace('-', ':').upper()
-                else:
-                    mac = '00:00:00:00:00:00'
-                ip_addresses[ip_addresses.index(ip_address)] = [
-                    ip_address, mac
-                ]
-
-    return ip_addresses
+    return results
 
 
 def cache_icons(sony_api):

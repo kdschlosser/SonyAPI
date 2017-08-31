@@ -16,6 +16,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+'''
+SonyAPI - Sony Bravia TV JSON API for Python 2.x and 3.x
+This API works with generation 3 TV's. It is untested for generation 1 and 2.
+
+I want to give mention to a couple of other authors for providing me with 
+ideas and insight on how to use some of the methods.
+ 
+aparraga / braviarc
+alanreid / bravia
+
+
+'''
+
 import threading
 import base64
 import re
