@@ -19,6 +19,7 @@
 import threading
 import base64
 import re
+import sys
 import json
 import time
 import socket
@@ -70,7 +71,8 @@ from api_const import (
     SSDP_REQUEST,
     HEADER,
     BODY,
-    NUMBERS
+    NUMBERS,
+    PY30_31
 )
 
 
@@ -99,12 +101,8 @@ class SonyAPI(object):
         mac=None,
         nickname=None,
         pin=0000,
-        psk=None,
-        debug=None
+        psk=None
     ):
-
-        import sys
-        _LOGGER.file_writer = sys.stdout
 
         self._ircc_url = 'http://%s/sony/IRCC' % ip_address
         self._access_url = 'http://%s/sony/accessControl' % ip_address
@@ -162,6 +160,25 @@ class SonyAPI(object):
     def run_tests(self):
         import test
         test.run(self)
+
+    @property
+    def debug(self):
+        return _LOGGER.file_writer
+
+    @debug.setter
+    def debug(self, writer):
+        if writer in (False, None):
+            _LOGGER.file_writer = None
+        elif writer is True:
+            _LOGGER.file_writer = sys.stdout.write
+        elif hasattr(writer, 'write'):
+            _LOGGER.file_writer = writer.write
+        elif PY30_31 and hasattr(writer, '__call__'):
+            _LOGGER.file_writer = writer
+        elif not PY30_31 and __builtin__.callable(writer):
+            _LOGGER.file_writer = writer
+        else:
+            _LOGGER.file_writer = None
 
     @property
     def pin(self):

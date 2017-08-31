@@ -22,6 +22,11 @@ try:
 except NameError:
     PY2 = False
 
+try:
+    PY30_31 = not bool(callable)
+except NameError:
+    PY30_31 = True
+
 GUID = '24F26C67-5A50-4B08-8754-80EBAF880379'
 
 VOLUME_EVENT = 0x1
