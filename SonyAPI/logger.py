@@ -41,6 +41,7 @@ def debug_data(*args, **kwargs):
 
 class LOGGER(object):
     file_writer = None
+    name = __name__.rsplit('.', 1)[0]
 
     @classmethod
     def error(cls, *args, **kwargs):
@@ -51,15 +52,21 @@ class LOGGER(object):
             err = traceback.format_exc()
 
         if cls.file_writer:
-            cls.file_writer.write(
-                '%s.%s: %s\n' % (__name__, err, debug_data(*args, **kwargs))
+            data = debug_data(*args, **kwargs)
+            data = data.replace('\n', '\n' + (' ' * (7 + len(err))))
+
+            cls.file_writer(
+                '%s.%s: %s\n' % (cls.name, err, data)
             )
 
     @classmethod
     def debug(cls, direction, *args, **kwargs):
 
         if cls.file_writer:
-            cls.file_writer.write(
+            data = debug_data(*args, **kwargs)
+            data = data.replace('\n', '\n' + (' ' * 19))
+
+            cls.file_writer(
                 '%s: DEBUG: %s  %s\n' %
-                (__name__, direction, debug_data(*args, **kwargs))
+                (cls.name, direction, data)
             )

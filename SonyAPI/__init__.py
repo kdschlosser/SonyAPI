@@ -157,9 +157,19 @@ class SonyAPI(object):
             self._pin = None
             self.pin = pin
 
-    def run_tests(self):
+    def run_tests(self, enable_debugging=False):
         import test
+
+        tmp_debug = _LOGGER.file_writer
+        if enable_debugging:
+            if not tmp_debug:
+                _LOGGER.file_writer = sys.stdout.write
+        else:
+            _LOGGER.file_writer = None
+
         test.run(self)
+
+        _LOGGER.file_writer = tmp_debug
 
     @property
     def debug(self):
