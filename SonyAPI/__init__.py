@@ -624,7 +624,8 @@ class SonyAPI(object):
                 raise
 
     @led_indicator_status.setter
-    def led_indicator_status(self, (status, mode)):
+    def led_indicator_status(self, value=('', '')):
+        status, mode = value
         self.send(
             'system',
             'setLEDIndicatorStatus',
