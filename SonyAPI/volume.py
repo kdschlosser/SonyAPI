@@ -54,11 +54,9 @@ class VolumeBase(object):
 
     @property
     def _volume_info(self):
-        results = self._sony_api.send('audio', 'getVolumeInformation')
-
-        for result in results:
-            if result['target'] == self.target:
-                return result
+        for volume_info in self._sony_api.send('audio', 'getVolumeInformation'):
+            if volume_info['target'] == self.target:
+                return volume_info
 
     def up(self):
         self._set_volume(self._volume + 1)
