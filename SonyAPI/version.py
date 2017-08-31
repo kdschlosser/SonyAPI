@@ -42,8 +42,8 @@ dev_status = status.get(__version__[-1][:-1], '5 - Production/Stable')
 __classifiers__ = [
     'Development Status :: ' + dev_status,
     'Operating System :: MacOS',
-    'Operating System :: Microsoft :: Windows'
-    'Operating System :: Unix'
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: Unix',
     'Intended Audience :: Developers',
     'Intended Audience :: End Users/Desktop',
     'Intended Audience :: Other Audience',
