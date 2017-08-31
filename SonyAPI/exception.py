@@ -22,6 +22,7 @@ import json
 
 
 class SonyAPIError(Exception):
+    __module__ = 'SonyAPI'
 
     def __init__(self, msg):
         if isinstance(msg, dict):
@@ -35,24 +36,25 @@ class SonyAPIError(Exception):
 
 
 class PinError(SonyAPIError):
-    pass
+    __module__ = 'SonyAPI'
 
 
 class RegisterTimeoutError(SonyAPIError):
-    pass
+    __module__ = 'SonyAPI'
 
 
 class NotImplementedError(SonyAPIError):
     # 501,"Not Implemented"
-    pass
+    __module__ = 'SonyAPI'
 
 
 class UnsupportedError(SonyAPIError):
     # 15, "unsupported"
-    pass
+    __module__ = 'SonyAPI'
 
 
 class JSONRequestError(SonyAPIError):
+    __module__ = 'SonyAPI'
     # 7, "Illegal State"
     # 7, "Clock is not set"
     # 12, "getLEDIndicatorStatus"
@@ -69,24 +71,24 @@ class JSONRequestError(SonyAPIError):
 
 
 class CommandError(SonyAPIError):
-    pass
+    __module__ = 'SonyAPI'
 
 
 class VolumeDeviceError(SonyAPIError):
-    pass
+    __module__ = 'SonyAPI'
 
 
 class RegisterError(SonyAPIError):
-    pass
+    __module__ = 'SonyAPI'
 
 
 class IRCCError(SonyAPIError):
-    pass
+    __module__ = 'SonyAPI'
 
 
 class SendError(SonyAPIError):
-    pass
+    __module__ = 'SonyAPI'
 
 
 class IPAddressError(SonyAPIError):
-    pass
+    __module__ = 'SonyAPI'

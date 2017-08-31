@@ -262,8 +262,7 @@ class SonyAPI(object):
                     _LOGGER.error(traceback.format_exc(), err='PinError')
                     raise SonyAPI.PinError(
                         'This device is not registered or the PIN is '
-                        'invalid.\n\n' +
-                        traceback.format_exc()
+                        'invalid.\n\n'
                     )
                 else:
                     timed_out = False
