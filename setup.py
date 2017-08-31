@@ -39,7 +39,7 @@ sys.path.insert(0, '.')
 PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Get the long description from the relevant file
-with open(os.path.join(PACKAGE_DIR, 'README.md'), 'r') as f:
+with open(os.path.join(PACKAGE_DIR, 'README.txt'), 'r') as f:
     __long_description__ = f.read().encode('utf-8')
 
 setup(
