@@ -27,15 +27,13 @@ class Application(object):
         self.title = title
         self.data = data
         self.uri = uri
-        if (
-            icon and
-            sony_api._ip_address.split(':')[0] not in icon and
-            icon not in sony_api.icon_cache
-        ):
-            self.display_icon = get_icon(icon)
-            sony_api.icon_cache[icon] = self.display_icon
-        else:
-            self.display_icon = None
+        self.display_icon = None
+
+        if icon and icon not in sony_api.icon_cache:
+            if sony_api._ip_address.split(':')[0] not in icon:
+                self.display_icon = get_icon(icon)
+                sony_api.icon_cache[icon] = self.display_icon
+
         self.icon = icon
 
     def start(self):

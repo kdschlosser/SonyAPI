@@ -22,6 +22,14 @@ from exception import NotImplementedError
 from utils import PlayTimeMixin
 
 
+def _compare(obj1, obj2):
+    return (
+        obj1.title == obj2.title and
+        obj1.uri == obj2.uri and
+        str(obj1.start_time) == str(obj2.start_time)
+    )
+
+
 class ContentBase(PlayTimeMixin):
     _sony_api = None
     source = ''
@@ -85,20 +93,12 @@ class ContentBase(PlayTimeMixin):
         )
 
         for item in self._sony_api.recording_schedule_list:
-            if (
-                self.title == item.title and
-                self.uri == item.uri and
-                str(self.start_time) == str(item.start_time)
-            ):
+            if _compare(self, item):
                 return item
 
     def remove_recording_schedule(self):
         for item in self._sony_api.recording_schedule_list:
-            if (
-                self.title == item.title and
-                self.uri == item.uri and
-                str(self.start_time) == str(item.start_time)
-            ):
+            if _compare(self, item):
                 item.delete()
 
 
