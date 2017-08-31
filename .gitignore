@@ -1,28 +1,16 @@
-# Build output
-/*.chm
-/*.dll
-/*.exe
-/_build/data/docs/pluginlist.rst
-/_build/data/docs/eg/*
-!/_build/data/docs/eg/index.rst
-/_build/data/Python??/[Ii]mports.py
-/_build/output/
-/eg/StaticImports.py
-/lib??/*
-!/lib??/site-packages/
+# Build
+build
+dist
 
-# IDE storage
-/.*/
+# PyCharm
+.idea
 
 # Python
-__pycache__/
-*.py[co]
-*$py.class
+*.pyc
 
-# Visual Studio
-.vs/
-Debug/
-Release/
-*.opendb
-*.sdf
-*.VC.db
+# setuptools
+*.egg-info
+
+# pypi
+.pypirc
+push_pypi.py

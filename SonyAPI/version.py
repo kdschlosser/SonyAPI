@@ -19,5 +19,13 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 __author__ = 'Kevin G. Schlosser'
+__author_email__ = 'Kevin.G.Schlosser@gmail.com'
 __version__ = '0.1b'
 __version_info__ = (0, 1, 'b')
+__description__ = 'Sony Bravia TV interface (generation 3)'
+__url__ = 'https://github.com/kdschlosser/SonyAPI'
+__requirements__ = ['requests>=2.18.4', 'setuptools>=36.3.0']
+__keywords__ = ['Sony', 'SonyAPI', 'Bravia', 'BraviaAPI', 'SonyTV']
+__download_url__ = (
+    'https://github.com/kdschlosser/SonyAPI/archive/%s.tar.gz' % __version__
+)

@@ -20,21 +20,33 @@
 
 
 import sys
-import os
 from setuptools import setup, find_packages
-from SonyAPI.version import __version__, __author__
+from SonyAPI.version import (
+    __version__,
+    __author__,
+    __author_email__,
+    __url__,
+    __download_url__,
+    __description__,
+    __requirements__,
+    __keywords__
+)
 
 sys.path.insert(0, '.')
-CURRENT_DIR = os.path.dirname(__file__)
 
 setup(
     name='SonyAPI',
     version=__version__,
-    description=open(os.path.join(CURRENT_DIR, 'README.md')).read(),
-    install_requires=['requests>=2.18.4', 'setuptools>=36.3.0'],
+    description=__description__,
+    install_requires=__requirements__,
     maintainer=__author__,
+    author=__author__,
+    author_email=__author_email__,
     zip_safe=True,
     packages=find_packages(),
     include_package_data=True,
-    url='https://github.com/kdschlosser/SonyAPI'
+    url=__url__,
+    download_url=__download_url__,
+    keywords=__keywords__,
+    classifiers=[]
 )
