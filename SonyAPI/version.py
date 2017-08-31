@@ -21,11 +21,39 @@
 __author__ = 'Kevin G. Schlosser'
 __author_email__ = 'Kevin.G.Schlosser@gmail.com'
 __version__ = '0.1.1b0'
-__version_info__ = (0, 1, 1, 'b0')
+__version_info__ = (0, 1, 1, 'b1')
 __description__ = 'Sony Bravia TV interface (generation 3)'
 __url__ = 'https://github.com/kdschlosser/SonyAPI'
-__requirements__ = ['requests>=2.18.4', 'setuptools>=36.3.0']
-__keywords__ = ['Sony', 'SonyAPI', 'Bravia', 'BraviaAPI', 'SonyTV']
+__requirements__ = ['requests >= 2.18.4', 'setuptools >= 36.3.0']
+__keywords__ = 'Sony SonyAPI Bravia BraviaAPI SonyTV BravieTV'
+__license__ = 'GPL-2.0'
 __download_url__ = (
     'https://github.com/kdschlosser/SonyAPI/archive/%s.tar.gz' % __version__
 )
+
+status = dict(
+    a='3 - Alpha',
+    b='4 - Beta',
+    pre='2 - Pre-Alpha'
+)
+
+dev_status = status.get(__version__[-1][:-1], '5 - Production/Stable')
+
+__classifiers__ = [
+    'Development Status :: ' + dev_status,
+    'Operating System :: MacOS',
+    'Operating System :: Microsoft :: Windows'
+    'Operating System :: Unix'
+    'Intended Audience :: Developers',
+    'Intended Audience :: End Users/Desktop',
+    'Intended Audience :: Other Audience',
+    'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+    'Natural Language :: English',
+    'Programming Language :: Python',
+    'Topic :: Multimedia',
+    'Topic :: Other/Nonlisted Topic',
+    'Topic :: Home Automation'
+]
+
+del dev_status
+del status

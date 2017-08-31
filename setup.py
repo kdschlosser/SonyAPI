@@ -18,8 +18,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 import sys
+import os
 from setuptools import setup, find_packages
 from SonyAPI.version import (
     __version__,
@@ -29,15 +29,24 @@ from SonyAPI.version import (
     __download_url__,
     __description__,
     __requirements__,
-    __keywords__
+    __keywords__,
+    __classifiers__,
+    __license__
 )
 
 sys.path.insert(0, '.')
+
+PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+# Get the long description from the relevant file
+with open(os.path.join(PACKAGE_DIR, 'README.md'), 'r') as f:
+    __long_description__ = f.read().encode('utf-8')
 
 setup(
     name='SonyAPI',
     version=__version__,
     description=__description__,
+    long_description=__long_description__,
     install_requires=__requirements__,
     maintainer=__author__,
     author=__author__,
@@ -48,5 +57,7 @@ setup(
     url=__url__,
     download_url=__download_url__,
     keywords=__keywords__,
-    classifiers=[]
+    classifiers=__classifiers__,
+    license=__license__,
+
 )
