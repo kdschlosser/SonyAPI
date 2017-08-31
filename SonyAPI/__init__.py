@@ -435,7 +435,9 @@ class SonyAPI(object):
 
     cec_control_mode = property(fset=cec_control_mode)
 
-    def cec_power_sync_mode(self, (on_sync, off_sync)):
+    def cec_power_sync_mode(self, sync=(True, True)):
+        on_sync, off_sync = sync
+
         self.send(
             'cec',
             'setPowerSyncMode',
