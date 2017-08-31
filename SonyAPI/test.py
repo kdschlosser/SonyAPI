@@ -67,53 +67,64 @@ ATTR_NAMES = (
     'visibility'
 )
 
+SONY_API = None
 
-def run(sony_api):
-    print(sony_api.discover())
 
-    def p(*attr_name):
-        if len(attr_name) == 1:
-            attr_name = attr_name[0]
+def print_single(attr_name):
+    attr_name = attr_name[0]
 
-            if attr_name.endswith(':'):
-                print(attr_name)
+    if attr_name.endswith(':'):
+        print(attr_name)
+
+    else:
+        try:
+            print('%s: %r' % (attr_name, getattr(SONY_API, attr_name)))
+        except Error:
+            print('%s: %s' % (attr_name, traceback.format_exc()))
+
+
+def print_multiple(item, label, attr_names):
+    found_names = []
+    for attr_name in attr_names:
+        if hasattr(item, attr_name):
+            try:
+                print(
+                    '    %s.%s: %r' %
+                    (label, attr_name, getattr(item, attr_name))
+                )
+                found_names += [attr_name]
+            except Error:
+                print(
+                    '    %s.%s: %s' %
+                    (label, attr_name, traceback.format_exc())
+                )
+    return found_names
+
+
+def p(*args):
+    if len(args) == 1:
+        print_single(args[0])
+    else:
+        label, attrs = args
+        found_names = []
+
+        for attr in attrs:
+            if found_names:
+                print_multiple(attr, label, found_names)
 
             else:
-                try:
-                    print(attr_name + ':', repr(getattr(sony_api, attr_name)))
-                except Error:
-                    print(attr_name + ':', traceback.format_exc())
-        else:
-            label, attrs = attr_name
-            found_names = []
+                print_multiple(attr, label, ATTR_NAMES)
+            print('-' * 80)
+        print('=' * 80)
 
-            for attr in attrs:
-                if found_names:
-                    for attr_name in found_names:
-                        print(
-                            '    %s.%s: %r' %
-                            (label, attr_name, getattr(attr, attr_name))
-                        )
-                else:
-                    for attr_name in ATTR_NAMES:
-                        try:
-                            if hasattr(attr, attr_name):
-                                found_names += [attr_name]
-                                print(
-                                    '    %s.%s: %r' %
-                                    (
-                                        label,
-                                        attr_name,
-                                        getattr(attr, attr_name)
-                                    )
-                                )
-                        except Error:
-                            print(
-                                '    %s.%s: %s' %
-                                (label, attr_name, traceback.format_exc())
-                            )
 
-    print('============================================================')
+
+def run(sony_api):
+    global SONY_API
+    SONY_API = sony_api
+    print('sony_api.discover:', sony_api.discover())
+    print('=' * 80)
+
     print('volume:')
     speaker = sony_api.volume.speaker
     print('    volume:', speaker, '%')
@@ -125,19 +136,18 @@ def run(sony_api):
     print('    volume:', speaker, '%')
     speaker -= 1
     print('    volume:', speaker, '%')
+    print('=' * 80)
 
-    print('============================================================')
     print('mute:')
     print('    mute:', speaker.mute)
     speaker.mute = True
     print('    mute:', speaker.mute)
     speaker.mute = False
     print('    mute:', speaker.mute)
+    print('=' * 80)
 
-    print('============================================================')
     print('channel:')
     channel = sony_api.channel
-
     try:
         print('    channel:', channel)
         speaker.up()
@@ -160,8 +170,8 @@ def run(sony_api):
         print('    channel:', channel)
     except Error:
         print('    channel:', traceback.format_exc())
+    print('=' * 80)
 
-    print('============================================================')
     p('time_format')
     p('date_format')
     p('time')
@@ -210,22 +220,22 @@ def run(sony_api):
     p('recording_status')
     p('recording_supported_repeat_type')
     p('command_list')
-    print('============================================================')
+    print('=' * 80)
 
     print('scheme_list:')
     for item in sony_api.scheme_list:
         print('    scheme:', repr(item))
-    print('============================================================')
+    print('=' * 80)
 
     print('application_status_list:')
     for item in sony_api.application_status_list:
         print('    name, status:', item)
-    print('============================================================')
+    print('=' * 80)
 
     print('content_count:')
     for item in sony_api.content_count:
         print('    inputs.InputItem, count:', item)
-    print('============================================================')
+    print('=' * 80)
 
     print('browser_bookmark_list:')
     p('browser.BookmarkItem', sony_api.browser_bookmark_list)
