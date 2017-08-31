@@ -132,18 +132,22 @@ class SonyAPI(object):
                     self._ip_address = address[0]
                     break
                 else:
-                    display_addresses += '%d: %s - %s\n' % tuple([i] + address)
+                    display_addresses += (
+                        '# %d.)   %s  -  %s\n' % tuple([i + 1] + address)
+                    )
             else:
                 _LOGGER.debug('||', display_addresses=display_addresses)
                 display_addresses += (
                     '\n\n Please input the number for '
-                    'the TV you want to control.\n\n'
+                    'the TV you want to control.\n'
                 )
 
                 index = int(input(display_addresses))
                 self._ip_address = ip_addresses[index][0]
         else:
             self._ip_address = ip_address
+
+        _LOGGER.debug('||', ip_address=self._ip_address)
 
         if not self._ip_address:
             raise IPAddressError('')
@@ -184,12 +188,8 @@ class SonyAPI(object):
 
         _LOGGER.file_writer = tmp_debug
 
-    @property
-    def debug(self):
-        return _LOGGER.file_writer
-
-    @debug.setter
-    def debug(self, writer):
+    @staticmethod
+    def debug(writer):
         if writer in (False, None):
             _LOGGER.file_writer = None
         elif writer is True:
