@@ -122,6 +122,7 @@ class SonyAPI(object):
         ssdp_timeout=10
     ):
         self._methods = {}
+        self._remote_command_list = {}
         self._ircc_url = 'http://%s/sony/IRCC' % ip_address
         self._access_url = 'http://%s/sony/accessControl' % ip_address
 
@@ -1139,12 +1140,22 @@ class SonyAPI(object):
 
     @property
     def _command_list(self):
-        result = self.send('system', 'getRemoteControllerInfo', return_index=1)
+        if not self._remote_command_list:
+            result = self.send(
+                'system',
+                'getRemoteControllerInfo',
+                return_index=1
+            )
 
-        return dict(list(
-            (command['name'], command['value'])
-            for command in result
-        ))
+            self._remote_command_list = dict(list(
+                (command['name'], command['value'])
+                for command in result
+            ))
+        return self._remote_command_list
+
+    def refresh_command_list(self):
+        self._remote_command_list = {}
+        return self._command_list
 
     def send_command(self, command_name):
         try:
