@@ -51,7 +51,7 @@ class InputItem(object):
         content_items = []
         for content in content_list:
             content['source'] = self
-            content_items += [media.ContentItem(self, **content)]
+            content_items += [media.ContentItem(self._sony_api, **content)]
         return content_items
 
     @property
