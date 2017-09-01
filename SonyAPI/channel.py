@@ -34,12 +34,22 @@ class Channels(object):
 
     @property
     def lineup(self):
-        results = []
-        for item in self._sony_api.content_list:
-            if item.uri.startswith('tv'):
-                results += [item]
+        content_items = []
 
-        return results
+        for source in self._sony_api.source_list:
+            if source.uri.startswith('tv'):
+                content_list = self._sony_api.send(
+                    'avContent',
+                    'getContentList',
+                    source=source.uri
+                )
+
+                for content in content_list:
+                    content['source'] = source
+                    content_items += [
+                        media.ContentItem(self._sony_api, **content)
+                    ]
+        return content_items
 
     def _set_channel(self, direction, channel):
         for chan in self.lineup:
