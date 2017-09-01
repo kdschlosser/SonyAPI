@@ -121,7 +121,7 @@ class SonyAPI(object):
         psk=None,
         ssdp_timeout=10
     ):
-
+        self._methods = {}
         self._ircc_url = 'http://%s/sony/IRCC' % ip_address
         self._access_url = 'http://%s/sony/accessControl' % ip_address
 
@@ -175,6 +175,7 @@ class SonyAPI(object):
         self._icon_thread = threading.Thread(target=_cache_icons, args=(self,))
         if psk:
             self._pin = pin
+            self._build_command_list()
         else:
             self._pin = None
             self.pin = pin
@@ -192,6 +193,61 @@ class SonyAPI(object):
         test.run(self)
 
         _LOGGER.file_writer = tmp_debug
+
+    def _build_command_list(self):
+        post = requests.post
+
+        protocols = (
+            'system',
+            'appControl',
+            'videoScreen',
+            'avContent',
+            'audio',
+            'cec',
+            'recording'
+        )
+
+        get_versions = json.dumps(
+            {"id": 1, "method": "getVersions", "version": "1.0", "params": []}
+        )
+        get_methods = {"id": 1, "method": "getMethodTypes", "version": "1.0"}
+
+        for protocol in protocols:
+            protocol_container = {}
+
+            url = 'http://%s/sony/%s' % (self._ip_address, protocol)
+            data = get_versions.encode('UTF-8')
+            try:
+                _LOGGER.debug('<<', url=url, data=data)
+                response = post(url, data=data).content.decode('utf-8')
+                versions = json.loads(response)['result'][0]
+                _LOGGER.debug('>>', protocol=protocol, versions=versions)
+            except (requests.RequestException, KeyError):
+                continue
+
+            for ver in versions:
+                get_methods['params'] = [ver]
+                data = json.dumps(get_methods).encode('UTF-8')
+                try:
+                    _LOGGER.debug('<<', url=url, data=data)
+                    response = post(url, data=data).content.decode('utf-8')
+                    results = json.loads(response)['results']
+
+                    protocol_container[ver] = list(res[0] for res in results)
+                    _LOGGER.debug(
+                        '>>',
+                        protocol=protocol,
+                        methods=protocol_container[ver]
+                    )
+                except (requests.RequestException, KeyError):
+                    continue
+
+            self._methods[protocol] = protocol_container
+            _LOGGER.debug(
+                '||',
+                protocol=protocol,
+                methods=self._methods[protocol]
+            )
 
     @staticmethod
     def debug(writer):
@@ -273,6 +329,7 @@ class SonyAPI(object):
 
             self._cookies = response.cookies
             self._pin = pin
+            self._build_command_list()
 
         except requests.exceptions.HTTPError as exception_instance:
             if '401' in str(exception_instance):
@@ -356,16 +413,36 @@ class SonyAPI(object):
         except requests.exceptions.RequestException:
             raise SonyAPI.IRCCError(traceback.format_exc())
 
-    def send(self, url, method, return_index=0, **params):
+    def send(self, protocol, method, return_index=0, **params):
+        try:
+            versions = self._methods[protocol]
+        except KeyError:
+            raise UnsupportedError(
+                'Protocol %s is not supported by your TV' % protocol
+            )
+        found_version = None
+        for ver in sorted(versions.keys()):
+            if method in versions[ver]:
+                found_version = ver
+        if found_version is None:
+            raise UnsupportedError(
+                'Method %s is not supported by your TV' % method
+            )
+
         if not params:
-            params = []
+            params = [found_version]
+            found_version = '1.0'
         else:
             params = [params]
 
-        json_data = json.dumps(
-            {'method': method, 'params': params, 'id': 1, 'version': '1.0'}
-        )
-        _LOGGER.debug('||', json_data=json_data)
+        data = {
+            'method': method,
+            'params': params,
+            'id': 1,
+            'version': found_version
+        }
+
+        _LOGGER.debug('||', json_data=data)
 
         try:
             if self._psk is None:
@@ -373,10 +450,10 @@ class SonyAPI(object):
             else:
                 header = dict(headers={'X-Auth-PSK': self._psk})
 
-            header['data'] = json_data.encode('UTF-8')
+            header['data'] = json.dumps(data).encode('UTF-8')
 
             _LOGGER.debug('||', header=header)
-            url = 'http://%s/sony/%s' % (self._ip_address, url)
+            url = 'http://%s/sony/%s' % (self._ip_address, protocol)
             _LOGGER.debug('<<', url=url, header=header)
             response = requests.post(url, **header)
             response = json.loads(response.content.decode('utf-8'))
@@ -493,12 +570,11 @@ class SonyAPI(object):
     def time(self):
         try:
             t = self.send('system', 'getCurrentTime')
-            version = self.send('system', 'getVersions')[-1]
+            ver = self.send('system', 'getVersions')[-1]
 
-            if version == '1.0':
+            if ver == '1.0':
                 return t
-
-            if version == '1.1':
+            if ver == '1.1':
                 return t['dateTime']
         except JSONRequestError as err:
             if err == 'Clock is not set':

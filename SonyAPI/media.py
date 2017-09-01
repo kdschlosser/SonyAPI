@@ -219,7 +219,8 @@ class NowPlaying(ContentBase):
         startDateTime='',
         bivl_assetId='',
         bivl_serviceId='',
-        playSpeed=''
+        playSpeed='',
+        programMediaType=''
     ):
         self._sony_api = sony_api
         self.program_title = programTitle
@@ -236,6 +237,7 @@ class NowPlaying(ContentBase):
         self.bivl_asset_id = bivl_assetId
         self.bivl_service_id = bivl_serviceId
         self.play_speed = playSpeed
+        self.program_media_type = programMediaType
 
         for s in sony_api.source_list:
             if s.uri == source or s.uri == uri:
