@@ -118,7 +118,8 @@ class SonyAPI(object):
         mac=None,
         nickname=None,
         pin=0000,
-        psk=None
+        psk=None,
+        ssdp_timeout=10
     ):
 
         self._ircc_url = 'http://%s/sony/IRCC' % ip_address
@@ -128,7 +129,7 @@ class SonyAPI(object):
             display_addresses = ''
             self._ip_address = None
 
-            ip_addresses = _get_mac_addresses(SonyAPI.discover())
+            ip_addresses = _get_mac_addresses(SonyAPI.discover(ssdp_timeout))
             _LOGGER.debug('||', ip_addresses=ip_addresses)
 
             for i, address in enumerate(ip_addresses):
@@ -179,7 +180,7 @@ class SonyAPI(object):
             self.pin = pin
 
     def run_tests(self, enable_debugging=False):
-        import test
+        from . import test
 
         tmp_debug = _LOGGER.file_writer
         if enable_debugging:

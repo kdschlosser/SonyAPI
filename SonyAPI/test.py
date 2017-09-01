@@ -139,7 +139,6 @@ def p(*args):
         print('=' * 80)
 
 
-
 def run(sony_api):
     global SONY_API
     SONY_API = sony_api
