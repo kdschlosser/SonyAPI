@@ -18,6 +18,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+from __future__ import absolute_import
+from . import media
+
 
 class InputItem(object):
     def __init__(self,  sony_api, source):
@@ -37,6 +40,19 @@ class InputItem(object):
 
     def set(self):
         self._sony_api.send('avContent', 'setPlayContent', uri=self.uri)
+
+    @property
+    def content(self):
+        content_list = self._sony_api.send(
+            'avContent',
+            'getContentList',
+            source=self.uri
+        )
+        content_items = []
+        for content in content_list:
+            content['source'] = self
+            content_items += [media.ContentItem(self, **content)]
+        return content_items
 
     @property
     def connection(self):
