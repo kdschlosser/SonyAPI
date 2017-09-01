@@ -1,18 +1,30 @@
 ## SonyAPI
 
-This is the initial release of a python connector for Sony Bravia generation 3 TV's.
+Python connector for Sony Bravia generation 3 TV's.
 
-The API is pretty simple. This API will automatically get the MAC address of the TV to create the WOL packet  so you will be able to wake it from standby. It also automatically will get the FQDN of the computer running this lib and use that information to create a client id and nickname. This is done so the use of the same pin and hostname cannot be used to access the TV. This adds a little bit of extra security.
+This API I believe is one of if not these most complete API's outside of the Sony Partner circle. Sony was nice enough to only distribute API documentation to their partners. Which means that unless you have thousands of dollars to spend on a controller you are without the ability to externally control the TV.
+Through a lot of research and some reverse engineering by myself and other developers is what made this connector possible. If there is something that I missed or is not functioning properly please submit an issue. If you have any questions on how it functions please submit an issue.
 
+
+## The Basics
 ***Constructor:***
 
-    instance = SonyAPI(ip_address, pin=0000, psk=None, debug=None)
+    instance = SonyAPI.SonyAPI(ip_address=None, pin=0000, psk=None, mac=None, ssdp_timeout=10)
 
-The constructor can be passed a pin number if you want to pair the TV to the API or it can be passed a personal access key which can also be set up on the TV.
 
-If you do not have the TV paired you will need to pass 0000 for the pin number or simply do not specify one. If the TV requires pairing and you have initialized the constructor you will be prompted to enter the pin number and this will time out in 60 seconds and generate a SonyAPI.RegisterError exception.
+If this is a first time connecting to the TV you can start the connector without passing a single thing to it. The API will go and retrieve a list of available TV's on your network and prompt you to select which TV you want to use. Once it has made the initial connected to the TV a box will appear on your TV screen prompting you to connect with a spicific pin. The API at the same time will ask for a pin. Enter that pin and also write it down for future connections. The pin entry has a 60 second timeout, if the timeout period expires the API will raise SonyAPI.RegisterTimeoutError.
 
-I used rawinput to allow entry for the pin number and this can be overridden very easily if you are wanting to use a GUI control to allow entry for the pin number.
+Developer tidbit. If you want to intercept the prompts for the TV selection and the pin for something like a GUI you will want to override input()
+
+If you have any issues with the automatic discovery you have several options. you cause pass the parameter ssdp_timeout with a higher value then 10 (seconds) or you can enter the IP address of the TV directly. If you enter the IP address you have to be sure you have your TV set to use a static IP address.
+If you do not want to have the API prompt you for which TV you want to use you can once again use the IP address, or you can pass the mac address using the mac keyword. Use of the mac address is hinged on the TV being automatically discovered. if the discovery yields no TV's SonyAPI.IPAddressError will be raised.
+
+Once you have completed the registration process the mac address as well as the pin that was entered can be pulled from the API so it can be written to a file or how ever you want to store the information.
+
+    mac = instance.mac
+    pin = instance.pin
+
+You also can pass a personal access key instead of using the pairing this is handy in a multi TV system as you won't have to worry about keeping track of registrations and pin numbers. (if supported by the TV)
 
 ## Power
 
@@ -89,7 +101,81 @@ When changing the volume you will reference the device you want to control the v
     instance.volume.headphone -= 1
 ## Channels
 
-Channels work the same way the volume does but without the speaker or headphone. There is also the property lineup which will return a list of ContentItem instances.
+Channels work the same way the volume does but without the speaker or headphone.
+
+    instance.channel.up()
+    instance.channel.down()
+    instance.channel += 1
+    instance.channel = 15
+    channel = int(instance.channel)
+
+There is also the property lineup which will return a list of ContentItem instances.
+
+    channel_lineup = instance.channel.lineup
+
+## Content
+
+There are 2 different types of content. the first one being a media.NowPlaying object and the second one being a media.ContentItem.
+The ContentItem object is going to be found in a list of available content gotten by using
+
+    instance.channel.lineup
+    InputItem.content
+
+The ContentItem is a container for all kinds of metadata as well as some methods to perform different tasks
+
+***The available attributes/properties are:***
+
+  * index
+  * triplet_str
+  * title
+  * direct_remote_num
+  * is_protected
+  * is_already_played
+  * uri
+  * program_num
+  * display_num
+  * original_display_num
+  * program_media_type
+  * channel_name
+  * source
+  * user_content_flag
+  * created_time
+  * size_mb
+  * parental_country
+  * parental_system
+  * parental_rating
+  * subtitle_title
+  * subtitle_language
+  * audio_channel
+  * audio_frequency
+  * audio_codec
+  * chapter_count
+  * video_codec
+  * storage_uri
+  * content_type
+  * product_id
+  * file_size_byte
+  * visibility
+  * channel_surfing_visibility
+  * epg_visibility
+  * idx
+  * status
+  * duration
+  * start_time
+  * remaining
+  * elapsed
+  * percent_elapsed
+  * end_time
+
+***Available methods are:***
+  * set()
+  * delete()
+  * remove_recording_schedule()
+  * add_recording_schedule(quality, repeat_type)
+  * delete_protection(enable=bool)
+  * tv_content_visibility(visibility=None, surfing_visibility=None, epg_visibility=None)
+
+
 
 
 
