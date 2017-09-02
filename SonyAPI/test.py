@@ -426,7 +426,7 @@ def run(sony_api):
 
     def find_methods(protocol, attr_names):
         for prop, meth in attr_names:
-            for methods in protocol.items():
+            for methods in protocol.values():
                 if meth in methods:
                     print ('    %s: SUPPORTED' % prop)
                 else:
