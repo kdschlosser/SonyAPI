@@ -350,6 +350,7 @@ def run(sony_api):
         items = sony_api.source_list
         print('source_list:')
         p('inputs.InputItem', items)
+        print('    content:')
         for item in items:
             print('   %s.content:' % item.label)
             p('media.ContentItem', item.content)
@@ -419,17 +420,20 @@ def run(sony_api):
 
     print('Other methods/properties:')
 
+    print(sony_api._methods)
     def get_protocol(protocol):
         if protocol in sony_api._methods:
             return sony_api._methods[protocol]
 
     def find_methods(protocol, attr_names):
         for prop, meth in attr_names:
+            supported = 0
             for methods in protocol.values():
-                if meth in methods:
-                    print ('    %s: SUPPORTED' % prop)
-                else:
-                    print('    %s: UNSUPPORTED' % prop)
+                supported = max([supported, int(meth in methods)])
+            if supported:
+                print ('    %s: SUPPORTED' % prop)
+            else:
+                print('    %s: UNSUPPORTED' % prop)
 
     system = get_protocol('system')
     if system is None:
