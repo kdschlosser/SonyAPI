@@ -133,7 +133,6 @@ def p(*args):
                 else:
                     print_multiple(attr, label, ATTR_NAMES)
                 print('-' * 80)
-            print('=' * 80)
         except TypeError:
             print_multiple(attrs, label, ATTR_NAMES)
 
@@ -177,6 +176,76 @@ def run(sony_api):
     SONY_API = sony_api
     print('sony_api.discover:', sony_api.discover())
     print('=' * 80)
+    print()
+
+    p('model')
+    p('serial')
+    p('name')
+    p('generation')
+    p('product')
+    p('remote_model')
+    p('cid')
+    p('mac')
+    p('wol_mac')
+    p('wol_mode')
+    p('postal_code')
+    p('language')
+    print('=' * 80)
+    print()
+
+    p('time_format')
+    p('date_format')
+    p('time')
+    print('=' * 80)
+    print()
+
+    p('network_ipv4')
+    p('network_netif')
+    p('network_ipv6')
+    p('network_subnet_mask')
+    p('network_dns')
+    p('network_mac')
+    p('network_gateway')
+    print('=' * 80)
+    print()
+
+    p('interface_server_name')
+    p('interface_model_name')
+    p('interface_product_name')
+    p('interface_product_category')
+    p('interface_version')
+    print('=' * 80)
+    print()
+
+    p('parental_rating_setting_country')
+    p('parental_rating_setting_unrated')
+    p('parental_rating_setting_age')
+    p('parental_rating_setting_sony')
+    p('parental_rating_setting_tv')
+    p('parental_rating_setting_mpaa')
+    p('parental_rating_setting_french')
+    p('parental_rating_setting_english')
+    print('=' * 80)
+    print()
+
+    p('led_indicator_status')
+    p('recording_status')
+    # p('remote_device_settings')
+    p('browser_text_url')
+    print('=' * 80)
+    print()
+
+    p('power_saving_mode')
+    p('chinese_software_keyboard_supported')
+    p('color_keys_layout')
+    p('pip_sub_screen_position')
+    p('audio_source_screen')
+    p('multi_screen_mode')
+    p('multi_screen_internet_mode')
+    p('recording_supported_repeat_type')
+    p('command_list')
+    print('=' * 80)
+    print()
 
     print('volume:')
     speaker = sony_api.volume.speaker
@@ -190,6 +259,7 @@ def run(sony_api):
     speaker -= 1
     print('    volume:', speaker, '%')
     print('=' * 80)
+    print()
 
     print('mute:')
     print('    mute:', speaker.mute)
@@ -198,6 +268,7 @@ def run(sony_api):
     speaker.mute = False
     print('    mute:', speaker.mute)
     print('=' * 80)
+    print()
 
     print('channel:')
     channel = sony_api.channel
@@ -212,7 +283,6 @@ def run(sony_api):
         print('    channel:', channel)
     except Error:
         print('    channel:', traceback.format_exc())
-
     try:
         speaker += 1
         print('    channel:', channel)
@@ -224,56 +294,7 @@ def run(sony_api):
     except Error:
         print('    channel:', traceback.format_exc())
     print('=' * 80)
-
-    p('time_format')
-    p('date_format')
-    p('time')
-    p('postal_code')
-    p('power_saving_mode')
-    p('interface_server_name')
-    p('interface_model_name')
-    p('interface_product_name')
-    p('interface_product_category')
-    p('interface_version')
-    p('remote_model')
-    p('product')
-    p('mac')
-    p('name')
-    p('language')
-    p('cid')
-    p('generation')
-    p('model')
-    p('serial')
-    p('wol_mode')
-    p('color_keys_layout')
-    p('led_indicator_status')
-    # p('remote_device_settings')
-    p('network_ipv4')
-    p('network_netif')
-    p('network_ipv6')
-    p('network_subnet_mask')
-    p('network_dns')
-    p('network_mac')
-    p('network_gateway')
-    p('wol_mac')
-    p('chinese_software_keyboard_supported')
-    p('pip_sub_screen_position')
-    p('audio_source_screen')
-    p('multi_screen_mode')
-    p('multi_screen_internet_mode')
-    p('parental_rating_setting_country')
-    p('parental_rating_setting_unrated')
-    p('parental_rating_setting_age')
-    p('parental_rating_setting_sony')
-    p('parental_rating_setting_tv')
-    p('parental_rating_setting_mpaa')
-    p('parental_rating_setting_french')
-    p('parental_rating_setting_english')
-    p('browser_text_url')
-    p('recording_status')
-    p('recording_supported_repeat_type')
-    p('command_list')
-    print('=' * 80)
+    print()
 
     try:
         items = sony_api.scheme_list
@@ -285,6 +306,7 @@ def run(sony_api):
     except Error:
         print('scheme_list: %s' % traceback.format_exc())
     print('=' * 80)
+    print()
 
     try:
         items = sony_api.application_status_list
@@ -296,6 +318,7 @@ def run(sony_api):
     except Error:
         print('application_status_list: %s' % traceback.format_exc())
     print('=' * 80)
+    print()
 
     try:
         items = sony_api.content_count
@@ -307,7 +330,7 @@ def run(sony_api):
     except Error:
         print('content_count: %s' % traceback.format_exc())
     print('=' * 80)
-
+    print()
 
     try:
         items = sony_api.browser_bookmark_list
@@ -317,6 +340,8 @@ def run(sony_api):
         print('browser_bookmark_list: NOT SUPPORTED')
     except Error:
         print('browser_bookmark_list: %s' % traceback.format_exc())
+    print('=' * 80)
+    print()
 
     try:
         items = sony_api.source_list
@@ -326,6 +351,8 @@ def run(sony_api):
         print('browser_bookmark_list: NOT SUPPORTED')
     except Error:
         print('browser_bookmark_list: %s' % traceback.format_exc())
+    print('=' * 80)
+    print()
 
     try:
         items = sony_api.application_list
@@ -335,6 +362,8 @@ def run(sony_api):
         print('browser_bookmark_list: NOT SUPPORTED')
     except Error:
         print('browser_bookmark_list: %s' % traceback.format_exc())
+    print('=' * 80)
+    print()
 
     try:
         items = sony_api.recording_history_list
@@ -344,6 +373,8 @@ def run(sony_api):
         print('browser_bookmark_list: NOT SUPPORTED')
     except Error:
         print('browser_bookmark_list: %s' % traceback.format_exc())
+    print('=' * 80)
+    print()
 
     try:
         items = sony_api.recording_schedule_list
@@ -353,6 +384,8 @@ def run(sony_api):
         print('browser_bookmark_list: NOT SUPPORTED')
     except Error:
         print('browser_bookmark_list: %s' % traceback.format_exc())
+    print('=' * 80)
+    print()
 
     try:
         items = sony_api.recording_conflict_list
@@ -362,6 +395,8 @@ def run(sony_api):
         print('browser_bookmark_list: NOT SUPPORTED')
     except Error:
         print('browser_bookmark_list: %s' % traceback.format_exc())
+    print('=' * 80)
+    print()
 
     try:
         items = sony_api.content_list
@@ -371,6 +406,8 @@ def run(sony_api):
         print('browser_bookmark_list: NOT SUPPORTED')
     except Error:
         print('browser_bookmark_list: %s' % traceback.format_exc())
+    print('=' * 80)
+    print()
 
     try:
         items = sony_api.now_playing
@@ -380,6 +417,9 @@ def run(sony_api):
         print('browser_bookmark_list: NOT SUPPORTED')
     except Error:
         print('browser_bookmark_list: %s' % traceback.format_exc())
+    print('=' * 80)
+    print()
+    print('DONE!')
 
 
 TEST_SCHEMA = {
