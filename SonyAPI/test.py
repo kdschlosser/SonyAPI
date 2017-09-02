@@ -94,6 +94,8 @@ SONY_API = None
 def print_single(attr_name):
     try:
         print('%s: %r' % (attr_name, getattr(SONY_API, attr_name)))
+    except SONY_API.UnsupportedError:
+        print('%s: NOT SUPPORTED' % attr_name)
     except Error:
         print('%s: %s' % (attr_name, traceback.format_exc()))
 
@@ -273,44 +275,111 @@ def run(sony_api):
     p('command_list')
     print('=' * 80)
 
-    print('scheme_list:')
-    for item in sony_api.scheme_list:
-        print('    scheme:', repr(item))
+    try:
+        items = sony_api.scheme_list
+        print('scheme_list:')
+        for item in items:
+            print('    scheme:', repr(item))
+    except SONY_API.UnsupportedError:
+        print('scheme_list: NOT SUPPORTED')
+    except Error:
+        print('scheme_list: %s' % traceback.format_exc())
     print('=' * 80)
 
-    print('application_status_list:')
-    for item in sony_api.application_status_list:
-        print('    name, status:', item)
+    try:
+        items = sony_api.application_status_list
+        print('application_status_list:')
+        for item in items:
+            print('    name, status:', item)
+    except SONY_API.UnsupportedError:
+        print('application_status_list: NOT SUPPORTED')
+    except Error:
+        print('application_status_list: %s' % traceback.format_exc())
     print('=' * 80)
 
-    print('content_count:')
-    for item in sony_api.content_count:
-        print('    inputs.InputItem, count:', item)
+    try:
+        items = sony_api.content_count
+        print('content_count:')
+        for item in items:
+            print('    inputs.InputItem, count:', item)
+    except SONY_API.UnsupportedError:
+        print('content_count: NOT SUPPORTED')
+    except Error:
+        print('content_count: %s' % traceback.format_exc())
     print('=' * 80)
 
-    print('browser_bookmark_list:')
-    p('browser.BookmarkItem', sony_api.browser_bookmark_list)
 
-    print('source_list:')
-    p('inputs.InputItem', sony_api.source_list)
+    try:
+        items = sony_api.browser_bookmark_list
+        print('browser_bookmark_list:')
+        p('browser.BookmarkItem', items)
+    except SONY_API.UnsupportedError:
+        print('browser_bookmark_list: NOT SUPPORTED')
+    except Error:
+        print('browser_bookmark_list: %s' % traceback.format_exc())
 
-    print('application_list:')
-    p('application.Application', sony_api.application_list)
+    try:
+        items = sony_api.source_list
+        print('source_list:')
+        p('inputs.InputItem', items)
+    except SONY_API.UnsupportedError:
+        print('browser_bookmark_list: NOT SUPPORTED')
+    except Error:
+        print('browser_bookmark_list: %s' % traceback.format_exc())
 
-    print('recording_history_list:')
-    p('recording.HistoryItem', sony_api.recording_history_list)
+    try:
+        items = sony_api.application_list
+        print('application_list:')
+        p('application.Application', items)
+    except SONY_API.UnsupportedError:
+        print('browser_bookmark_list: NOT SUPPORTED')
+    except Error:
+        print('browser_bookmark_list: %s' % traceback.format_exc())
 
-    print('recording_schedule_list:')
-    p('recording.ScheduleItem', sony_api.recording_schedule_list)
+    try:
+        items = sony_api.recording_history_list
+        print('recording_history_list:')
+        p('recording.HistoryItem', items)
+    except SONY_API.UnsupportedError:
+        print('browser_bookmark_list: NOT SUPPORTED')
+    except Error:
+        print('browser_bookmark_list: %s' % traceback.format_exc())
 
-    print('recording_conflict_list:')
-    p('recording.ScheduleItem:', sony_api.recording_conflict_list)
+    try:
+        items = sony_api.recording_schedule_list
+        print('recording_schedule_list:')
+        p('recording.ScheduleItem', items)
+    except SONY_API.UnsupportedError:
+        print('browser_bookmark_list: NOT SUPPORTED')
+    except Error:
+        print('browser_bookmark_list: %s' % traceback.format_exc())
 
-    print('content_list:')
-    p('media.ContentItem', sony_api.content_list)
+    try:
+        items = sony_api.recording_conflict_list
+        print('recording_conflict_list:')
+        p('recording.ScheduleItem:', items)
+    except SONY_API.UnsupportedError:
+        print('browser_bookmark_list: NOT SUPPORTED')
+    except Error:
+        print('browser_bookmark_list: %s' % traceback.format_exc())
 
-    print('now_playing:')
-    p('media.NowPlaying', sony_api.now_playing)
+    try:
+        items = sony_api.content_list
+        print('content_list:')
+        p('media.ContentItem', items)
+    except SONY_API.UnsupportedError:
+        print('browser_bookmark_list: NOT SUPPORTED')
+    except Error:
+        print('browser_bookmark_list: %s' % traceback.format_exc())
+
+    try:
+        items = sony_api.now_playing
+        print('now_playing:')
+        p('media.NowPlaying', items)
+    except SONY_API.UnsupportedError:
+        print('browser_bookmark_list: NOT SUPPORTED')
+    except Error:
+        print('browser_bookmark_list: %s' % traceback.format_exc())
 
 
 TEST_SCHEMA = {
