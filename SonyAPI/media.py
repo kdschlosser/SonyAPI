@@ -19,7 +19,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from __future__ import absolute_import
-from . import inputs
+
 from .exception import NotImplementedError
 from .utils import PlayTimeMixin
 
@@ -47,6 +47,7 @@ class ContentBase(PlayTimeMixin):
         surfing_visibility=None,
         epg_visibility=None
     ):
+        from . import inputs
 
         if isinstance(self.source, inputs.InputItem):
             source = self.source.uri

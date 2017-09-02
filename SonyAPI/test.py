@@ -18,13 +18,13 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
+from __future__ import print_function
 import traceback
 
 try:
-    Error = __import__('__builtin__.Exception')
+    Error = getattr(__import__('__builtin__'), 'Exception')
 except ImportError:
-    Error = __import__('builtins.Exception')
+    Error = getattr(__import__('builtins.Exception'), 'Exception')
 
 ATTR_NAMES = (
     'audio_channel',
@@ -92,16 +92,10 @@ SONY_API = None
 
 
 def print_single(attr_name):
-    attr_name = attr_name[0]
-
-    if attr_name.endswith(':'):
-        print(attr_name)
-
-    else:
-        try:
-            print('%s: %r' % (attr_name, getattr(SONY_API, attr_name)))
-        except Error:
-            print('%s: %s' % (attr_name, traceback.format_exc()))
+    try:
+        print('%s: %r' % (attr_name, getattr(SONY_API, attr_name)))
+    except Error:
+        print('%s: %s' % (attr_name, traceback.format_exc()))
 
 
 def print_multiple(item, label, attr_names):
@@ -129,14 +123,51 @@ def p(*args):
         label, attrs = args
         found_names = []
 
-        for attr in attrs:
-            if found_names:
-                print_multiple(attr, label, found_names)
+        try:
+            for attr in attrs:
+                if found_names:
+                    print_multiple(attr, label, found_names)
 
-            else:
-                print_multiple(attr, label, ATTR_NAMES)
-            print('-' * 80)
-        print('=' * 80)
+                else:
+                    print_multiple(attr, label, ATTR_NAMES)
+                print('-' * 80)
+            print('=' * 80)
+        except TypeError:
+            print_multiple(attrs, label, ATTR_NAMES)
+
+
+class TestAPI(object):
+    _sony_api = None
+
+    def __init__(self):
+
+        import SonyAPI
+        import sys
+
+        # SonyAPI._LOGGER.file_writer = sys.stdout.write
+
+        def build_command_list(self):
+            pass
+
+        def discover(self, timeout=10):
+            return ['192.168.1.2']
+
+        def get_pin(self):
+            return self._pin
+
+        def set_pin(self, pin):
+            self._pin = pin
+
+        def send(self, protocol, method, return_index=0, **params):
+            result = TEST_SCHEMA[protocol][method]['result'][return_index]
+            return result
+
+        SonyAPI.SonyAPI.send = send
+        SonyAPI.SonyAPI.discover = discover
+        SonyAPI.SonyAPI._build_command_list = build_command_list
+        SonyAPI.SonyAPI.pin = property(fget=get_pin, fset=set_pin)
+        api = SonyAPI.SonyAPI(ip_address='192.168.1.2', pin=1234)
+        api.run_tests()
 
 
 def run(sony_api):
@@ -214,7 +245,7 @@ def run(sony_api):
     p('wol_mode')
     p('color_keys_layout')
     p('led_indicator_status')
-    p('remote_device_settings')
+    # p('remote_device_settings')
     p('network_ipv4')
     p('network_netif')
     p('network_ipv6')
@@ -349,6 +380,10 @@ TEST_SCHEMA = {
                     "interfaceVersion": "2.3.0"
                 }
             ]
+        },
+        "getVersions": {
+            "params": [],
+            "result": [["1.0"]]
         },
         "setPowerStatus": {
             "params": [
@@ -907,7 +942,7 @@ TEST_SCHEMA = {
     "recording": {
         "getScheduleList": {
             "params": [],
-            "result": []
+            "result": [[]]
         },
         "getSupportedRepeatType": {
             "params": [
@@ -932,7 +967,7 @@ TEST_SCHEMA = {
         },
         "getHistoryList": {
             "params": [],
-            "result": []
+            "result": [[]]
         },
         "deleteSchedule": {
             "params": [],
@@ -1119,7 +1154,7 @@ TEST_SCHEMA = {
                         "label": "",
                         "uri": "extInput:widi?port=1",
                         "icon": "meta:wifidisplay"
-                    }
+                    },
                 ]
             ]
         },
@@ -1670,7 +1705,7 @@ TEST_SCHEMA = {
         },
         "getTextUrl": {
             "params": [],
-            "result": []
+            "result": [[]]
         }
     },
     "audio": {

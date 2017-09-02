@@ -93,7 +93,10 @@ def cache_icons(sony_api):
 def get_icon(url):
     icon_data = requests.get(url).content
     icon = StringIO()
-    icon.write(icon_data)
+    try:
+        icon.write(icon_data)
+    except:
+        pass
     icon.seek(0)
     return icon
 

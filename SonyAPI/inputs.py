@@ -68,3 +68,10 @@ class InputItem(object):
         for result in results:
             if result['uri'] == self._source:
                 return result
+        return dict(
+            title=self._source,
+            uri=self._source,
+            label=self._source,
+            icon=None,
+            connection=None
+        )
