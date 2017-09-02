@@ -960,7 +960,7 @@ class SonyAPI(object):
                 )['count']
                 yield (source, count)
             except JSONRequestError:
-                continue
+                yield (source, 'ERROR')
 
     def favorite_content_list(self, source=None, contents=('',)):
         if source is None:

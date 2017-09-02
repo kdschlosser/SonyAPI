@@ -351,10 +351,15 @@ def run(sony_api):
         items = sony_api.source_list
         print('source_list:')
         p('inputs.InputItem', items)
+        for item in items:
+            print('   %s.content:' % item.label)
+            p('media.ContentItem', item.content)
+            print('=' * 80)
+            print()
     except SONY_API.UnsupportedError:
-        print('browser_bookmark_list: NOT SUPPORTED')
+        print('source_list: NOT SUPPORTED')
     except Error:
-        print('browser_bookmark_list: %s' % traceback.format_exc())
+        print('source_list: %s' % traceback.format_exc())
     print('=' * 80)
     print()
 
@@ -363,9 +368,9 @@ def run(sony_api):
         print('application_list:')
         p('application.Application', items)
     except SONY_API.UnsupportedError:
-        print('browser_bookmark_list: NOT SUPPORTED')
+        print('application_list: NOT SUPPORTED')
     except Error:
-        print('browser_bookmark_list: %s' % traceback.format_exc())
+        print('application_list: %s' % traceback.format_exc())
     print('=' * 80)
     print()
 
@@ -374,9 +379,9 @@ def run(sony_api):
         print('recording_history_list:')
         p('recording.HistoryItem', items)
     except SONY_API.UnsupportedError:
-        print('browser_bookmark_list: NOT SUPPORTED')
+        print('recording_history_list: NOT SUPPORTED')
     except Error:
-        print('browser_bookmark_list: %s' % traceback.format_exc())
+        print('recording_history_list: %s' % traceback.format_exc())
     print('=' * 80)
     print()
 
@@ -385,9 +390,9 @@ def run(sony_api):
         print('recording_schedule_list:')
         p('recording.ScheduleItem', items)
     except SONY_API.UnsupportedError:
-        print('browser_bookmark_list: NOT SUPPORTED')
+        print('recording_schedule_list: NOT SUPPORTED')
     except Error:
-        print('browser_bookmark_list: %s' % traceback.format_exc())
+        print('recording_schedule_list: %s' % traceback.format_exc())
     print('=' * 80)
     print()
 
@@ -396,20 +401,9 @@ def run(sony_api):
         print('recording_conflict_list:')
         p('recording.ScheduleItem:', items)
     except SONY_API.UnsupportedError:
-        print('browser_bookmark_list: NOT SUPPORTED')
+        print('ScheduleItem: NOT SUPPORTED')
     except Error:
-        print('browser_bookmark_list: %s' % traceback.format_exc())
-    print('=' * 80)
-    print()
-
-    try:
-        items = sony_api.content_list
-        print('content_list:')
-        p('media.ContentItem', items)
-    except SONY_API.UnsupportedError:
-        print('browser_bookmark_list: NOT SUPPORTED')
-    except Error:
-        print('browser_bookmark_list: %s' % traceback.format_exc())
+        print('ScheduleItem: %s' % traceback.format_exc())
     print('=' * 80)
     print()
 
@@ -418,9 +412,9 @@ def run(sony_api):
         print('now_playing:')
         p('media.NowPlaying', items)
     except SONY_API.UnsupportedError:
-        print('browser_bookmark_list: NOT SUPPORTED')
+        print('now_playing: NOT SUPPORTED')
     except Error:
-        print('browser_bookmark_list: %s' % traceback.format_exc())
+        print('now_playing: %s' % traceback.format_exc())
     print('=' * 80)
     print()
 
