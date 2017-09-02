@@ -230,6 +230,8 @@ def run(sony_api):
     print('=' * 80)
     print()
 
+    p('banner_mode')
+    p('scene_setting')
     p('led_indicator_status')
     p('recording_status')
     # p('remote_device_settings')
@@ -421,6 +423,102 @@ def run(sony_api):
         print('browser_bookmark_list: %s' % traceback.format_exc())
     print('=' * 80)
     print()
+
+    print('Other methods/properties:')
+
+    def get_protocol(protocol):
+        if protocol in sony_api._methods:
+            return sony_api._methods[protocol]
+
+    def find_methods(protocol, attr_names):
+        for prop, meth in attr_names:
+            for methods in protocol.items():
+                if meth in methods:
+                    print ('    %s: SUPPORTED' % prop)
+                else:
+                    print('    %s: UNSUPPORTED' % prop)
+
+    system = get_protocol('system')
+    if system is None:
+        print('    System Protocol: UNSUPPORTED')
+    else:
+        print('    System Protocol: SUPPORTED')
+        attrs = [
+            ['reboot', 'requestReboot'],
+            ['time', 'setCurrentTime'],
+            ['postal_code', 'setPostalCode'],
+            ['power_saving_mode', 'setPowerSavingMode'],
+            ['wol_mode', 'setWolMode'],
+            ['led_indicator_status', 'setLEDIndicatorStatus']
+        ]
+        find_methods(system, attrs)
+
+    browser = get_protocol('browser')
+    if browser is None:
+        print('    Browser Protocol: UNSUPPORTED')
+
+    else:
+        print('    Browser Protocol: SUPPORTED')
+        attrs = [['browser_text_url', 'setTextUrl']]
+        find_methods(browser, attrs)
+
+    appControl = get_protocol('appControl')
+    if appControl is None:
+        print('    App Control Protocol: UNSUPPORTED')
+    else:
+        print('    App Control Protocol: SUPPORTED')
+        attrs = [['terminate_applications', 'terminateApps']]
+        find_methods(appControl, attrs)
+
+    videoScreen = get_protocol('videoScreen')
+    if videoScreen is None:
+        print('    Video Screen Protocol: UNSUPPORTED')
+    else:
+        print('    Video Screen Protocol: SUPPORTED')
+        attrs = [
+            ['banner_mode', 'setBannerMode'],
+            ['scene_setting', 'setSceneSetting'],
+            ['pip_sub_screen_position', 'setPipSubScreenPosition'],
+            ['audio_source_screen', 'setAudioSourceScreen'],
+            ['pap_screen_size', 'setPapScreenSize'],
+            ['multi_screen_mode', 'setMultiScreenMode'],
+            ['multi_screen_internet_mode', 'setMultiScreenMode']
+        ]
+        find_methods(videoScreen, attrs)
+
+    avContent = get_protocol('avContent')
+    if avContent is None:
+        print('    AV Content Protocol: UNSUPPORTED')
+    else:
+        print('    AV Content Protocol: SUPPORTED')
+        attrs = [['favorite_content_list', 'setFavoriteContentList']]
+        find_methods(avContent, attrs)
+
+    audio = get_protocol('audio')
+    if audio is None:
+        print('    Audio Protocol: UNSUPPORTED')
+    else:
+        print('    Audio Protocol: SUPPORTED')
+        attrs = [['speaker_settings', 'getSpeakerSettings']]
+        find_methods(audio, attrs)
+
+    cec = get_protocol('cec')
+    if cec is None:
+        print('    CEC Protocol: UNSUPPORTED')
+    else:
+        print('    CEC Protocol: SUPPORTED')
+        attrs = [
+            ['mhl_power_feed_mode', 'setMhlPowerFeedMode'],
+            ['mhl_auto_input_change_mode', 'setMhlAutoInputChangeMode'],
+            ['cec_control_mode', 'setCecControlMode'],
+            ['cec_power_sync_mode', 'setPowerSyncMode'],
+        ]
+        find_methods(cec, attrs)
+
+    recording = get_protocol('recording')
+    if recording is None:
+        print('    Recording Protocol: UNSUPPORTED')
+
     print('DONE!')
 
 

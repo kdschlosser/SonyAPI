@@ -205,7 +205,8 @@ class SonyAPI(object):
             'avContent',
             'audio',
             'cec',
-            'recording'
+            'recording',
+            'browser'
         )
 
         get_versions = json.dumps(

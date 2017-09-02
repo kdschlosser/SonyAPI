@@ -69,23 +69,22 @@ def get_mac_addresses(ip_addresses):
 
 def cache_icons(sony_api):
     applications = sony_api.send('appControl', 'getApplicationList')
-    for app in applications[:]:
+
+    while applications:
+        app = applications.pop(0)
         icon = app['icon']
         if (
             icon and
             sony_api._ip_address.split(':')[0] not in icon and
             icon not in sony_api.icon_cache
         ):
-            def g_icon():
+            def g_icon(icn):
                 try:
-                    sony_api.icon_cache[icon] = get_icon(icon)
+                    sony_api.icon_cache[icn] = get_icon(icn)
                 except:
                     pass
-                applications.remove(app)
 
-            threading.Thread(target=g_icon).start()
-    while applications:
-        pass
+            threading.Thread(target=g_icon, args=(icon,)).start()
 
     sony_api._icon_thread = None
 
