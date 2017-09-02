@@ -963,10 +963,17 @@ class SonyAPI(object):
 
     @property
     def source_list(self):
+        statuses = self._sony_api.send(
+            'avContent',
+            'getCurrentExternalInputsStatus'
+        )
         for scheme in self.scheme_list:
             sources = self.send('avContent', 'getSourceList', scheme=scheme)
             for source in sources:
                 yield inputs.InputItem(self, **source)
+                for status in statuses:
+                    if scheme in status['uri']:
+                        yield inputs.InputItem(self, **status)
 
     @property
     def content_count(self):
@@ -979,7 +986,7 @@ class SonyAPI(object):
                 )['count']
                 yield (source, count)
             except JSONRequestError:
-                yield (source, 'ERROR')
+                pass
 
     def favorite_content_list(self, source=None, contents=('',)):
         if source is None:
