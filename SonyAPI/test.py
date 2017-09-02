@@ -326,7 +326,7 @@ def run(sony_api):
         items = sony_api.content_count
         print('content_count:')
         for item in items:
-            print('    inputs.InputItem, count:', item)
+            print('    %s (inputs.InputItem, count):' % item[0].label, item)
     except SONY_API.UnsupportedError:
         print('content_count: NOT SUPPORTED')
     except Error:
