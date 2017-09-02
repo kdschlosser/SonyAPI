@@ -165,6 +165,9 @@ class SonyAPI(object):
         self._client_id = self._nickname + ':' + GUID
 
         self.icon_cache = {}
+        self._icon_event = threading.Event()
+        self._icon_thread = None
+        self._cache_icons = False
         self._volume = None
         self._channel = 0
         self._cookies = None
@@ -173,7 +176,6 @@ class SonyAPI(object):
         self._timeout_event = None
 
         self._psk = psk
-        self._icon_thread = threading.Thread(target=_cache_icons, args=(self,))
         if psk:
             self._pin = pin
             self._build_command_list()
@@ -485,9 +487,26 @@ class SonyAPI(object):
             _LOGGER.error(traceback.format_exc(), err='SendError')
             raise SonyAPI.SendError(traceback.format_exc())
 
+    @property
     def cache_icons(self):
-        if self._icon_thread is not None and not self._icon_thread.isAlive():
-            self._icon_thread.start()
+        return self._cache_icons
+
+    @cache_icons.setter
+    def cache_icons(self, flag):
+        if self._icon_thread is not None and self._icon_thread.isAlive():
+            self._icon_event.set()
+            self._icon_thread.join(3.0)
+
+        self._cache_icons = flag
+        self.icon_cache.clear()
+
+        if flag:
+            self._icon_event.clear()
+            self._icon_thread = threading.Thread(
+                target=_cache_icons,
+                args=(self, self._icon_event
+                )
+            )
 
     @property
     def volume(self):

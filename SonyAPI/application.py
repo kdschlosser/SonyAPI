@@ -31,8 +31,10 @@ class Application(object):
         self.uri = uri
         self.display_icon = None
 
-        if icon and icon not in sony_api.icon_cache:
-            if sony_api._ip_address.split(':')[0] not in icon:
+        if self._sony_api.cache_icons and icon:
+            if icon in sony_api.icon_cache:
+                self.display_icon = sony_api.icon_cache[icon]
+            elif sony_api._ip_address.split(':')[0] not in icon:
                 self.display_icon = get_icon(icon)
                 sony_api.icon_cache[icon] = self.display_icon
 

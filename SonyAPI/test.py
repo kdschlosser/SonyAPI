@@ -174,7 +174,6 @@ class TestAPI(object):
 def run(sony_api):
     global SONY_API
     SONY_API = sony_api
-    sony_api.cache_icons()
 
     print('sony_api.discover:', sony_api.discover())
     print('=' * 80)
