@@ -12,5 +12,5 @@ dist
 *.egg-info
 
 # pypi
-.pypirc
+*.pypirc
 push_pypi.py
