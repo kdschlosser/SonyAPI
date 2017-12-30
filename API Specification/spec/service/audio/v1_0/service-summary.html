@@ -1,0 +1,2111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<!--  -->
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <title>Service audio (Scalar Web API Specification (TV))</title>
+  <link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+  <link rel="stylesheet" type="text/css" href="../../../resources/scripts/prettify.css" title="prettify">
+  <link rel="shortcut icon" href="../../../resources/favicon.ico">
+  <script type="text/javascript" src="../../../resources/scripts/prettify.js"></script>
+  <script type="text/javascript">
+    <!--
+      function windowTitle() {
+        if (location.href.indexOf('is-external=true') == -1) {
+          parent.document.title="Service audio (Scalar Web API Specification (TV))";
+        }
+      }
+    //-->
+  </script>
+</head>
+
+<body onload="windowTitle();">
+
+<!-- container -->
+<div id="container" class="">
+
+<!-- header -->
+<div id="header_bg">
+  <div id="header_content">
+<h1><a href="../../../index.html" target="_top">Scalar WebAPI Specification</a></h1>
+<div>
+<ul class="header-menu">
+<li id="deviceinfo" class="menu-item"><a href="../../../../doc/Device+Specific+Information.html" target="_top">Device Info</a>
+<ul>
+<li class="menu-subitem"><a href="../../../device/tv/index.html" class="menu-subitem-link">TV</a>
+<ul>
+<li><a href="../../../device/tv/v1_0_0/index.html">v1.0.0</a></li>
+<li><a href="../../../device/tv/v1_1_0/index.html">v1.1.0</a></li>
+<li><a href="../../../device/tv/v1_2_0/index.html">v1.2.x</a></li>
+<li><a href="../../../device/tv/v2_0_0/index.html">v2.0.0</a></li>
+<li><a href="../../../device/tv/v2_1_0/index.html">v2.1.0</a></li>
+<li><a href="../../../device/tv/v2_2_0/index.html">v2.2.0</a></li>
+<li><a href="../../../device/tv/v2_3_0/index.html">v2.3.0</a></li>
+<li><a href="../../../device/tv/v2_4_0/index.html">v2.4.0</a></li>
+<li><a href="../../../device/tv/v3_0_0/index.html">v3.0.0</a></li>
+<li><a href="../../../device/tv/v3_1_0/index.html">v3.1.0</a></li>
+<li><a href="../../../device/tv/v3_2_0/index.html">v3.2.0</a></li>
+<li><a href="../../../device/tv/v3_3_0/index.html">v3.3.0</a></li>
+<li><a href="../../../device/tv/v3_4_0/index.html">v3.4.0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li id="moreinfo" class="menu-item"><a>More...</a>
+<ul>
+<li><a href="../../../resource-uri-list.html">Device Resource URI</a></li>
+<li><a href="../../../errorcode-list.html">Error Code</a></li>
+<li><a href="../../../deprecated-list.html">Deprecated List</a></li>
+<li><a href="../../../index-all.html">Index List</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<!-- content header -->
+<div class="header header-padding">
+  <h1 title="Service" class="title">
+    Service audio
+    <a href="../../../index.html?service/audio/v1_0/service-summary.html" target="_top" class="anchor-quiet-link">¶</a>
+  </h1>
+</div>
+
+<!-- content container -->
+<div class="contentContainer">
+
+  <!-- description -->
+  <div class="contentContainer">
+    This service handles APIs that are related to audio functions like volume,
+sound effect and so on.
+
+    
+  </div>
+
+  <!-- API list -->
+  <ul class="blockList">
+  <div class="constantValuesContainer">
+  <dl>
+    <dt>API List</dt>
+    <dd>
+      <table class="packageSummary" cellpadding="3" cellspacing="0">
+<tr>
+<th class="colFirst" scope="col">API name</th>
+<th scope="col">Auth Level</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><a href="../../../service/audio/v1_1/getSoundSettings.html" title="API in audio service" target="classFrame">getSoundSettings <small>(v1.1)</small></a></td>
+<td class="authlevel">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="colLast">
+<div>This API provides current settings and supported settings related to sound
+configuration items.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="../../../service/audio/v1_0/getSpeakerSettings.html" title="API in audio service" target="classFrame">getSpeakerSettings <small>(v1.0)</small></a></td>
+<td class="authlevel">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="colLast">
+<div>This API provides current settings and supported settings related to speaker
+configuration items.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="../../../service/audio/v1_0/getVolumeInformation.html" title="API in audio service" target="classFrame">getVolumeInformation <small>(v1.0)</small></a></td>
+<td class="authlevel">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="colLast">
+<div>This API provides information about sound volume (also mute status) of the
+device.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="../../../service/audio/v1_0/setAudioMute.html" title="API in audio service" target="classFrame">setAudioMute <small>(v1.0)</small></a></td>
+<td class="authlevel">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="colLast">
+<div>This API provides a function to change audio mute status.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="../../../service/audio/v1_0/setAudioVolume.html" title="API in audio service" target="classFrame">setAudioVolume <small>(v1.0)</small></a></td>
+<td class="authlevel">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="colLast">
+<div>This API provides a function to change audio volume level.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="../../../service/audio/v1_1/setSoundSettings.html" title="API in audio service" target="classFrame">setSoundSettings <small>(v1.1)</small></a></td>
+<td class="authlevel">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="colLast">
+<div>This API provides a function to change settings related to sound setting
+items.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="../../../service/audio/v1_0/setSpeakerSettings.html" title="API in audio service" target="classFrame">setSpeakerSettings <small>(v1.0)</small></a></td>
+<td class="authlevel">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="colLast">
+<div>This API provides a function to change settings related to speaker setting
+items.</div>
+</td>
+</tr>
+</tbody>
+</table>
+
+    </dd>
+  </dl>
+  </div>
+
+  <!-- Option Parameter -->
+  <div class="contentContainer">
+    <dl>
+<dt><a name="parameters" class="anchor">Common parameters in audio service</a></dt>
+<dd>
+<div>
+<dl>
+<dt><a name="ClearAudio" class="anchor">Clear Audio +</a></dt>
+<dd>Clear Audio+ function
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Clear Audio + function</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Clear Audio + function</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SoundField" class="anchor">Sound Field</a></dt>
+<dd>The sound quality according to the music genre.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"standard"</span></td>
+<td class="boardcell">
+<div class="block">Music Equalizer Standard. Sound effects are optimized for the
+individual source.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"rock"</span></td>
+<td class="boardcell">
+<div class="block">Music Equalizer Rock</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"hiphop"</span></td>
+<td class="boardcell">
+<div class="block">Music Equalizer Hip Hop</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"electronica"</span></td>
+<td class="boardcell">
+<div class="block">Music Equalizer Electronica</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"sertanejo"</span></td>
+<td class="boardcell">
+<div class="block">Music Equalizer Sertanejo</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"movie"</span></td>
+<td class="boardcell">
+<div class="block">Movie mode. Sound effects are optimized for movies. This mode
+replicates the density and rich expanse of sound.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"movie2"</span></td>
+<td class="boardcell">
+<div class="block">Movie2 mode. Sound effects are optimized for movies. This mode
+replicates sound looping around the listener to the rear.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"music"</span></td>
+<td class="boardcell">
+<div class="block">Music mode. Sound effects are optimized for music.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"game"</span></td>
+<td class="boardcell">
+<div class="block">Game mode. Sound effects are optimized for game play.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"compressionMusic"</span></td>
+<td class="boardcell">
+<div class="block">Digital Music mode</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"night"</span></td>
+<td class="boardcell">
+<div class="block">Night mode</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"flat"</span></td>
+<td class="boardcell">
+<div class="block">Flat mode</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"pop"</span></td>
+<td class="boardcell">
+<div class="block">Pop mode</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"jazz"</span></td>
+<td class="boardcell">
+<div class="block">Jazz mode. Reproduces the acoustics of a jazz club.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"latin"</span></td>
+<td class="boardcell">
+<div class="block">Latin mode</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"classic"</span></td>
+<td class="boardcell">
+<div class="block">Classic mode</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"custom"</span></td>
+<td class="boardcell">
+<div class="block">Custom mode</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"clearAudio"</span></td>
+<td class="boardcell">
+<div class="block">Clear Audio + mode. The appropriate sound setting is
+automatically selected for the sound source.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"sports"</span></td>
+<td class="boardcell">
+<div class="block">Sports mode. Reproduces the feel of sports broadcasting.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"live"</span></td>
+<td class="boardcell">
+<div class="block">Live mode. Reproduces the acoustics of a 300-seat live house.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"stadium"</span></td>
+<td class="boardcell">
+<div class="block">Stadium mode. Reproduces the feel of a large open-air stadium</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"proLogicIIMusic"</span></td>
+<td class="boardcell">
+<div class="block">Pro Logic II Music mode. Performs Dolby Pro Logic II Music mode
+decoding. This setting is ideal for normal stereo sources such as
+CDs.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"proLogicIIxMusic"</span></td>
+<td class="boardcell">
+<div class="block">Pro Logic IIx Music mode. Performs Dolby Pro Logic IIx Music mode
+decoding. This setting is ideal for normal stereo sources such as
+CDs.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"neo6Music"</span></td>
+<td class="boardcell">
+<div class="block">Neo6 Music mode. Performs DTS Neo:6 Music mode decoding. Sources
+recorded in 2-channel format are enhanced up to 7 channels. This
+setting is ideal for normal stereo sources such as CDs.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"concertHallA"</span></td>
+<td class="boardcell">
+<div class="block">Concert Hall A. Reproduces the acoustics of a vineyard style
+concert hall in Berlin famous for its clear acoustics.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"concertHallB"</span></td>
+<td class="boardcell">
+<div class="block">Concert Hall B. Reproduces the acoustics of a shoe box style
+concert hall with plaster walls in Amsterdam.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"concertHallC"</span></td>
+<td class="boardcell">
+<div class="block">Concert Hall C. Reproduces the acoustics of a wooden shoe box
+style concert hall in Vienna.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"portableAudio"</span></td>
+<td class="boardcell">
+<div class="block">Portable Audio. Reproduces clear enhanced sound from your
+portable audio device. This mode is ideal for MP3s and other
+compressed music.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"cinemaStudio"</span></td>
+<td class="boardcell">
+<div class="block">Cinema Studio. Sound effect are optimized for higher realistic
+sound like a cinema studio.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"musicArena"</span></td>
+<td class="boardcell">
+<div class="block">Music Arena. Sound effects like a live music concerts filled with
+great excitement created by Sony’s unique Audio DSP technology.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Sound Field function.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="FootballMode" class="anchor">Football Mode</a></dt>
+<dd>Football Mode
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Football Mode with narration</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"on_narration_off"</span></td>
+<td class="boardcell">
+<div class="block">Enable Football Mode without narration</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Football Mode</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DigitalMusicArena" class="anchor">Digital Music Arena</a></dt>
+<dd>Digital Music Arena function
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Digital Music Arena function</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Digital Music Arena function</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="PhilharmonicHall" class="anchor">Philharmonic Hall</a></dt>
+<dd>Philharmonic Hall function
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Philharmonic Hall function</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Philharmonic Hall function</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="CinemaStudio" class="anchor">Cinema Studio</a></dt>
+<dd>Cinema Studio function
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Cinema Studio function</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Cinema Studio function</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DigitalAudioType" class="anchor">Digital Audio Output Type</a></dt>
+<dd>Set the output type for the digital signal from HDMI or DIGITAL OUT
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"auto"</span></td>
+<td class="boardcell">
+<div class="block">PCM and BitStream can switch automatically according to
+connection device.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"pcm"</span></td>
+<td class="boardcell">
+<div class="block">PCM output from HDMI or digital audio output.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DsdMode" class="anchor">DSD Output Mode</a></dt>
+<dd>Select Audio output mode from HDMI during SACD or DSD file format
+playback
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"auto"</span></td>
+<td class="boardcell">
+<div class="block">DSD output</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">PCM output</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="BdMixMode" class="anchor">BD Audio Mix Mode</a></dt>
+<dd>Enabled during BDMV playback. Sets Mix state of Audio output.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Outputs Mixed Audio, that is Additional Audio mixed with Primary
+Audio.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Outputs only Primary Audio.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="AAC" class="anchor">AAC</a></dt>
+<dd>Sets the output method of AAC signal.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"downmixPcm"</span></td>
+<td class="boardcell">
+<div class="block">Converted Downmix LPCM output</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"aac"</span></td>
+<td class="boardcell">
+<div class="block">AAC output</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DigitalMusicEnhancer" class="anchor">Digital Music Enhancer</a></dt>
+<dd>Set Digital Music Enhancer function for output when playing Internet
+content or USB content.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Three elements (PAE+(Portable Audio Enhancer Plus), Dynamic Range
+Recovery, Advanced Auto Volume) are enabled to create better
+sound quality for Internet content or USB content.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Turns off the Digital Music Enhancer function.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"soundBarMode"</span></td>
+<td class="boardcell">
+<div class="block">Same as setting value "off", the purpose of this setting value is
+to force sound bar users to use off.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DtsNeo6" class="anchor">DTS Neo:6</a></dt>
+<dd>Settings for DTS Neo:6.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"cinema"</span></td>
+<td class="boardcell">
+<div class="block">Neo:6 Cinema settings for movie.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"music"</span></td>
+<td class="boardcell">
+<div class="block">Neo:6 Music settings for audio.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Neo:6 function.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="ConvertToDolbyD" class="anchor">Dolby D Compatible Output</a></dt>
+<dd>Settings for Dolby Digital Converter Dolby D Compatible Output
+function which converts DTS source to Dolby Digital by referring EDID
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Convert DTS source to Dolby Digital by referring EDID.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Not convert DTS source to Dolby Digital</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="InputAttenuation" class="anchor">Input Attenuation</a></dt>
+<dd>Reduces the input sensitivity of audio signal input to Audio analog
+audio input terminal.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable input attenuation function</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable input attenuation function</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="OutputTerminal" class="anchor">Audio Output Terminal</a></dt>
+<dd>Selecting speakers or terminals to output sound.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"speaker"</span></td>
+<td class="boardcell">
+<div class="block">Audio is output from speaker.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"speaker_hdmi"</span></td>
+<td class="boardcell">
+<div class="block">Audio is output from speaker and HDMI.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"hdmi"</span></td>
+<td class="boardcell">
+<div class="block">Audio is output from HDMI.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"audioSystem"</span></td>
+<td class="boardcell">
+<div class="block">Audio is output from HDMI or digital audio output.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="AudioDRC" class="anchor">Audio DRC</a></dt>
+<dd>Setting for DRC function that makes even small sounds more audible
+when listening in low volume.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"auto"</span></td>
+<td class="boardcell">
+<div class="block">Dynamic range specified by disc is set. (only BD-ROM)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Dynamic range specified by recording engineer is set.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable DRC function.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DownMix" class="anchor">Down Mix</a></dt>
+<dd>Enabled when outputting BD LPCM, DTS HD, Dolby TrueHD, DD+, DD, DTS
+and AAC of Multi Channel source by Downmixed PCM 2ch. Multi channel
+source BD LPCM, DTS HD, Dolby TrueHD, DD+, DD, DTS, AAC are able to
+export when set as Downmix in PCM 2ch.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"surround"</span></td>
+<td class="boardcell">
+<div class="block">Audio with surround effect is output.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"stereo"</span></td>
+<td class="boardcell">
+<div class="block">Audio without surround effect is output.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="AutoGenreSelector" class="anchor">Auto Genre Selector</a></dt>
+<dd>To provide suitable Sound Field depending on the kind of contents,
+switch Sound Field automatically according to "Genre Info" on CEC.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Auto Genre Selector function.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">The Auto Genre selector function is disable.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DseeHX" class="anchor">DSEE HX</a></dt>
+<dd>Set whether using the DSEE HX function. DSEE HX is advanced DSEE
+(Digital Sound Enhancement Engine) function and upscales existing
+sound sources to near hi-resolution sound quality.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable DSEE HX function</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="AutoFormatDirect_2ch" class="anchor">A.F.D/2ch</a></dt>
+<dd>Set Auto Format Direct (A.F.D)/2-channel sound mode
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"2chStereo"</span></td>
+<td class="boardcell">
+<div class="block">2ch Stereo. The receiver outputs the sound from the front
+left/right speakers only. There is no sound from the subwoofer.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"analogDirect"</span></td>
+<td class="boardcell">
+<div class="block">Analog Direct. You can switch the audio of the selected input to
+2-channel analog input. This function enables you to enjoy
+high-quality analog sources.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"auto"</span></td>
+<td class="boardcell">
+<div class="block">Auto Format Direct (A.F.D.) Presets the sound as it was
+recorded/encoded without adding any surround effects.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"multiStereo"</span></td>
+<td class="boardcell">
+<div class="block">Multi stereo. Outputs 2-channel left/right or monaural signals
+from all speakers.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable A.F.D/2ch function</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SoundFieldMovie" class="anchor">Sound Field Movie</a></dt>
+<dd>Set Sound Field Movie function.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"hdDcsDynamic"</span></td>
+<td class="boardcell">
+<div class="block">HD Digital Cinema Sound (HD-D.C.S.) Dynamic. This setting is
+suitable for an environment which is reverberant but lacks a
+spacious feel (where sound absorption is not sufficient). It
+emphasizes the reflection of sound and reproduces the sound of a
+large, classic movie theater.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"hdDcsTheater"</span></td>
+<td class="boardcell">
+<div class="block">HD Digital Cinema Sound (HD-D.C.S.) Theater. This setting is
+suitable for a general living room. It reproduces the
+reverberation of sound just like in a movie theater (dubbing
+theater). It is most appropriate for watching content recorded on
+a Blu-ray Disc when you want the atmosphere of a movie theater</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"hdDcsStudio"</span></td>
+<td class="boardcell">
+<div class="block">HD Digital Cinema Sound (HD-D.C.S.) Studio. This setting is
+suitable for a living room with the appropriate sound devices. It
+reproduces the reverberation of sound provided when a theatrical
+sound source is remixed for a Blu-ray Disc to a volume level
+suitable for home use.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"proLogicII"</span></td>
+<td class="boardcell">
+<div class="block">Dolby Pro Logic II Movie mode decoding. This setting is ideal for
+movies encoded in Dolby Surround.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"proLogicIIx"</span></td>
+<td class="boardcell">
+<div class="block">Dolby Pro Logic IIx Movie mode decoding. This setting expands
+Dolby Pro Logic II Movie or Dolby Digital 5.1 to 7.1 discrete
+movie channels.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"neo6Cinema"</span></td>
+<td class="boardcell">
+<div class="block">DTS Neo:6 Cinema mode decoding. Sources recorded in 2-channel
+format are enhanced up to 7 channels.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Sound Field Movie function.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="NightMode" class="anchor">Night mode</a></dt>
+<dd>Set Night mode. Sound is output at low volume with minimum loss of
+fidelity and clarity of dialogue.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Night mode.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Night mode.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="PureDirect" class="anchor">Pure Direct</a></dt>
+<dd>Set Pure Direct function. When the Pure Direct function is on, the
+display panel lights off to suppress noise that affects sound
+quality.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Pure Direct function.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Pure Direct function.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="Optimizer" class="anchor">Sound Optimizer</a></dt>
+<dd>Set Sound Optimizer function. Enjoying clear and dynamic sound at a
+low volume.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"normal"</span></td>
+<td class="boardcell">
+<div class="block">Normal mode. Adjusts for the reference level of a movie.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"low"</span></td>
+<td class="boardcell">
+<div class="block">Low mode. Adjusts for a CD or other software whose average sound
+pressure level is processed highly.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Sound Optimizer function.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="CalibrationType" class="anchor">Calibration type</a></dt>
+<dd>Set Calibration type after you have performed the Auto Calibration
+and saved the settings.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"fullFlat"</span></td>
+<td class="boardcell">
+<div class="block">Full Flat. Makes the measurement of frequency from each speaker
+flat.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"engineer"</span></td>
+<td class="boardcell">
+<div class="block">Engineer. Sets to "the Sony listening room standard" frequency
+characteristics.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"frontReference"</span></td>
+<td class="boardcell">
+<div class="block">Front Reference. Adjusts the characteristics of all of the
+speakers to match the characteristics of the front speaker.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Calibration type.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="Voice" class="anchor">Voice mode</a></dt>
+<dd>Set Voice mode. This helps make dialogues clearer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"type1"</span></td>
+<td class="boardcell">
+<div class="block">Type 1. Standard.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"type2"</span></td>
+<td class="boardcell">
+<div class="block">Type 2. Dialogue range is enhanced.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"type3"</span></td>
+<td class="boardcell">
+<div class="block">Type 3. Dialogue range is enhanced, and the parts of range
+difficult to be discerned by the elderly are boosted.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="AVSyncMs" class="anchor">AV Sync</a></dt>
+<dd>Set a delay time (ms) of input audio to adjust Audio and Video Sync.
+Note that the range and step values vary depending on device.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">0</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 25)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">300</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DualMono" class="anchor">Dual Mono</a></dt>
+<dd>Set Dual Mono mode.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"main_sub"</span></td>
+<td class="boardcell">
+<div class="block">Main/Sub mode. Sound in the main language will be output through
+the front left speaker and sound in the sub language will be
+output through the front right speaker simultaneously.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"main"</span></td>
+<td class="boardcell">
+<div class="block">Main mode. Sound in the main language will be output.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"sub"</span></td>
+<td class="boardcell">
+<div class="block">Sub mode. Sound in the sub language will be output.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="WideStereo" class="anchor">Wide Stereo</a></dt>
+<dd>Set Wide Stereo mode for immersive stereo sound.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"high"</span></td>
+<td class="boardcell">
+<div class="block">Wide Stereo High mode.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"standard"</span></td>
+<td class="boardcell">
+<div class="block">Wide Stereo Standard mode.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SceneSelection" class="anchor">Custom Preset</a></dt>
+<dd>Set Custom Preset scene. Each preset scene saves various settings
+with the player, monitor, etc., according to listening and viewing
+style.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"movie"</span></td>
+<td class="boardcell">
+<div class="block">Movie scene.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"music"</span></td>
+<td class="boardcell">
+<div class="block">Music scene.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"party"</span></td>
+<td class="boardcell">
+<div class="block">Party scene.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"night"</span></td>
+<td class="boardcell">
+<div class="block">Night scene.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">""</span></td>
+<td class="boardcell">
+<div class="block">Scene Selection Settings is Unknown.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="HybridDiscPlaybackLayer" class="anchor">Hybrid disc playback layer</a></dt>
+<dd>Hybrid disc playback layer (SA-CD layer, CD layer) can be switched.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"sacd"</span></td>
+<td class="boardcell">
+<div class="block">Play SA-CD layer.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"cd"</span></td>
+<td class="boardcell">
+<div class="block">Play CD layer.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DiscChannel" class="anchor">Disc Channel</a></dt>
+<dd>The disc area, where both 2 channel area and multi channel area are
+recorded, can be switched. Even if set to "dsdMulti", output is in
+2ch as long as there is no multi channel area in disc. Even if set to
+"dsd2ch", output is in Multi as long as there is no 2ch area in disc.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"dsd2ch"</span></td>
+<td class="boardcell">
+<div class="block">2ch area is played.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"dsdMulti"</span></td>
+<td class="boardcell">
+<div class="block">Multi channel area is played.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="InCeilingSpeakerMode" class="anchor">In Ceiling Speaker Mode</a></dt>
+<dd>Set whether or not to use in-ceiling speaker mode with the current
+input. In a setup where the front and center speakers are installed
+in the ceiling, lowering the audio output position to the screen
+height allows you to enjoy a more natural experience.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable In Ceiling Speaker Mode.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable In Ceiling Speaker Mode.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="TvPosition" class="anchor">Setting the sound according to the TV position</a></dt>
+<dd>Setting the sound according to the TV position.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"tableTop"</span></td>
+<td class="boardcell">
+<div class="block">Provides the best sound quality when you place the TV on a TV
+stand.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"wallMount"</span></td>
+<td class="boardcell">
+<div class="block">Provides the best sound quality when you hang the TV on a wall.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSelection" class="anchor">Speaker Selection</a></dt>
+<dd>Select the front speaker system to operate.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"speakerA"</span></td>
+<td class="boardcell">
+<div class="block">Speaker A. Speakers connected to the SPEAKERS FRONT A terminals.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"speakerB"</span></td>
+<td class="boardcell">
+<div class="block">Speaker B. Speakers connected to the SPEAKERS SURROUND
+BACK/BI-AMP/FRONT HIGH/FRONT B terminals.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"speakerA_B"</span></td>
+<td class="boardcell">
+<div class="block">Speaker A and Speaker B. Speakers connected to both the SPEAKERS
+FRONT A and SPEAKERS SURROUND BACK/BIAMP/FRONT HIGH/FRONT B
+terminals (parallel connection).</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">No audio signals are output from any speaker terminals.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerFrontLLevel" class="anchor">Front L Speaker level</a></dt>
+<dd>Set level of Front Left speaker.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 0.5)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerFrontRLevel" class="anchor">Front R Speaker level</a></dt>
+<dd>Set level of Front Right speaker.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 0.5)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerCenterLevel" class="anchor">Center Speaker level</a></dt>
+<dd>Set level of Center speaker.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 0.5)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSurroundLevel" class="anchor">Surround Speaker level</a></dt>
+<dd>Set level of Surround speaker.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 0.5)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSurroundLLevel" class="anchor">Surround L Speaker level</a></dt>
+<dd>Set level of Surround Left speaker.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 0.5)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSurroundRLevel" class="anchor">Surround Speaker R level</a></dt>
+<dd>Set level of Surround Right speaker.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 0.5)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSurroundBackLevel" class="anchor">Surround Back Speaker level</a></dt>
+<dd>Set level of Surround Back speaker.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 0.5)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSurroundBackLLevel" class="anchor">Surround Back L Speaker level</a></dt>
+<dd>Set level of Surround Back Left speaker.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 0.5)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSurroundBackRLevel" class="anchor">Surround Speaker Back R level</a></dt>
+<dd>Set level of Surround Back Right speaker.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 0.5)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerFrontHighLLevel" class="anchor">Front L High Speaker level</a></dt>
+<dd>Set level of Front High Left speaker.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 0.5)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerFrontHighRLevel" class="anchor">Front High R Speaker level</a></dt>
+<dd>Set level of Front High Right speaker.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 0.5)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSubwooferLevel" class="anchor">Subwoofer Speaker level</a></dt>
+<dd>Set level of Subwoofer speaker. Note that the range and step values
+vary depending on device.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">0</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">24</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSubwooferFreq" class="anchor">Subwoofer Speaker Frequency</a></dt>
+<dd>Adjust the cut off frequency of the Wireless Subwoofer. All
+frequencies below the cut off frequency are output to the Wireless
+Subwoofer instead of the TV speakers.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">0</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">30</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSubwooferPhase" class="anchor">Subwoofer Speaker Phase</a></dt>
+<dd>Sets the phase polarity of subwoofer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"normal"</span></td>
+<td class="boardcell">
+<div class="block">normal</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"reverse"</span></td>
+<td class="boardcell">
+<div class="block">reverse</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSubwooferPower" class="anchor">Subwoofer Speaker Power</a></dt>
+<dd>Set the power control method of the Wireless Subwoofer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">on</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">off</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerFrontCrossoverFreq" class="anchor">Front Crossover frequency</a></dt>
+<dd>Setting the crossover frequency of the front speakers (Hz)
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">40</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 10)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">200</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerCenterCrossoverFreq" class="anchor">Center Crossover frequency</a></dt>
+<dd>Setting the crossover frequency of the center speaker (Hz)
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">40</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 10)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">200</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerSurroundCrossoverFreq" class="anchor">Surrond Crossover frequency</a></dt>
+<dd>Setting the crossover frequency of the surround speakers (Hz)
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">40</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 10)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">200</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SpeakerFrontHighCrossoverFreq" class="anchor">Front High Crossover frequency</a></dt>
+<dd>Setting the crossover frequency of the front high speakers (Hz)
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">40</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 10)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">200</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="Equalizer100HzBandLevel" class="anchor">Equalizer 100Hz Band level</a></dt>
+<dd>Set level of 100Hz band in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="Equalizer330HzBandLevel" class="anchor">Equalizer 330Hz Band level</a></dt>
+<dd>Set level of 330Hz band in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="Equalizer1000HzBandLevel" class="anchor">Equalizer 1000Hz Band level</a></dt>
+<dd>Set level of 1000Hz band in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="Equalizer3300HzBandLevel" class="anchor">Equalizer 3300Hz Band level</a></dt>
+<dd>Set level of 3300Hz band in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="Equalizer10000HzBandLevel" class="anchor">Equalizer 10000Hz Band level</a></dt>
+<dd>Set level of 10000Hz band in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="EqualizerFrontBassLevel" class="anchor">Equalizer Front Bass level</a></dt>
+<dd>Set level of Front Bass in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="EqualizerFrontTrebleLevel" class="anchor">Equalizer Front Treble level</a></dt>
+<dd>Set level of Front Treble in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="EqualizerCenterBassLevel" class="anchor">Equalizer Center Bass level</a></dt>
+<dd>Set level of Center Bass in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="EqualizerCenterTrebleLevel" class="anchor">Equalizer Center Treble level</a></dt>
+<dd>Set level of Center Treble in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="EqualizerSurroundBassLevel" class="anchor">Equalizer Surround Bass level</a></dt>
+<dd>Set level of Surround Bass in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="EqualizerSurroundTrebleLevel" class="anchor">Equalizer Surround Treble level</a></dt>
+<dd>Set level of Surround Treble in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="EqualizerFrontHighBassLevel" class="anchor">Equalizer Front High Bass level</a></dt>
+<dd>Set level of Front High Bass in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="EqualizerFrontHighTrebleLevel" class="anchor">Equalizer Front High Treble level</a></dt>
+<dd>Set level of Front High Treble in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="EqualizerBassLevel" class="anchor">Equalizer Bass level</a></dt>
+<dd>Set level of Bass in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="EqualizerTrebleLevel" class="anchor">Equalizer Treble level</a></dt>
+<dd>Set level of Treble in Equalizer.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">-10</span></td>
+<td class="boardcell">
+<div class="block">Min value.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">&nbsp;&nbsp;:</span></td>
+<td class="boardcell">
+<div class="block">(step by 1)</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">10</span></td>
+<td class="boardcell">
+<div class="block">Max value.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+</div>
+</dd>
+</dl>
+
+  </div>
+
+  </ul> <!-- ./blockList -->
+
+</div> <!-- ./content container -->
+
+<!-- footer -->
+<div id="footer_bg">
+  <div id="footer_content">
+    <div class="footer-links">
+    <ul>
+      <li></li>
+      <li></li>
+    </ul>
+    </div>
+    <p class="copyright">Copyright 2013 -2015 (C) SONY Corp. All rights reserved.</p>
+  </div>
+</div> <!-- ./footer_bg -->
+
+</div> <!-- ./container -->
+
+</body>
+</html>

@@ -1,0 +1,800 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<!--  -->
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <title>setSpeakerSettings - v1.0 (Scalar Web API Specification (TV))</title>
+  <link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+  <link rel="stylesheet" type="text/css" href="../../../resources/scripts/prettify.css" title="prettify">
+  <link rel="shortcut icon" href="../../../resources/favicon.ico">
+  <script type="text/javascript" src="../../../resources/scripts/prettify.js"></script>
+  <script type="text/javascript">
+  <!--
+    function windowTitle() {
+      if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="setSpeakerSettings - v1.0 (Scalar Web API Specification (TV))";
+      }
+    }
+    var tabMenu = {
+      init: function() {
+        var headers = this.setup.tabHeaders;
+        var pages = this.setup.tabPages;
+        for (i = 0; i < pages.length; i++) {
+          if (i !== 0) pages[i].style.display = 'none';
+          headers[i].onclick = function() { tabMenu.showpagebyheader(this); return false; };
+        }
+      },
+      showpage: function(num) {
+        var headers = this.setup.tabHeaders;
+        var pages = this.setup.tabPages;
+        for(var i = 0; i < pages.length; i++) {
+          if (i == num) {
+            headers[num].className = 'tab-present';
+            pages[num].style.display = 'block';
+          } else {
+            headers[i].className = null;
+            pages[i].style.display = 'none';
+          }
+        }
+      },
+      showpagebyheader: function(obj) {
+        var headers = this.setup.tabHeaders;
+        var pages = this.setup.tabPages;
+        var num;
+        for (num = 0; num < headers.length; num++) {
+          if (headers[num] === obj) break;
+        }
+        this.showpage(num);
+      },
+      showpagebyname: function(pagename) {
+        var num = 0;
+        switch (pagename) {
+          case 'request':      num = 0; break;
+          case 'response':     num = 1; break;
+          case 'notification': num = 2; break;
+          case 'reference':    num = 3; break;
+        }
+        this.showpage(num);
+      }
+    };
+    (function() {
+      function init(event) {
+        prettyPrint();
+      }
+      if (window.addEventListener) {
+        window.addEventListener("load",init,false);
+      } else if (window.attachEvent) {
+        window.attachEvent("onload",init);
+      }
+    })();
+  //-->
+  </script>
+</head>
+
+<body onload="windowTitle();">
+
+<!-- container -->
+<div id="container" class="">
+
+<!-- header -->
+<div id="header_bg">
+  <div id="header_content">
+<h1><a href="../../../index.html" target="_top">Scalar WebAPI Specification</a></h1>
+<div>
+<ul class="header-menu">
+<li id="deviceinfo" class="menu-item"><a href="../../../../doc/Device+Specific+Information.html" target="_top">Device Info</a>
+<ul>
+<li class="menu-subitem"><a href="../../../device/tv/index.html" class="menu-subitem-link">TV</a>
+<ul>
+<li><a href="../../../device/tv/v1_0_0/index.html">v1.0.0</a></li>
+<li><a href="../../../device/tv/v1_1_0/index.html">v1.1.0</a></li>
+<li><a href="../../../device/tv/v1_2_0/index.html">v1.2.x</a></li>
+<li><a href="../../../device/tv/v2_0_0/index.html">v2.0.0</a></li>
+<li><a href="../../../device/tv/v2_1_0/index.html">v2.1.0</a></li>
+<li><a href="../../../device/tv/v2_2_0/index.html">v2.2.0</a></li>
+<li><a href="../../../device/tv/v2_3_0/index.html">v2.3.0</a></li>
+<li><a href="../../../device/tv/v2_4_0/index.html">v2.4.0</a></li>
+<li><a href="../../../device/tv/v3_0_0/index.html">v3.0.0</a></li>
+<li><a href="../../../device/tv/v3_1_0/index.html">v3.1.0</a></li>
+<li><a href="../../../device/tv/v3_2_0/index.html">v3.2.0</a></li>
+<li><a href="../../../device/tv/v3_3_0/index.html">v3.3.0</a></li>
+<li><a href="../../../device/tv/v3_4_0/index.html">v3.4.0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li id="moreinfo" class="menu-item"><a>More...</a>
+<ul>
+<li><a href="../../../resource-uri-list.html">Device Resource URI</a></li>
+<li><a href="../../../errorcode-list.html">Error Code</a></li>
+<li><a href="../../../deprecated-list.html">Deprecated List</a></li>
+<li><a href="../../../index-all.html">Index List</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<!-- content header -->
+<div class="header header-padding">
+  <div class="subTitle">
+    <div class="desc1">
+      <a href="../../../service/audio/v1_0/service-summary.html">audio</a> - v1.0
+      <span class="authlevel authlevel-generic">Generic</span>
+    </div>
+    <div class="desc2">
+      <a href="../../../device/tv/index.html"><img src="../../../resources/device_tv_min.png" title="TV" /></a>
+
+    </div>
+  </div>
+  <br/>
+
+  <h2 class="title">
+    <img src="../../../resources/api_standard.png" title="Standard API"> 
+    setSpeakerSettings
+    <a href="../../../index.html?service/audio/v1_0/setSpeakerSettings.html" target="_top" class="anchor-quiet-link">¶</a>
+  </h2>
+</div>
+
+<!-- content container -->
+<div class="contentContainer">
+
+  <div class="description">
+
+    <div class="contentContainer">
+       <div class="block">This API provides a function to change settings related to speaker setting
+items.</div>
+<dl class="api-overview"><dt><span class="strong">Syntax</span></dt>
+<dd>http://&lt;Base URL&gt;/audio</dd>
+<dd>ws://&lt;Base URL&gt;/audio</dd>
+<dt><span class="strong">Authentication Level</span></dt>
+  <dd>generic</dd></dl>
+
+    </div> <!-- ./contentContainer -->
+
+  </div> <!-- ./description -->
+
+  <div class="details footer-padding">
+
+  <div class="contentContainer">
+
+    <ul id="tab_menu">
+      <li class="tab-present"><a href="#tab_page_request">Request</a></li>
+      <li class="tab-nopresent"><a href="#tab_page_response">Response</a></li>
+      <li class="tab-nopresent" style="display:none"><a href="#tab_page_notification">Notification</a></li>
+      <li class="tab-nopresent"><a href="#tab_page_references">See also</a></li>
+    </ul>
+
+    <div id="tab_page_request" class="tab-page">
+      <dl>
+<dt><i>params</i>' Elements</dt>
+<dd>An object composed by following pair(s).</dd>
+<dd>
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" colspan="2">name</th>
+<th scope="col">type</th>
+<th scope="col">multiplicity</th>
+<th scope="col">default</th>
+<th scope="col">description</th>
+</tr>
+<tr>
+<td class="nestParent" colspan="2"><a name="settings" class="anchor"><span class="parameter-name">settings</span></a></td>
+<td class="boardcell">(object-array)</td>
+<td class="boardcell">1</td>
+<td class="boardcell">&nbsp;</td>
+<td class="boardcell">
+<div class="block">Object to accommodate one or more target/value pair.</div>
+</td>
+</tr>
+<tr>
+<td class="nestPadding">&nbsp;</td>
+<td class="boardcell"><a name="target" class="anchor"><span class="parameter-name">target</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">1</td>
+<td class="boardcell">&nbsp;</td>
+<td class="boardcell">
+<div class="block">Target name. (UI setting target)
+<ul class="paramValues">
+<li><span class="option-value">"inCeilingSpeakerMode"</span> - Set whether or not to use in-ceiling speaker mode with the current
+input. In a setup where the front and center speakers are installed
+in the ceiling, lowering the audio output position to the screen
+height allows you to enjoy a more natural experience.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#InCeilingSpeakerMode">more...</a>)</small></li>
+<li><span class="option-value">"tvPosition"</span> - Setting the sound according to the TV position.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#TvPosition">more...</a>)</small></li>
+<li><span class="option-value">"speakerSelection"</span> - Select the front speaker system to operate.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSelection">more...</a>)</small></li>
+<li><span class="option-value">"frontLLevel"</span> - Set level of Front Left speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontLLevel">more...</a>)</small></li>
+<li><span class="option-value">"frontRLevel"</span> - Set level of Front Right speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontRLevel">more...</a>)</small></li>
+<li><span class="option-value">"centerLevel"</span> - Set level of Center speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCenterLevel">more...</a>)</small></li>
+<li><span class="option-value">"surroundLevel"</span> - Set level of Surround speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundLevel">more...</a>)</small></li>
+<li><span class="option-value">"surroundLLevel"</span> - Set level of Surround Left speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundLLevel">more...</a>)</small></li>
+<li><span class="option-value">"surroundRLevel"</span> - Set level of Surround Right speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundRLevel">more...</a>)</small></li>
+<li><span class="option-value">"surroundcBackLevel"</span> - Set level of Surround Back speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackLevel">more...</a>)</small></li>
+<li><span class="option-value">"surroundBackLLevel"</span> - Set level of Surround Back Left speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackLLevel">more...</a>)</small></li>
+<li><span class="option-value">"surroundBackRLevel"</span> - Set level of Surround Back Right speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackRLevel">more...</a>)</small></li>
+<li><span class="option-value">"frontHighLLevel"</span> - Set level of Front High Left speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighLLevel">more...</a>)</small></li>
+<li><span class="option-value">"frontHighRLevel"</span> - Set level of Front High Right speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighRLevel">more...</a>)</small></li>
+<li><span class="option-value">"subwooferLevel"</span> - Set level of Subwoofer speaker. Note that the range and step values
+vary depending on device.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferLevel">more...</a>)</small></li>
+<li><span class="option-value">"subwooferFreq"</span> - Adjust the cut off frequency of the Wireless Subwoofer. All
+frequencies below the cut off frequency are output to the Wireless
+Subwoofer instead of the TV speakers.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferFreq">more...</a>)</small></li>
+<li><span class="option-value">"subwooferPhase"</span> - Sets the phase polarity of subwoofer.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferPhase">more...</a>)</small></li>
+<li><span class="option-value">"subwooferPower"</span> - Set the power control method of the Wireless Subwoofer.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferPower">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"speakerPosition"</span> - Set the type of front and center speaker to Floor speaker or
+In-Ceiling speaker  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerPosition">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"frontLDistanceMM"</span> - Set distance to Front Left speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontLDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"frontRDistanceMM"</span> - Set distance to Front Right speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontRDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"centerDistanceMM"</span> - Set distance to Center speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCenterDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"surroundDistanceMM"</span> - Set distance to Surround speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"surroundLDistanceMM"</span> - Set distance to Surround Left speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundLDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"surroundRDistanceMM"</span> - Set distance to Surround Right speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundRDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"surroundcBackDistanceMM"</span> - Set distance to Surround Back speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"surroundBackLDistanceMM"</span> - Set distance to Surround Back Left speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackLDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"surroundBackRDistanceMM"</span> - Set distance to Surround Back Right speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackRDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"frontHighLDistanceMM"</span> - Set distance to Front High Left speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighLDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"frontHighRDistanceMM"</span> - Set distance to Front High Right speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighRDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"subwooferDistanceMM"</span> - Set distance to Subwoofer speaker. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferDistanceMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"frontSize"</span> - Set Size of Front speakers.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontSize">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"centerSize"</span> - Set Size of Center speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCenterSize">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"surroundSize"</span> - Set size of Surround speakers.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundSize">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"frontHighSize"</span> - Set size of Front High speakers.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighSize">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"centerLiftUp"</span> - Lifting up the sound of the center speaker.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCenterLiftUp">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"distanceUnit"</span> - Selecting the unit of measurement (Distance Unit)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerDistanceUnit">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"ceilingSpeakerHeight"</span> - Setting the height from the floor to the ceiling speakers. (Unit: mm)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCeilingSpeakerHeightMM">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"surroundSpeakerAssign"</span> - Assigning speakers for Zone 3. You can assign the speakers installed
+in Zone 3 as Zone 3 speakers.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundSpeakerAssign">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"surroundBackSpeakerAssign"</span> - Selecting the speaker pattern and setting the assignment for the
+speaker terminals.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackSpeakerAssign">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"speakerPattern"</span> - Selecting the speaker pattern  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerPattern">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"frontCrossoverFreq"</span> - Setting the crossover frequency of the front speakers (Hz)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontCrossoverFreq">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"centerCrossoverFreq"</span> - Setting the crossover frequency of the center speaker (Hz)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCenterCrossoverFreq">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"surroundCrossoverFreq"</span> - Setting the crossover frequency of the surround speakers (Hz)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundCrossoverFreq">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"frontHightCrossoverFreq"</span> - Setting the crossover frequency of the front high speakers (Hz)  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighCrossoverFreq">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"subwooferLpf"</span> - Set if the low-pass filter for the subwoofer output on or off. The
+low-pass filter works when PCM signals are input via an all
+connection. Turn the function on if connecting a subwoofer without
+the crossover frequency function.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SubwooferLpf">more...</a>)</small></li>
+<li class="draft"><span class="option-value">"subwooferLevelHdmiPcm"</span> - set the level of the subwoofer to 0 dB or +10 dB when PCM signals are
+input via an HDMI connection. The level for each input to which an
+HDMI input jack is assigned can be set independently.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferLevelHdmiPcm">more...</a>)</small></li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td class="nestPadding">&nbsp;</td>
+<td class="boardcell"><a name="value" class="anchor"><span class="parameter-name">value</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">1</td>
+<td class="boardcell">&nbsp;</td>
+<td class="boardcell">
+<div class="block">The value to set for target name.
+<ul class="targetParamValues">
+<li>In case <i>"target"</i> is <em><b>"inCeilingSpeakerMode"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#InCeilingSpeakerMode">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - Enable In Ceiling Speaker Mode.</li>
+<li><span class="option-value">"off"</span> - Disable In Ceiling Speaker Mode.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"tvPosition"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#TvPosition">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"tableTop"</span> - Provides the best sound quality when you place the TV on a TV
+stand.</li>
+<li><span class="option-value">"wallMount"</span> - Provides the best sound quality when you hang the TV on a wall.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"speakerSelection"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSelection">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"speakerA"</span> - Speaker A. Speakers connected to the SPEAKERS FRONT A terminals.</li>
+<li><span class="option-value">"speakerB"</span> - Speaker B. Speakers connected to the SPEAKERS SURROUND
+BACK/BI-AMP/FRONT HIGH/FRONT B terminals.</li>
+<li><span class="option-value">"speakerA_B"</span> - Speaker A and Speaker B. Speakers connected to both the SPEAKERS
+FRONT A and SPEAKERS SURROUND BACK/BIAMP/FRONT HIGH/FRONT B
+terminals (parallel connection).</li>
+<li><span class="option-value">"off"</span> - No audio signals are output from any speaker terminals.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"frontLLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontLLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">-10</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 0.5)</li>
+<li><span class="option-value">10</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"frontRLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontRLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">-10</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 0.5)</li>
+<li><span class="option-value">10</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"centerLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCenterLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">-10</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 0.5)</li>
+<li><span class="option-value">10</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"surroundLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">-10</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 0.5)</li>
+<li><span class="option-value">10</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"surroundLLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundLLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">-10</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 0.5)</li>
+<li><span class="option-value">10</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"surroundRLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundRLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">-10</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 0.5)</li>
+<li><span class="option-value">10</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"surroundcBackLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">-10</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 0.5)</li>
+<li><span class="option-value">10</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"surroundBackLLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackLLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">-10</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 0.5)</li>
+<li><span class="option-value">10</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"surroundBackRLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackRLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">-10</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 0.5)</li>
+<li><span class="option-value">10</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"frontHighLLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighLLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">-10</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 0.5)</li>
+<li><span class="option-value">10</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"frontHighRLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighRLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">-10</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 0.5)</li>
+<li><span class="option-value">10</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"subwooferLevel"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferLevel">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">0</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 1)</li>
+<li><span class="option-value">24</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"subwooferFreq"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferFreq">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">0</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 1)</li>
+<li><span class="option-value">30</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"subwooferPhase"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferPhase">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"normal"</span> - normal</li>
+<li><span class="option-value">"reverse"</span> - reverse</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"subwooferPower"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferPower">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - on</li>
+<li><span class="option-value">"off"</span> - off</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"speakerPosition"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerPosition">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"floor"</span> - Speaker position is Floor speaker.</li>
+<li><span class="option-value">"inCeiling"</span> - Speaker position is In-Ceiiing speaker.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"frontLDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontLDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"frontRDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontRDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"centerDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCenterDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"surroundDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"surroundLDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundLDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"surroundRDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundRDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"surroundcBackDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"surroundBackLDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackLDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"surroundBackRDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackRDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"frontHighLDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighLDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"frontHighRDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighRDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"subwooferDistanceMM"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferDistanceMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"frontSize"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontSize">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"large"</span> - Large size speaker. If you connect large speakers that will
+effectively reproduce bass frequencies, select this.</li>
+<li><span class="option-value">"small"</span> - Small size speaker. If the sound is distorted, or you hear a lack
+of surround effects when using multi channel surround sound,
+select this.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"centerSize"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCenterSize">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"large"</span> - Large size speaker. If you connect large speakers that will
+effectively reproduce bass frequencies, select this.</li>
+<li><span class="option-value">"small"</span> - Small size speaker. If the sound is distorted, or you hear a lack
+of surround effects when using multi channel surround sound,
+select this.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"surroundSize"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundSize">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"large"</span> - Large size speaker. If you connect large speakers that will
+effectively reproduce bass frequencies, select this.</li>
+<li><span class="option-value">"small"</span> - Small size speaker. If the sound is distorted, or you hear a lack
+of surround effects when using multi channel surround sound,
+select this.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"frontHighSize"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighSize">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"large"</span> - Large size speaker. If you connect large speakers that will
+effectively reproduce bass frequencies, select this.</li>
+<li><span class="option-value">"small"</span> - Small size speaker. If the sound is distorted, or you hear a lack
+of surround effects when using multi channel surround sound,
+select this.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"centerLiftUp"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCenterLiftUp">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">1</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 1)</li>
+<li class="draft"><span class="option-value">10</span> - Max value.</li>
+<li><span class="option-value">"off"</span> - Disable lifting up the sound of the center speaker.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"distanceUnit"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerDistanceUnit">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"meter"</span> - The distance is displayed in meters.</li>
+<li><span class="option-value">"feet"</span> - The distance is displayed in feet.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"ceilingSpeakerHeight"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCeilingSpeakerHeightMM">more...</a>)</small>
+<ul class="paramValues">
+<li class="draft"><span class="option-value">2000</span> - Min value.</li>
+<li class="draft"><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li class="draft"><span class="option-value">10000</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"surroundSpeakerAssign"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundSpeakerAssign">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"zone3"</span> - Surround speaker is assigned for Zone 3.</li>
+<li><span class="option-value">"off"</span> - Surround speaker is not assigned for Zone 3.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"surroundBackSpeakerAssign"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundBackSpeakerAssign">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"zone2"</span> - Surrond back speaker is assigned for Zone 2. When using the Zone
+2 connection.</li>
+<li><span class="option-value">"biAmp"</span> - Surrond back speaker is assigned for Bi-Amp. When using the
+bi-amplifier connection.</li>
+<li><span class="option-value">"frontB"</span> - Surrond back speaker is assigned for Front B. When using the
+front B speaker connection.</li>
+<li><span class="option-value">"off"</span> - When none of the connections above are used.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"speakerPattern"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerPattern">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"2_0_0"</span> - Speaker pattern is 2/0</li>
+<li><span class="option-value">"2_0_1"</span> - Speaker pattern is 2/0.1</li>
+<li><span class="option-value">"3_0_0"</span> - Speaker pattern is 3/0</li>
+<li><span class="option-value">"3_0_1"</span> - Speaker pattern is 3/0.1</li>
+<li><span class="option-value">"2_2_0"</span> - Speaker pattern is 2/2</li>
+<li><span class="option-value">"2_2_1"</span> - Speaker pattern is 2/2.1</li>
+<li><span class="option-value">"3_2_0"</span> - Speaker pattern is 3/2</li>
+<li><span class="option-value">"3_2_1"</span> - Speaker pattern is 3/2.1</li>
+<li><span class="option-value">"2_3_0"</span> - Speaker pattern is 2/3</li>
+<li><span class="option-value">"2_3_1"</span> - Speaker pattern is 2/3.1</li>
+<li><span class="option-value">"3_3_0"</span> - Speaker pattern is 3/3</li>
+<li><span class="option-value">"3_3_1"</span> - Speaker pattern is 3/3.1</li>
+<li><span class="option-value">"2_4_0"</span> - Speaker pattern is 2/4</li>
+<li><span class="option-value">"2_4_1"</span> - Speaker pattern is 2/4.1</li>
+<li><span class="option-value">"3_4_0"</span> - Speaker pattern is 3/4</li>
+<li><span class="option-value">"3_4_1"</span> - Speaker pattern is 3/4.1</li>
+<li><span class="option-value">"4_2_0"</span> - Speaker pattern is 4/2</li>
+<li><span class="option-value">"4_2_1"</span> - Speaker pattern is 4/2.1</li>
+<li><span class="option-value">"5_2_0"</span> - Speaker pattern is 5/2</li>
+<li><span class="option-value">"5_2_1"</span> - Speaker pattern is 5/2.1</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"frontCrossoverFreq"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontCrossoverFreq">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">40</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li><span class="option-value">200</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"centerCrossoverFreq"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerCenterCrossoverFreq">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">40</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li><span class="option-value">200</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"surroundCrossoverFreq"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSurroundCrossoverFreq">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">40</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li><span class="option-value">200</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"frontHightCrossoverFreq"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerFrontHighCrossoverFreq">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">40</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 10)</li>
+<li><span class="option-value">200</span> - Max value.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"subwooferLpf"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SubwooferLpf">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - The low-pass filter of subwoofer is enabled.</li>
+<li><span class="option-value">"off"</span> - The low-pass filter of subwoofer is disabled.</li>
+</ul>
+</li>
+<li class="draft">In case <i>"target"</i> is <em><b>"subwooferLevelHdmiPcm"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SpeakerSubwooferLevelHdmiPcm">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"auto"</span> - Automatically sets the level to 0 dB or +10 dB, depending on the
+audio stream.</li>
+<li><span class="option-value">"10db"</span> - Subwoofer Speaker Level is set to +10 dB.</li>
+<li><span class="option-value">"0db"</span> - Subwoofer Speaker Level is set to 0 dB.</li>
+</ul>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>JSON Example</dt>
+<dd>
+<pre class="prettyprint">{
+    "id": 62,
+    "method": "setSpeakerSettings",
+    "params": [{"settings": [{
+        "value": "on",
+        "target": "inCeilingSpeakerMode"
+    }]}],
+    "version": "1.0"
+}
+</pre></dd>
+</dl>
+
+    </div>
+
+    <div id="tab_page_response" class="tab-page">
+      <dl>
+<dt><i>result</i>'s Elements</dt>
+<dd>Not necessary.</dd>
+<dt>JSON Example</dt>
+<dd>
+<pre class="prettyprint">{
+    "id": 62,
+    "result": []
+}
+</pre></dd>
+<dt>Error Code</dt>
+<dd>Following error codes are important for this API. Refer to <a href="../../../errorcode-list.html">error code</a> for other errors.</dd>
+<dd>
+<table class="error-code" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><a href="../../../errorcode-list.html#40004"><span class="strong">40004</span></a></td>
+<td>
+<div class="block">One or more settings are not set by error when multiple settings are set.
+ Client needs to call paired APIs (getXXXSettings) to identify which
+ parameters fail to be updated.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+
+    </div>
+
+    <div id="tab_page_notification" class="tab-page">
+      
+    </div>
+
+    <div id="tab_page_references" class="tab-page">
+      <dl>
+<dt>Related APIs</dt>
+<dd>
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="colFirst">name</th>
+<th scope="col" class="colLast">description</th>
+</tr>
+<tr>
+<td class="colFirst"><a href="../../../service/audio/v1_0/getSpeakerSettings.html">getSpeakerSettings <small>(v1.0)</small></a></td>
+<td class="colLast">
+<div class="block">This API provides current settings and supported settings related to speaker
+configuration items.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>Supported Devices</dt>
+<dd>
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="colFirst">Device</th>
+<th scope="col">Interface Version</th>
+<th scope="col" class="colLast">description</th>
+</tr>
+<tr>
+<td class="colFirst">TV</td>
+<td class="colFirst"><a href="../../../device/tv/v3_1_0/index.html">v3.1.0</a></td>
+<td class="colLast">
+<div class="block">List of all APIs supported by FY15 TV after software update called OTA0.</div>
+</td>
+</tr>
+<tr>
+<td class="colFirst">TV</td>
+<td class="colFirst"><a href="../../../device/tv/v3_2_0/index.html">v3.2.0</a></td>
+<td class="colLast">
+<div class="block">List of all APIs supported by FY15 TV after software update called OTA2.<br></div>
+</td>
+</tr>
+<tr>
+<td class="colFirst">TV</td>
+<td class="colFirst"><a href="../../../device/tv/v3_3_0/index.html">v3.3.0</a></td>
+<td class="colLast">
+<div class="block">List of all APIs supported by FY15 TV after software update called OTA3.<br>
+getRemoteDeviceSettings(v1.0) is added in "system" service.</div>
+</td>
+</tr>
+<tr>
+<td class="colFirst">TV</td>
+<td class="colFirst"><a href="../../../device/tv/v3_4_0/index.html">v3.4.0</a></td>
+<td class="colLast">
+<div class="block">List of all APIs supported by FY15 TV after software update called OTA4.<br>
+"broadcastLink" service is added.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+
+    </div>
+
+  </div> <!-- ./contentContainer -->
+
+  </div> <!-- ./details -->
+
+</div> <!-- ./contentContainer -->
+
+<!-- footer -->
+<div id="footer_bg">
+  <div id="footer_content">
+    <div class="footer-links">
+    <ul>
+      <li></li>
+      <li></li>
+    </ul>
+    </div>
+    <p class="copyright">Copyright 2013 -2015 (C) SONY Corp. All rights reserved.</p>
+  </div>
+</div> <!-- ./footer_bg -->
+
+</div> <!-- ./container -->
+
+<!-- Script for Tabs -->
+<script type="text/javascript">
+  <!--
+    tabMenu.setup = {
+      tabHeaders: document.getElementById('tab_menu').getElementsByTagName('li'),
+      tabPages: [
+        document.getElementById('tab_page_request'),
+        document.getElementById('tab_page_response'),
+        document.getElementById('tab_page_notification'),
+        document.getElementById('tab_page_references')
+      ]
+    };
+    tabMenu.init();
+
+    if (1 < window.location.search.length) {
+      var query = window.location.search.substring(1);
+      tabMenu.showpagebyname(query);
+    } else {
+      tabMenu.showpagebyname('request');
+    }
+  //-->
+</script>
+
+</body>
+
+</html>

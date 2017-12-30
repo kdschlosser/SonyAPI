@@ -1,0 +1,836 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<!--  -->
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <title>Device Resource URI (Scalar Web API Specification (TV))</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+  <link rel="stylesheet" type="text/css" href="resources/scripts/prettify.css" title="prettify">
+  <link rel="shortcut icon" href="resources/favicon.ico">
+  <script type="text/javascript" src="resources/scripts/prettify.js"></script>
+  <script type="text/javascript">
+    <!--
+      function windowTitle() {
+        if (location.href.indexOf('is-external=true') == -1) {
+          parent.document.title="Device Resource URI (Scalar Web API Specification (TV))";
+        }
+      }
+    //-->
+  </script>
+</head>
+
+<body onload="windowTitle();">
+
+<!-- container -->
+<div id="container">
+
+<!-- header -->
+<div id="header_bg">
+  <div id="header_content">
+<h1><a href="index.html" target="_top">Scalar WebAPI Specification</a></h1>
+<div>
+<ul class="header-menu">
+<li id="deviceinfo" class="menu-item"><a href="../doc/Device+Specific+Information.html" target="_top">Device Info</a>
+<ul>
+<li class="menu-subitem"><a href="device/tv/index.html" class="menu-subitem-link">TV</a>
+<ul>
+<li><a href="device/tv/v1_0_0/index.html">v1.0.0</a></li>
+<li><a href="device/tv/v1_1_0/index.html">v1.1.0</a></li>
+<li><a href="device/tv/v1_2_0/index.html">v1.2.x</a></li>
+<li><a href="device/tv/v2_0_0/index.html">v2.0.0</a></li>
+<li><a href="device/tv/v2_1_0/index.html">v2.1.0</a></li>
+<li><a href="device/tv/v2_2_0/index.html">v2.2.0</a></li>
+<li><a href="device/tv/v2_3_0/index.html">v2.3.0</a></li>
+<li><a href="device/tv/v2_4_0/index.html">v2.4.0</a></li>
+<li><a href="device/tv/v3_0_0/index.html">v3.0.0</a></li>
+<li><a href="device/tv/v3_1_0/index.html">v3.1.0</a></li>
+<li><a href="device/tv/v3_2_0/index.html">v3.2.0</a></li>
+<li><a href="device/tv/v3_3_0/index.html">v3.3.0</a></li>
+<li><a href="device/tv/v3_4_0/index.html">v3.4.0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li id="moreinfo" class="menu-item"><a>More...</a>
+<ul>
+<li><a href="resource-uri-list.html">Device Resource URI</a></li>
+<li><a href="errorcode-list.html">Error Code</a></li>
+<li><a href="deprecated-list.html">Deprecated List</a></li>
+<li><a href="index-all.html">Index List</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<!-- content header -->
+<div class="header header-padding">
+  <h1 title="Device Resource URI" class="title">
+    Device Resource URI
+    <a href="index.html?resource-uri-list.html" target="_top" class="anchor-quiet-link">¶</a>
+  </h1>
+</div>
+
+<!-- content container -->
+<div class="contentContainer">
+  <div class="description footer-padding">
+
+  <div class="contentContainer">
+    <div class="block">
+      <div>In Scalar Web API, standard URI structure, as defined by RFC 3986, is used
+for representing device's resources. Schemes are used to refer to device
+resources. URI is basically provided from devices/servers, and a client
+should not change/modify the URI.<br/>
+<br/>Similar URIs can be used with different services. For example, TV's channel
+URI can be used with avContent and recording.<br/>
+<br/>As to the supported URIs in a server device, see Supported URIs in each
+device specific information (Server Device Specific information).</div>
+
+    </div>
+
+    <div class="block resource-uri-define">
+    <dl>
+      <!-- Schemes -->
+      <dt>Defined Schemes</dt>
+      <dd><table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="uri-scheme">scheme</th>
+<th scope="col">Description</th>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="tv" class="anchor">tv</a></td>
+<td>
+<div class="block">Tuner resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="extInput" class="anchor">extInput</a></td>
+<td>
+<div class="block">External inputs resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="usb" class="anchor">usb</a></td>
+<td>
+<div class="block">USB files resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="iptv" class="anchor">iptv</a></td>
+<td>
+<div class="block">IPTV movie/music resources. (Use in limited methods)</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="dlna" class="anchor">dlna</a></td>
+<td>
+<div class="block">DLNA files resources. (Use in limited methods)</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="video" class="anchor">video</a></td>
+<td>
+<div class="block">Video content resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="audio" class="anchor">audio</a></td>
+<td>
+<div class="block">Audio content resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="image" class="anchor">image</a></td>
+<td>
+<div class="block">Image content resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="extOutput" class="anchor">extOutput</a></td>
+<td>
+<div class="block">External outputs resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="storage" class="anchor">storage</a></td>
+<td>
+<div class="block">Storage media resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="fav" class="anchor">fav</a></td>
+<td>
+<div class="block">Favorite contents managing resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="radio" class="anchor">radio</a></td>
+<td>
+<div class="block">radio contents resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="netService" class="anchor">netService</a></td>
+<td>
+<div class="block">network service resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="cast" class="anchor">cast</a></td>
+<td>
+<div class="block">cast service resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="multiroom" class="anchor">multiroom</a></td>
+<td>
+<div class="block">multiroom resources</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-scheme"><a name="hdrl" class="anchor">hdrl</a></td>
+<td>
+<div class="block">HDRL resources</div>
+</td>
+</tr>
+</table>
+</dd>
+
+      <!-- Sources -->
+      <dt>Defined Sources</dt>
+      <dd><table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="uri-scheme">scheme</th>
+<th scope="col" class="uri-source">source</th>
+<th scope="col">Description</th>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="10">tv</td>
+<td class="uri-def-source"><a name="tv:antenna" class="anchor">tv:antenna</a></td>
+<td>
+<div class="block">ATSC terrestrial tuner resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="tv:cable" class="anchor">tv:cable</a></td>
+<td>
+<div class="block">ATSC cable tuner resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="tv:dvbc" class="anchor">tv:dvbc</a></td>
+<td>
+<div class="block">DVB cable tuner resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="tv:dvbs" class="anchor">tv:dvbs</a></td>
+<td>
+<div class="block">DVB satellite tuner resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="tv:dvbsj" class="anchor">tv:dvbsj</a></td>
+<td>
+<div class="block">Japan DVB-based communication Satellite tuner resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="tv:dvbt" class="anchor">tv:dvbt</a></td>
+<td>
+<div class="block">DVB terrestrial tuner resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="tv:isdbbs" class="anchor">tv:isdbbs</a></td>
+<td>
+<div class="block">ISDB BS satellite tuner resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="tv:isdbcs" class="anchor">tv:isdbcs</a></td>
+<td>
+<div class="block">ISDB CS satellite tuner resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="tv:isdbgt" class="anchor">tv:isdbgt</a></td>
+<td>
+<div class="block">ISDBG terrestrial tuner resource (BR region)</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="tv:isdbt" class="anchor">tv:isdbt</a></td>
+<td>
+<div class="block">ISDB terrestrial tuner resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="20">extInput</td>
+<td class="uri-def-source"><a name="extInput:airPlay" class="anchor">extInput:airPlay</a></td>
+<td>
+<div class="block">AirPlay input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:bd-dvd" class="anchor">extInput:bd-dvd</a></td>
+<td>
+<div class="block">BD/DVD input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:btAudio" class="anchor">extInput:btAudio</a></td>
+<td>
+<div class="block">Bluetooth Audio input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:cec" class="anchor">extInput:cec</a></td>
+<td>
+<div class="block">CEC input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:coaxial" class="anchor">extInput:coaxial</a></td>
+<td>
+<div class="block">Audio Coaxial input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:component" class="anchor">extInput:component</a></td>
+<td>
+<div class="block">Component external input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:composite" class="anchor">extInput:composite</a></td>
+<td>
+<div class="block">Composite external input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:dsub" class="anchor">extInput:dsub</a></td>
+<td>
+<div class="block">DSub input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:game" class="anchor">extInput:game</a></td>
+<td>
+<div class="block">Game input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:hdmi" class="anchor">extInput:hdmi</a></td>
+<td>
+<div class="block">HDMI external input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:line" class="anchor">extInput:line</a></td>
+<td>
+<div class="block">Audio line input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:optical" class="anchor">extInput:optical</a></td>
+<td>
+<div class="block">Audio Optical input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:sacd-cd" class="anchor">extInput:sacd-cd</a></td>
+<td>
+<div class="block">SACD/CD input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:sat-catv" class="anchor">extInput:sat-catv</a></td>
+<td>
+<div class="block">SAT/CATV input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:scart" class="anchor">extInput:scart</a></td>
+<td>
+<div class="block">SCART external input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:source" class="anchor">extInput:source</a></td>
+<td>
+<div class="block">Source input resource. This means that input resource is current main
+Zone input signal.</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:tv" class="anchor">extInput:tv</a></td>
+<td>
+<div class="block">TV input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:usbDac" class="anchor">extInput:usbDac</a></td>
+<td>
+<div class="block">USB DAC input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:video" class="anchor">extInput:video</a></td>
+<td>
+<div class="block">Video input resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extInput:widi" class="anchor">extInput:widi</a></td>
+<td>
+<div class="block">Wi-fi Display resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="2">usb</td>
+<td class="uri-def-source"><a name="usb:massStorage" class="anchor">usb:massStorage</a></td>
+<td>
+<div class="block">USB storage for media files. (Use in limited methods)</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="usb:recStorage" class="anchor">usb:recStorage</a></td>
+<td>
+<div class="block">USB storage for recording TV broadcasting program</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="1">iptv</td>
+<td class="uri-def-source"><a name="iptv:bivl" class="anchor">iptv:bivl</a></td>
+<td>
+<div class="block">BIVL movie/music resource. (Use in limited methods)</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="2">dlna</td>
+<td class="uri-def-source"><a name="dlna:" class="anchor">dlna:</a></td>
+<td>
+<div class="block">DLNA movie/music/photo resource. (Use in limited methods)</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="dlna:music" class="anchor">dlna:music</a></td>
+<td>
+<div class="block">DLNA music resource. (Use in limited methods)</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="1">video</td>
+<td class="uri-def-source"><a name="video:content" class="anchor">video:content</a></td>
+<td>
+<div class="block">Video content resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="1">audio</td>
+<td class="uri-def-source"><a name="audio:content" class="anchor">audio:content</a></td>
+<td>
+<div class="block">Audio content resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="1">image</td>
+<td class="uri-def-source"><a name="image:content" class="anchor">image:content</a></td>
+<td>
+<div class="block">Image content resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="3">extOutput</td>
+<td class="uri-def-source"><a name="extOutput:hdmi" class="anchor">extOutput:hdmi</a></td>
+<td>
+<div class="block">HDMI external output resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extOutput:wirelessTransceiver" class="anchor">extOutput:wirelessTransceiver</a></td>
+<td>
+<div class="block">Wireless Transceiver external output resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="extOutput:zone" class="anchor">extOutput:zone</a></td>
+<td>
+<div class="block">Zone external output resource. You can enjoy audio at the same time
+in another room by connecting the speakers that are located in
+another room, which is identified by zone.</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="8">storage</td>
+<td class="uri-def-source"><a name="storage:bd" class="anchor">storage:bd</a></td>
+<td>
+<div class="block">BD resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="storage:cd" class="anchor">storage:cd</a></td>
+<td>
+<div class="block">CD resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="storage:dvd" class="anchor">storage:dvd</a></td>
+<td>
+<div class="block">DVD resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="storage:internalHdd" class="anchor">storage:internalHdd</a></td>
+<td>
+<div class="block">Internal HDD storage for content.</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="storage:memoryCard1" class="anchor">storage:memoryCard1</a></td>
+<td>
+<div class="block">Memory card1 for content.</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="storage:memoryCard2" class="anchor">storage:memoryCard2</a></td>
+<td>
+<div class="block">Memory card2 for content.</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="storage:usb1" class="anchor">storage:usb1</a></td>
+<td>
+<div class="block">USB1 storage for content.</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="storage:usb2" class="anchor">storage:usb2</a></td>
+<td>
+<div class="block">USB2 storage for content.</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="1">fav</td>
+<td class="uri-def-source"><a name="fav:tv" class="anchor">fav:tv</a></td>
+<td>
+<div class="block">TV contents' managing favorite resources (4 lists is managed.)</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="3">radio</td>
+<td class="uri-def-source"><a name="radio:am" class="anchor">radio:am</a></td>
+<td>
+<div class="block">AM radio resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="radio:dab" class="anchor">radio:dab</a></td>
+<td>
+<div class="block">DAB radio resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-def-source"><a name="radio:fm" class="anchor">radio:fm</a></td>
+<td>
+<div class="block">FM radio resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="1">netService</td>
+<td class="uri-def-source"><a name="netService:audio" class="anchor">netService:audio</a></td>
+<td>
+<div class="block">Audio Network service resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="1">cast</td>
+<td class="uri-def-source"><a name="cast:audio" class="anchor">cast:audio</a></td>
+<td>
+<div class="block">Cast for Audio service resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="1">multiroom</td>
+<td class="uri-def-source"><a name="multiroom:audio" class="anchor">multiroom:audio</a></td>
+<td>
+<div class="block">Multiroom for Audio service resource</div>
+</td>
+</tr>
+<tr>
+<td class="uri-scheme" rowspan="1">hdrl</td>
+<td class="uri-def-source"><a name="hdrl:movie" class="anchor">hdrl:movie</a></td>
+<td>
+<div class="block">HDRL Movie resource.</div>
+</td>
+</tr>
+</table>
+</dd>
+
+      <!-- Example -->
+      <dt>Examples</dt>
+      <dd>Notice that every source of "tv" scheme refers to digital resource.
+        Analog resource is not supported in this API version. For example,
+        tuner resources for DVB region are shown as
+        <ul>
+        <li>tv:dvbt?trip=11.22.33&srvName=ABC</li>
+        <li>tv:dvbc?trip=11.22.33&srvName=ABC</li>
+        <li>tv:dvbs?trip=111.222.333&srvName=ABC</li>
+        </ul></dd>
+<dd>For example, tuner resources for ISDB region are shown as
+        <ul>
+        <li>tv:isdbt?trip=111.222.333</li>
+        <li>tv:isdbbs?trip=111.222.333</li>
+        <li>tv:isdbcs?trip=111.222.333</li>
+        </ul></dd>
+<dd>For example, tuner resources for ATSC region are shown as
+        <ul>
+        <li>tv:antenna?dispNum=111.222</li>
+        <li>tv:cable?dispNum=111.222</li>
+        <li>(From TV device interface 2.X.Y)
+        tv:antenna?dispNum=111.222&index=0</li>
+        <li>(From TV device interface 2.X.Y) tv:cable?dispNum=111.222&index=3
+        </li>
+        <ul>
+        </li>(Note: If index is not specified, uri should be handled as
+        invalid)</li>
+        </ul>
+        </ul></dd>
+<dd>For example, tuner resource for ISDBG region is shown as
+        <ul>
+        <li>tv:isdbgt?dispNum=111.222</li>
+        </ul></dd>
+<dd>For example, tuner resource for SkyPerfectTV is shown as
+        <ul>
+        <li>tv:dvbsj?trip=11.22.33&srvName={CHANNELNAME}</li>
+        </ul></dd>
+<dd>For example, TV contents managing favorite resources (4 lists is
+        managed.) are shown as
+        <ul>
+        <li>fav:tv?id=1</li>
+        <li>fav:tv?id=2</li>
+        <li>fav:tv?id=3</li>
+        <li>fav:tv?id=4</li>
+        </ul></dd>
+<dd>For example, HDMI external inputs are shown as
+        <ul>
+        <li>extInput:hdmi?port=1</li>
+        <li>extInput:hdmi?port=2</li>
+        <li>extInput:hdmi?port=3</li>
+        <li>extInput:hdmi?port=4</li>
+        </ul></dd>
+<dd>For example, Component external inputs are shown as
+        <ul>
+        <li>extInput:component?port=1</li>
+        <li>extInput:component?port=2</li>
+        <li>extInput:component?port=3</li>
+        <li>extInput:component?port=4</li>
+        </ul></dd>
+<dd>For example, SCART external inputs are shown as
+        <ul>
+        <li>extInput:scart?port=1</li>
+        <li>extInput:scart?port=2</li>
+        </ul></dd>
+<dd>For example, Wi-Fi Display input is shown as
+        <ul>
+        <li>extInput:widi?port=1</li>
+        </ul></dd>
+<dd>For example, CEC inputs of recorder are shown as
+        <ul>
+        <li>extInput:cec?type=recorder&port=1</li>
+        <li>extInput:cec?type=recorder&port=2</li>
+        <li>extInput:cec?type=recorder&port=3</li>
+        </ul></dd>
+<dd>For example, CEC inputs of player are shown as
+        <ul>
+        <li>extInput:cec?type=player&port=1</li>
+        <li>extInput:cec?type=player&port=2</li>
+        <li>extInput:cec?type=player&port=3</li>
+        </ul></dd>
+<dd>For example, CEC inputs of tuner are shown as
+        <ul>
+        <li>extInput:cec?type=tuner&port=1</li>
+        <li>extInput:cec?type=tuner&port=2</li>
+        <li>extInput:cec?type=tuner&port=3</li>
+        </ul></dd>
+<dd>For example, CEC input of others is shown as
+        <ul>
+        <li>extInput:cec?type=freeuse</li>
+        </ul></dd>
+<dd>For example, Optical input is shown as
+        <ul>
+        <li>extInput:optical?port=1</li>
+        </ul></dd>
+<dd>For example, coaxial input is shown as
+        <ul>
+        <li>extInput:coaxial?port=1</li>
+        </ul></dd>
+<dd>For example, line input is shown as
+        <ul>
+        <li>extInput:line?port=1</li>
+        </ul></dd>
+<dd>For example, TV input is shown as
+        <ul>
+        <li>extInput:tv</li>
+        </ul></dd>
+<dd>For example, Bluetooth Audio input is shown as
+        <ul>
+        <li>extInput:btAudio</li>
+        </ul></dd>
+<dd>For example, USB DAC input is shown as
+        <ul>
+        <li>extInput:usbDac</li>
+        </ul></dd>
+<dd>For example, SACD/CD input is shown as
+        <ul>
+        <li>extInput:sacd-cd</li>
+        </ul></dd>
+<dd>For example, BD/DVD input is shown as
+        <ul>
+        <li>extInput:bd-dvd</li>
+        </ul></dd>
+<dd>For example, SAT/CATV input is shown as
+        <ul>
+        <li>extInput:sat-catv</li>
+        </ul></dd>
+<dd>For example, Video input is shown as
+        <ul>
+        <li>extInput:video</li>
+        <li>extInput:video?port=1</li>
+        <li>extInput:video?port=2</li>
+        </ul></dd>
+<dd>For example, Game input is shown as
+        <ul>
+        <li>extInput:game</li>
+        </ul></dd>
+<dd>For example, source input is shown as
+        <ul>
+        <li>extInput:source</li>
+        </ul></dd>
+<dd>For example, AirPlay input is shown as
+        <ul>
+        <li>extInput:airPlay</li>
+        </ul></dd>
+<dd>For example, recorded content in USB storage is shown as
+        <ul>
+        <li>usb:recStorage?path=%/mnt%/usb0%/movie.mov</li>
+        </ul></dd>
+<dd>For example, video content (productID:005-005-005, contentType:main)
+        in internal HDD storage is shown as
+        <ul>
+        <li>video:content?productID=005-005-005-005&contentType=main&storage=
+        internalHdd</li>
+        </ul></dd>
+<dd>For example, video content in memory card1 is shown as
+        <ul>
+        <li>video:content?contentId=01001</li>
+        </ul></dd>
+<dd>For example, image content in memory card1 is shown as
+        <ul>
+        <li>image:content?contentId=01002</li>
+        </ul></dd>
+<dd>For example, HDMI external output are shown as
+        <ul>
+        <li>extOutput:hdmi?port=1</li>
+        <li>extOutput:hdmi?port=2</li>
+        </ul></dd>
+<dd>For example, Wireless transceiver output is shown as
+        <ul>
+        <li>extOutput:wirelessTransceiver</li>
+        </ul></dd>
+<dd>For example, Zone external output are shown as
+        <ul>
+        <li>extOutput:zone?zone=1</li>
+        <li>extOutput:zone?zone=2</li>
+        <li>extOutput:zone?zone=3</li>
+        <li>extOutput:zone?zone=4</li>
+        </ul></dd>
+<dd>For example, internal HDD storage is shown as
+        <ul>
+        <li>storage:internalHdd</li>
+        </ul></dd>
+<dd>For example, USB storage is shown as
+        <ul>
+        <li>storage:usb1 storage:usb2</li>
+        </ul></dd>
+<dd>For example, USB storage with ID is shown as
+        <ul>
+        <li>storage:usb1?id=0x2000001</li>
+        </ul></dd>
+<dd>For example, Memory card is shown as
+        <ul>
+        <li>storage:memoryCard1 storage:memoryCard2</li>
+        </ul></dd>
+<dd>For example, path in Memory card is shown as
+        <ul>
+        <li>storage:memoryCard1?path=2014-03-31</li>
+        </ul></dd>
+<dd>For example, iPhone storage is shown as
+        <ul>
+        <li>storage:usb3?device=iPhone</li>
+        </ul></dd>
+<dd>For example, CD (Audio CD or Data CD) is shown as
+        <ul>
+        <li>storage:cd</li>
+        </ul></dd>
+<dd>For example, BD (Blu-ray disc) is shown as
+        <ul>
+        <li>storage:bd</li>
+        </ul></dd>
+<dd>For example, DVD is shown as
+        <ul>
+        <li>storage:dvd</li>
+        </ul></dd>
+<dd>For example, audio content is shown as
+        <ul>
+        <li>audio:content?contentId=1</li>
+        </ul></dd>
+<dd>For example, folder including audio content is shown as
+        <ul>
+        <li>audio:content?path=/1</li>
+        </ul></dd>
+<dd>For example, AM radio broadcasting station is shown as
+        <ul>
+        <li>radio:am?contentId=1</li>
+        </ul></dd>
+<dd>For example, FM radio broadcasting station is shown as
+        <ul>
+        <li>radio:fm?contentId=3</li>
+        </ul></dd>
+<dd>For example, DAB radio broadcasting station is shown as
+        <ul>
+        <li>radio:dab?contentId=1</li>
+        </ul></dd>
+<dd>For example, Spotify audio network service is shown as
+        <ul>
+        <li>netService:audio?service=spotify</li>
+        </ul></dd>
+
+    </dl>
+    </div> <!-- ./block -->
+  </div> <!-- ./contentContainer -->
+
+</div> <!-- ./description -->
+</div> <!-- ./contentContainer -->
+
+<!-- footer -->
+<div id="footer_bg">
+  <div id="footer_content">
+    <div class="footer-links">
+    <ul>
+      <li></li>
+      <li></li>
+    </ul>
+    </div>
+    <p class="copyright">Copyright 2013 -2015 (C) SONY Corp. All rights reserved.</p>
+  </div>
+</div> <!-- ./footer_bg -->
+
+</div> <!-- ./container -->
+
+</body>
+</html>

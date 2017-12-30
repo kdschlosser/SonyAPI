@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+  <meta http-equiv="X-UA-Compatible" content="IE=8 ; IE=9">
+  <title>Access Control</title>
+  <link rel="stylesheet" href="./css/style.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="./css/prettify.css" type="text/css" title="prettify">
+  <link rel="shortcut icon" href="./res/favicon.ico">
+  <meta http-equiv="Content-Language" content="en-US">
+  <script type="text/javascript" src="./js/prettify.js"></script>
+  <script type="text/javascript">
+  <!--
+    (function() {
+      function init(event) {
+        prettyPrint();
+      }
+      if (window.addEventListener) {
+        window.addEventListener("load",init,false);
+      } else if (window.attachEvent) {
+        window.attachEvent("onload",init);
+      }
+    })();
+  //-->
+  </script>
+</head>
+
+<body>
+
+<!-- Page container -->
+<div id="container">
+
+<!-- Header -->
+<div id="header_bg">
+  <div id="header_content">
+    <h1><a title="Scalar WebAPI Developer" href="./index.html">Scalar WebAPI Developer</a></h1>
+    <div>
+      <ul class="header-menu">
+        <!-- Documents -->
+        <li id="documents" class="menu-item"><a title="Documents" href="Overview.html">Documents</a><ul id="doc"><li><a title="Overview" href="Overview.html">Overview</a></li><li><a title="Device Discovery" href="Device%2BDiscovery.html">Device Discovery</a></li><li><a title="Initialization" href="Initialization.html">Initialization</a></li><li><a title="Access Control" href="Access%2BControl.html">Access Control</a></li><li><a title="Data Encryption" href="Data%2BEncryption.html">Data Encryption</a></li></ul></li>
+
+        <!-- API Spec -->
+        <li id="apispec" class="menu-item"><a title="API Spec" href="../spec/index.html">API Spec</a><ul id="apimenu"><li><a title="Overview" href="../spec/index.html">Overview</a></li><li class="menu-subitem" id="apimenuli"><a class="menu-subitem-link" title="API Services" href="#">API Services</a><ul id="services"><li><a title="Common APIs" href="../spec/index.html?service/commonapi/v1_0/service-summary.html"><i><b>Common APIs</b></i></a></li><li><a title="guide" href="../spec/index.html?service/guide/v1_0/service-summary.html">guide</a></li><li><a title="accessControl" href="../spec/index.html?service/accesscontrol/v1_0/service-summary.html">accessControl</a></li><li><a title="appControl" href="../spec/index.html?service/appcontrol/v1_0/service-summary.html">appControl</a></li><li><a title="audio" href="../spec/index.html?service/audio/v1_0/service-summary.html">audio</a></li><li><a title="avContent" href="../spec/index.html?service/avcontent/v1_0/service-summary.html">avContent</a></li><li><a title="browser" href="../spec/index.html?service/browser/v1_0/service-summary.html">browser</a></li><li><a title="encryption" href="../spec/index.html?service/encryption/v1_0/service-summary.html">encryption</a></li><li><a title="notification" href="../spec/index.html?service/notification/v1_0/service-summary.html">notification</a></li><li><a title="recording" href="../spec/index.html?service/recording/v1_0/service-summary.html">recording</a></li><li><a title="system" href="../spec/index.html?service/system/v1_0/service-summary.html">system</a></li><li><a title="videoScreen" href="../spec/index.html?service/videoscreen/v1_0/service-summary.html">videoScreen</a></li><li><a title="cec" href="../spec/index.html?service/cec/v1_0/service-summary.html">cec</a></li><li><a title="photoshare" href="../spec/index.html?service/photoshare/v1_0/service-summary.html">photoshare</a></li><li><a title="broadcastLink" href="../spec/index.html?service/broadcastlink/v1_0/service-summary.html">broadcastLink</a></li><li><a title="contentshare" href="../spec/index.html?service/contentshare/v1_0/service-summary.html">contentshare</a></li></ul></li><li><a title="Device Resource URI" href="../spec/index.html?resource-uri-list.html">Device Resource URI</a></li><li><a title="Error Coce" href="../spec/index.html?errorcode-list.html">Error Code</a></li><li><a title="Index List" href="../spec/index.html?index-all.html">Index List</a></li></ul></li>
+
+        <!-- Device info -->
+        <li id="deviceinfo" class="menu-item"><a href="../doc/Device+Specific+Information.html" target="_top">Device Info</a>
+<ul>
+<li class="menu-subitem"><a href="../spec/index.html?device/tv/index.html" class="menu-subitem-link">TV</a>
+<ul>
+<li><a href="../spec/index.html?device/tv/v1_0_0/index.html">v1.0.0</a></li>
+<li><a href="../spec/index.html?device/tv/v1_1_0/index.html">v1.1.0</a></li>
+<li><a href="../spec/index.html?device/tv/v1_2_0/index.html">v1.2.x</a></li>
+<li><a href="../spec/index.html?device/tv/v2_0_0/index.html">v2.0.0</a></li>
+<li><a href="../spec/index.html?device/tv/v2_1_0/index.html">v2.1.0</a></li>
+<li><a href="../spec/index.html?device/tv/v2_2_0/index.html">v2.2.0</a></li>
+<li><a href="../spec/index.html?device/tv/v2_3_0/index.html">v2.3.0</a></li>
+<li><a href="../spec/index.html?device/tv/v2_4_0/index.html">v2.4.0</a></li>
+<li><a href="../spec/index.html?device/tv/v3_0_0/index.html">v3.0.0</a></li>
+<li><a href="../spec/index.html?device/tv/v3_1_0/index.html">v3.1.0</a></li>
+<li><a href="../spec/index.html?device/tv/v3_2_0/index.html">v3.2.0</a></li>
+<li><a href="../spec/index.html?device/tv/v3_3_0/index.html">v3.3.0</a></li>
+<li><a href="../spec/index.html?device/tv/v3_4_0/index.html">v3.4.0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+
+        <!-- TOOLS -->
+        
+
+        <!-- Support -->
+        
+
+
+      </ul>
+    </div>
+  </div>
+</div> <!-- ./Header -->
+
+
+<!-- Document body -->
+<div id="document_body">
+
+  <div id="content_body" class="content clear">
+
+    <!-- Menu links in left side -->
+    <div id="side_menu">
+    <h2 class="category-title">Documents</h2><ul id="sideTop"><li><a title="Overview" href="Overview.html">Overview</a></li><li><a title="Device Discovery" href="Device%2BDiscovery.html">Device Discovery</a></li><li><a title="Initialization" href="Initialization.html">Initialization</a></li><li><a title="Access Control" href="Access%2BControl.html"> <b>Access Control</b></a></li><li><a title="Data Encryption" href="Data%2BEncryption.html">Data Encryption</a></li></ul></div><!-- Menu links-->
+
+    <!-- Main content in right side -->
+    <div id="content_main"><div class="category-title"><h2>Access Control</h2></div>
+                    <h1 id="AccessControl-UserAuthentication" class="anchor">User Authentication<a href="#AccessControl-UserAuthentication" class="anclink">+</a></h1><p>Currently following authentication levels are defined.</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><td class="highlight confluenceTd" colspan="1">Authentication Level</td><td class="highlight confluenceTd" colspan="1">Criteria</td></tr><tr><td class="confluenceTd"><p><strong>private</strong></p></td><td class="confluenceTd"><p>Authentication required. The APIs that provide information which is not personal information (information that can be used to identify an individual), but information like device id or information that might differ with user of the device.</p></td></tr><tr><td class="confluenceTd"><p><strong>generic</strong></p></td><td class="confluenceTd"><p>Authentication required. The APIs that control device or change device status.</p></td></tr><tr><td class="confluenceTd"><p><strong>none</strong></p></td><td class="confluenceTd"><p>Authentication not required. The APIs that do not match above criteria.&#xA0;</p></td></tr></tbody></table></div><p>Authentication levels are hierarchical with &quot;private&quot; being highest in the hierarchy. An API is accessible by a client application with the same or higher access level in the hierarchy.&#xA0; This means if the authentication with level &quot;private&quot; is accepted by user for a client application, then the APIs categorized in lower level (i.e. &quot;generic&quot;&#xA0; ) are also available for the client application. On the contrary, if a lower level authentication is accepted by user for a client application, then the APIs categorized in higher level are not available for the client application.</p><p>Scalar Web API server should follow this level described in each API section. To get the access control from user, this specification defines <a href="../spec/index.html?service/accesscontrol/v1_0/actRegister.html" class="external-link" rel="nofollow">actRegister</a> API defined in <a href="../spec/index.html?service/accesscontrol/v1_0/service-summary.html" class="external-link" rel="nofollow">AccessControl service</a> and server/client application must implement this API if authentication is necessary. <span style="color: rgb(72,72,72);">&#xA0;But this does not prevent to introduction of other type of authentication schemes as long as the criteria mentioned above is observed.</span></p><p>Once client application is authorized, server must provide session id conveyed in Set-Cookie header with name &quot;auth&quot; and client application must set the value of Set-Cookie header in Cookie request header to use authorized APIs.</p><h1 id="AccessControl-ServerGuideline" class="anchor">Server Guideline<a href="#AccessControl-ServerGuideline" class="anclink">+</a></h1><h2 id="AccessControl-ClientValidation" class="anchor">Client Validation<a href="#AccessControl-ClientValidation" class="anclink">+</a></h2><p><span style="color: rgb(72,72,72);">Server application must provide session id to identify the authorized client</span> and set proper value with path attribute in Set-Cookie header corresponding to authentication level. Even if correct session id is in Cookie header, server application must check if the client application is authorized with the level of each API.<br>Server application should provide proper expires and max-age attribute in Set-Cookie header and refuse the request which have expired Cookie value to reduce the risk of CSRF(Cross site request forgeries) from malicious application. But at the same time, please pay attention to decide this value, because UX gets deteriorated if the value is too short.&#xA0;<br>In case of Web application, server should regard &quot;same application&quot; based on same origin policy defined in <a href="http://tools.ietf.org/html/rfc6454" class="external-link" rel="nofollow">The Web Origin Concept</a>. If the origin of client application can be identified, server should relate the cookie information with this origin and regard the session id with further request valid only if origin is same. This can also reduce the risk of CSRF.&#xA0;</p><h2 id="AccessControl-UserInterface" class="anchor">User Interface<a href="#AccessControl-UserInterface" class="anclink">+</a></h2><p>Server application is recommended to present brief explanation to user about APIs used according to authentication level when initiating authentication. Server application must get user&apos;s agreement before accepting the request of APIs which need authentication.<br>Server is strongly recommended to protect it from random PIN code access attack from malicious application, for example, takes counter measure as follows.</p><ul><li>Even if client application sends valid PIN code, server requests final confirmation from user in a way impossible for client application to manipulate,</li><li>Locking authentication process for some period by consecutive invalid request from client application and raise caution to end user.</li></ul><h1 id="AccessControl-ClientGuideline" class="anchor">Client Guideline<a href="#AccessControl-ClientGuideline" class="anclink">+</a></h1><p>Client application is recommended to present the information to user about how the server device is controlled or what kind of information is used before using APIs. Client application must present the information to user if the data from server device is used as personal information to relate it to an individual.&#xA0;</p><h1 id="AccessControl-OtherMechanismforUserAuthentication" class="anchor"><span style="color: rgb(0,0,0);">Other Mechanism for User Authentication</span><a href="#AccessControl-OtherMechanismforUserAuthentication" class="anclink">+</a></h1><p><span style="color: rgb(0,0,0);">This section explains the optional access control mechanism as informative. In case server device supports the mechanism described in this section, server must follow the rule described here.</span></p><h2 id="AccessControl-AccessControlforWebApplication" class="anchor"><span style="color: rgb(0,0,0);">Access Control for Web Application</span><a href="#AccessControl-AccessControlforWebApplication" class="anclink">+</a></h2><p><span style="color: rgb(0,0,0);">Instead of client application using authentication API defined in this section, server can provide HTML application for user authentication when authentication is necessary. This has advantage to force application to send the origin to return the page after authorized.</span><br><span style="color: rgb(0,0,0);">The URL format is shown below.<br></span></p><ul><li><span style="color: rgb(0,0,0);">Method<br></span><ul><li><span style="color: rgb(0,0,0);">GET</span></li></ul></li><li><span style="color: rgb(0,0,0);">Path<br></span><ul><li><span style="color: rgb(0,0,0);">URL specified from server in the 403 response. (see last section.)</span></li></ul></li><li><span style="color: rgb(0,0,0);">Query<br></span><ul><li><span style="color: rgb(0,0,0);">app_name</span><br><span style="color: rgb(0,0,0);">application name to be shown in authentication page (UTF-8)</span></li><li><span style="color: rgb(0,0,0);">app_url</span><br><span style="color: rgb(0,0,0);">application URL to be shown in authentication page (UTF-8)</span></li><li><span style="color: rgb(0,0,0);">return_url<br>the URL to be redirected after authentication. Following query is added with return url.</span><span style="color: rgb(0,0,0);">&#xA0;</span><ul><li><span style="color: rgb(0,0,0);">result=authorized</span><span style="color: rgb(0,0,0);">&#xA0;</span></li><li><span style="color: rgb(0,0,0);">result=denied</span><span style="color: rgb(0,0,0);">&#xA0;</span><span style="color: rgb(0,0,0);">&#xA0;</span></li><li><span style="color: rgb(0,0,0);">result=error</span><span style="color: rgb(0,0,0);">&#xA0;</span></li><li><span style="color: rgb(0,0,0);">auth_level</span><br><span style="color: rgb(0,0,0);">&#xA0;</span><span style="color: rgb(0,0,0);">authentication level defined in this section.</span><span style="color: rgb(0,0,0);"><span style="color: rgb(0,0,0);"><br style="color: rgb(0,0,0);"></span></span></li></ul></li></ul></li></ul><p><span style="color: rgb(0,0,0);"><br>Each parameters should be properly encoded as described in section 2-1 of <a href="http://www.ietf.org/rfc/rfc3986.txt" class="external-link" rel="nofollow">IETF RFC 3986 Uniform Resource Identifier (URL) : General Syntax</a></span></p><p><span style="color: rgb(0,0,0);">Note ) How the authentication is confirmed between server and HTML application delivered from server is outside the scope of this document.</span></p><h2 id="AccessControl-AccessControlforInternalapplicationrunningonserverdevice" class="anchor"><span style="color: rgb(0,0,0);">Access Control for Internal application running on server device</span><a href="#AccessControl-AccessControlforInternalapplicationrunningonserverdevice" class="anclink">+</a></h2><p><span style="color: rgb(0,0,0);">Server device may have execution environment that can issue internal Web API request to itself. In this case, authentication may be realized by native application UI. We introduce following common API for this purpose.&#xA0;</span></p><ul><li><span style="color: rgb(0,0,0);">Request</span><ul><li><span style="color: rgb(0,0,0);">Method</span><ul><li><span style="color: rgb(0,0,0);">POST</span></li></ul></li><li><span style="color: rgb(0,0,0);">Path</span><ul><li><span style="color: rgb(0,0,0);">Refer to next section(URL notification to client for authentication).</span></li></ul></li><li><span style="color: rgb(0,0,0);">Body (following data must be encoded with x-www-form-urlencoded )</span><ul><li><span style="color: rgb(0,0,0);">app_name</span><br><span style="color: rgb(0,0,0);">application name to be showed in authentication page (UTF-8)</span></li><li><span style="color: rgb(0,0,0);">app_url</span><br><span style="color: rgb(0,0,0);">application URLto be showed in authentication page (UTF-8)</span></li><li><span style="color: rgb(0,0,0);">auth_level</span><br><span style="color: rgb(0,0,0);">authen</span>tication level defined</li></ul></li></ul></li><li><span style="color: rgb(0,0,0);font-size: 10.0pt;line-height: 13.0pt;">Response</span><ul><li><span style="color: rgb(0,0,0);">Status Code</span><ul><li><span style="color: rgb(0,0,0);">200</span><br><span style="color: rgb(0,0,0);">Authorized</span></li><li><span style="color: rgb(0,0,0);">403</span><br><span style="color: rgb(0,0,0);">Not Authorized</span></li></ul></li></ul></li></ul><h2 id="AccessControl-URLNotificationtoclientforauthentication" class="anchor"><span style="color: rgb(0,0,0);">URL Notification to client for authentication</span><a href="#AccessControl-URLNotificationtoclientforauthentication" class="anclink">+</a></h2><p><span style="color: rgb(0,0,0);">In case server supports the mechanism in this chapter, following response format must be used when HTTP status is 403 forbidden (Scalar Web API is unauthorized.) to notify the client about the list of authentication mechanism.&#xA0;</span></p><ul><li><span style="color: rgb(0,0,0);">Status Code: 403 Forbidden</span></li><li><span style="color: rgb(0,0,0);">Contet-Type: application/json</span></li><li><span style="color: rgb(0,0,0);">Response body:</span><ul><li><span style="color: rgb(0,0,0);">Following object is for root entry</span><ul><li><span style="color: rgb(0,0,0);">auth_url (mandatory)</span><br><span style="color: rgb(0,0,0);">&#xA0;list of following items</span><ul><li><span style="color: rgb(0,0,0);">&quot;default&quot; (mandatory*1)</span><ul><li><span style="color: rgb(0,0,0);">The common URL for the application running on external device</span></li><li><span style="color: rgb(0,0,0);">&lt;base_url&gt;/auth_default</span></li></ul></li><li><span style="color: rgb(0,0,0);">&lt;name&gt; (optional*1)</span><ul><li><span style="color: rgb(0,0,0);">for the application running on same device as server</span></li><li><span style="color: rgb(0,0,0);">&lt;base_ur&gt;/auth_&lt;name&gt;</span></li></ul></li></ul></li></ul></li></ul></li></ul><p><span style="color: rgb(0,0,0);">&#xA0;</span></p><ul><li><p><span style="color: rgb(0,0,0);">Example format of response</span></p><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>ex1) WebApp on external device to different server device </b></div><div class="codeContent panelContent">
+<pre class="prettyprint" style="font-size:12px;">HTTP 403 Forbidden
+Content-Type: application/json 
+Content-Length: xxx
+
+{&quot;error&quot;:[403,&quot;echoPrivate&quot;],
+ &quot;id&quot;:100,
+ &quot;auth_url&quot; : {
+    &quot;default&quot;: &quot;http://192.168.0.100/sony/webauth/auth_default&quot;
+}}</pre>
+</div></div><p><span style="color: rgb(0,0,0);">&#xA0;</span><br><span style="color: rgb(0,0,0);">&#xA0;</span></p><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>ex2) WebApp running on same server device (TV) </b></div><div class="codeContent panelContent">
+<pre class="prettyprint" style="font-size:12px;">HTTP 403 Forbidden
+Content-Type: application/json 
+Content-Length: xxx
+
+{&quot;error&quot;:[403,&quot;echoPrivate&quot;],
+ &quot;id&quot;:100,
+ &quot;auth_url&quot; : {
+    &quot;tv&quot;: &quot;http://127.0.0.1/sony/webauth/auth_tv&quot;
+}}</pre>
+</div></div></li><br><br><br></ul><h1 id="AccessControl-SkipAuthentication" class="anchor">Skip Authentication<a href="#AccessControl-SkipAuthentication" class="anclink">+</a></h1><p><span style="color: rgb(0,0,0);">&#xA0;Server may provide some mechanism to skip authentication. This leads to better UX to release user from troublesome and frequent confirmation</span>.</p><p><strong><u>Note)&#xA0; Special security consideration must be necessary in case server provides this mechanism.</u></strong></p><h2 id="AccessControl-Internalapplicationrunningonserverdevice" class="anchor"><span style="color: rgb(0,0,0);">Internal application running on server device</span><a href="#AccessControl-Internalapplicationrunningonserverdevice" class="anclink">+</a></h2><p>&#xA0;<span style="color: rgb(0,0,0);">If the execution environment can identify the target application is not malicious (for example, application is sure to be developed by Sony), server can provide the mechanism to skip the authentication process by delivering token to that application. Client application is automatically authorized to use Scalar Web APIs by adding x-application-token header in request with the token value provided from server. Server must evaluate this header only when request comes from internal. How the server identifies this kind of application and how to deliver the token to client application is outside the scope of this document. </span></p><h2 id="AccessControl-Remoteapplicationrunningondifferentdevicefromserver" class="anchor"><span style="color: rgb(0,0,0);">Remote application running on different device from server<br></span><a href="#AccessControl-Remoteapplicationrunningondifferentdevicefromserver" class="anclink">+</a></h2><p><span style="color: rgb(0,0,0);">&#xA0;In case server wants to provide mechanism to skip authentication, for example, from business requirement, you can use common key by allocating it to each server in advance.<br>Note that this key must be unique key per each device. Client application which wants to skip authentication can use x-auth-psk header to notify pre-shared key to server.<br> <span style="color: rgb(0,0,0);"> How the key is shared to client application is outside the scope of this document.&#xA0; </span></span></p><h1 id="AccessControl-WebSocketauthentication" class="anchor"><span style="color: rgb(0,0,0);">WebSocket authentication</span><a href="#AccessControl-WebSocketauthentication" class="anclink">+</a></h1><p><span style="color: rgb(0,0,0);">&#xA0;The above aut</span>hentication methods are based on HTTP.<br>In case of using APIs of WebSocket, cookie is added to WebSocket upgrade request instead of each API request.(This means one cookie is handled per service.) The authentication level is fixed on the connection by the cookie and applied for authorization of all API requests on the connection.&#xA0;&#xA0;If lower level authentication is accepted by user for a client application, then the APIs categorized in higher level are not available for the client and server must return <a href="../spec/index.html" class="external-link" rel="nofollow">error code</a> 403 in JSON-RPC.<br>When authenticating by token or pre-shared key (refer to Skip Authentication section in this page), &#xA0;some platform or library used &#xA0;may not allow client application&#xA0;to add HTTP header.For that case, server should support token or key carried by HTTP Query as follows.</p><p><span style="color: rgb(0,0,0);line-height: 13.0pt;font-size: 10.0pt;background-color: transparent;">Query</span></p><ul><li>webapi_access_token<br>access token</li><li>webapi_auth_psk<br>pre-shared key</li></ul><h2 id="AccessControl-NotificationAPI" class="anchor">Notification API<a href="#AccessControl-NotificationAPI" class="anclink">+</a></h2><p>&#xA0;Notification API sent from server to client has no authentication methods.<br>&#xA0;However, switchNotifications API that enables/disables Notification follows standard authentication methods described above, so the use of Notification API from client can thereby be limited.</p><p>Notification API will be authorized for a client only if the corresponding enable API is authorized and allowed to send notification to that client.</p><p>&#xA0;</p>
+                    </div>
+  </div>
+</div> <!-- ./Document body -->
+
+
+<!-- Footer -->
+<div id="footer_bg">
+  <div id="footer_content">
+    <p class="copyright">Copyright 2013-2014 (C) Sony Corp. All rights reserved.</p>
+  </div>
+</div>
+
+</div> <!-- ./container -->
+
+</body>
+</html>

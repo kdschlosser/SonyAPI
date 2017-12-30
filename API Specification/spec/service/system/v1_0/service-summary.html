@@ -1,0 +1,947 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<!--  -->
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <title>Service system (Scalar Web API Specification (TV))</title>
+  <link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+  <link rel="stylesheet" type="text/css" href="../../../resources/scripts/prettify.css" title="prettify">
+  <link rel="shortcut icon" href="../../../resources/favicon.ico">
+  <script type="text/javascript" src="../../../resources/scripts/prettify.js"></script>
+  <script type="text/javascript">
+    <!--
+      function windowTitle() {
+        if (location.href.indexOf('is-external=true') == -1) {
+          parent.document.title="Service system (Scalar Web API Specification (TV))";
+        }
+      }
+    //-->
+  </script>
+</head>
+
+<body onload="windowTitle();">
+
+<!-- container -->
+<div id="container" class="">
+
+<!-- header -->
+<div id="header_bg">
+  <div id="header_content">
+<h1><a href="../../../index.html" target="_top">Scalar WebAPI Specification</a></h1>
+<div>
+<ul class="header-menu">
+<li id="deviceinfo" class="menu-item"><a href="../../../../doc/Device+Specific+Information.html" target="_top">Device Info</a>
+<ul>
+<li class="menu-subitem"><a href="../../../device/tv/index.html" class="menu-subitem-link">TV</a>
+<ul>
+<li><a href="../../../device/tv/v1_0_0/index.html">v1.0.0</a></li>
+<li><a href="../../../device/tv/v1_1_0/index.html">v1.1.0</a></li>
+<li><a href="../../../device/tv/v1_2_0/index.html">v1.2.x</a></li>
+<li><a href="../../../device/tv/v2_0_0/index.html">v2.0.0</a></li>
+<li><a href="../../../device/tv/v2_1_0/index.html">v2.1.0</a></li>
+<li><a href="../../../device/tv/v2_2_0/index.html">v2.2.0</a></li>
+<li><a href="../../../device/tv/v2_3_0/index.html">v2.3.0</a></li>
+<li><a href="../../../device/tv/v2_4_0/index.html">v2.4.0</a></li>
+<li><a href="../../../device/tv/v3_0_0/index.html">v3.0.0</a></li>
+<li><a href="../../../device/tv/v3_1_0/index.html">v3.1.0</a></li>
+<li><a href="../../../device/tv/v3_2_0/index.html">v3.2.0</a></li>
+<li><a href="../../../device/tv/v3_3_0/index.html">v3.3.0</a></li>
+<li><a href="../../../device/tv/v3_4_0/index.html">v3.4.0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li id="moreinfo" class="menu-item"><a>More...</a>
+<ul>
+<li><a href="../../../resource-uri-list.html">Device Resource URI</a></li>
+<li><a href="../../../errorcode-list.html">Error Code</a></li>
+<li><a href="../../../deprecated-list.html">Deprecated List</a></li>
+<li><a href="../../../index-all.html">Index List</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<!-- content header -->
+<div class="header header-padding">
+  <h1 title="Service" class="title">
+    Service system
+    <a href="../../../index.html?service/system/v1_0/service-summary.html" target="_top" class="anchor-quiet-link">¶</a>
+  </h1>
+</div>
+
+<!-- content container -->
+<div class="contentContainer">
+
+  <!-- description -->
+  <div class="contentContainer">
+    This service handles APIs that are related to basic device functions like as
+follows.
+<ul>
+<li>To provide device related information like category, serial number and so
+on.</li>
+<li>To provide/change general setting information like network setting, power
+status, clock setting and so on</li>
+<li>To provide function to access general component to Sony device, like
+Remote Commander.</li>
+</ul>
+
+    
+  </div>
+
+  <!-- API list -->
+  <ul class="blockList">
+  <div class="constantValuesContainer">
+  <dl>
+    <dt>API List</dt>
+    <dd>
+      <table class="api-list">
+<tr>
+<th scope="col">API Group</th>
+<th class="colFirst" scope="col">API name</th>
+<th scope="col">Auth Level</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getColorKeysLayout.html" title="API in system service" target="classFrame">getColorKeysLayout <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides layout of color key on the remote commander.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getCurrentTime.html" title="API in system service" target="classFrame">getCurrentTime <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides current time set in the device.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_1/getCurrentTime.html" title="API in system service" target="classFrame">getCurrentTime <small>(v1.1)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides current time set in the device.This version has additional
+response parameters of timezone and DST (Daylight Saving Time) offset
+information.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getDateTimeFormat.html" title="API in system service" target="classFrame">getDateTimeFormat <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides the GUI format (ISO 8601 style) with which device
+represents date and time to user.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getDeviceMode.html" title="API in system service" target="classFrame">getDeviceMode <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides a function to get status of the device mode.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getInterfaceInformation.html" title="API in system service" target="classFrame">getInterfaceInformation <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides information of WebAPI interface provided by the server.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getNetworkSettings.html" title="API in system service" target="classFrame">getNetworkSettings <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides information about network settings.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getPostalCode.html" title="API in system service" target="classFrame">getPostalCode <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-private">Private</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides information of the device's postal code setting.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getPowerSavingMode.html" title="API in system service" target="classFrame">getPowerSavingMode <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides setting of power saving mode, to adjust the device's power
+consumption.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getPowerStatus.html" title="API in system service" target="classFrame">getPowerStatus <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides current power status of the device.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getRemoteControllerInfo.html" title="API in system service" target="classFrame">getRemoteControllerInfo <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides information of the device's remote commander.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getRemoteDeviceSettings.html" title="API in system service" target="classFrame">getRemoteDeviceSettings <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides current settings and supported settings related to remote
+device, which can access server device from outside the door.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getSystemInformation.html" title="API in system service" target="classFrame">getSystemInformation <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-private">Private</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides general information of the device.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getSystemSupportedFunction.html" title="API in system service" target="classFrame">getSystemSupportedFunction <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides the list of device capabilities within the scope of system
+service handling.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/getWolMode.html" title="API in system service" target="classFrame">getWolMode <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides information of device's WOL (Wake-up On LAN) mode settings.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/requestToNotifyDeviceStatus.html" title="API in system service" target="classFrame">requestToNotifyDeviceStatus <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-none">None</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides a function to request device to notify status specified in
+the request.This API returns response when at least one of specified request
+parameters is different from current device status.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/setCurrentTime.html" title="API in system service" target="classFrame">setCurrentTime <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides function to set current time with timezone and DST
+(Daylight Saving Time) offset information.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/setDeviceMode.html" title="API in system service" target="classFrame">setDeviceMode <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides function to change device mode available in the device.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/setLEDIndicatorStatus.html" title="API in system service" target="classFrame">setLEDIndicatorStatus <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides function to light up specific LED Indicator, usually
+equipped in the front of the device to show current device status to user.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/setLanguage.html" title="API in system service" target="classFrame">setLanguage <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides language setting of device.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/setPostalCode.html" title="API in system service" target="classFrame">setPostalCode <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-private">Private</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides function to change the postal code setting.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/setPowerSavingMode.html" title="API in system service" target="classFrame">setPowerSavingMode <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides function to change setting of power saving mode, to adjust
+the device's power consumption.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/setPowerStatus.html" title="API in system service" target="classFrame">setPowerStatus <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="description first-raw">
+<div>This API provides function to change current power status of the device.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="api-group" rowspan="1"><span class="defined-group">Other</span></td>
+<td class="api-name first-raw"><a href="../../../service/system/v1_0/setWolMode.html" title="API in system service" target="classFrame">setWolMode <small>(v1.0)</small></a></td>
+<td class="authlevel first-raw">
+<div><span class="authlevel authlevel-generic">Generic</span></div>
+</td>
+<td class="description first-raw">
+<div>This API is to change WOL (Wake-up On LAN) mode settings of device.</div>
+</td>
+</tr>
+</tbody>
+</table>
+
+    </dd>
+  </dl>
+  </div>
+
+  <!-- Option Parameter -->
+  <div class="contentContainer">
+    <dl>
+<dt><a name="parameters" class="anchor">Common parameters in system service</a></dt>
+<dd>
+<div>
+<dl>
+<dt><a name="DeviceMiscSettingsFrontPanelBrightness" class="anchor">Front Panel Brightness</a></dt>
+<dd>Set Brightness of the system display.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"bright"</span></td>
+<td class="boardcell">
+<div class="block">Front panel brightness is bright.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"dark"</span></td>
+<td class="boardcell">
+<div class="block">Front panel brightness is dark.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Front panel brightness is off.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DeviceMiscSettingsAvSeparationMode" class="anchor">AV Separation</a></dt>
+<dd>Set whether to enable AV Separation Output Mode or not.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Output data in the AV Separation Output Mode.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Output data in the Multi Output Mode.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DeviceMiscSettingsAutoDisplayMode" class="anchor">Auto Display</a></dt>
+<dd>Auto Display settings.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">OSD is displayed automatically when state or mode etc. is
+changed.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">OSD is displayed only by user operation.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DeviceMiscSettingsScreenSaverMode" class="anchor">Screen Saver Mode</a></dt>
+<dd>Set whether to use Screen Saver feature or not.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Screen Saver.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Screen Saver.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DeviceMiscSettingsSWUpdateNotificationMode" class="anchor">Software Update Notification Mode</a></dt>
+<dd>Set whether to use Network update notification function or not.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Network update notification function.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Network update notification function.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DeviceMiscSettingsAcquiringRichMetaInfoMode" class="anchor">Rich Meta Information (Gracenote) settings</a></dt>
+<dd>Set for connecting to Gracenote.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"auto"</span></td>
+<td class="boardcell">
+<div class="block">When playback is stopped, BD ROM/DVD ROM creates TOC for
+Gracenote connection and obtains information from Gracenote.
+Whereas CD DA creates TOC and obtains information from Gracenote
+upon mounting.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"manual"</span></td>
+<td class="boardcell">
+<div class="block">Creates TOC and obtains information from Gracenote only when
+there is a request for information acquisition, such as window
+display.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DeviceMiscSettingsAutoRendererMode" class="anchor">Auto Renderer</a></dt>
+<dd>Set the access permission setting value required when registering new
+DMC/+PU+, DMR and DMP.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">When there is an access from new DMC/+PU+ (Send contents etc.),
+DMR and DMP registers Access Permission as "Allow" state. When it
+exceeds the max number of possible Access Permissions, is
+registers Access Permission as "Block(Hold)" state.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">When there is an access from new DMC/+PU+ (Send contents etc.),
+DMR and DMP registers Access Permission as "Block(Hold)" state.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DeviceMiscSettingsDlnaDeviceName" class="anchor">Name of a device.</a></dt>
+<dd>Name of a device.
+<ul class="exampleValues">
+<li>(ex) "BD Player in Living"</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><a name="DeviceMiscSettingsIRRepeat" class="anchor">IR Repeat</a></dt>
+<dd>Set whether a server receives and sends IR signal to other device.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">A server receives and sends IR signal for other device.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">A server does not receive and send IR signal to other device.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DeviceMiscSettingsCisIPControl" class="anchor">CIS-IP Control</a></dt>
+<dd>Set whether a dedicated controller (home automation controller) on
+the home network is allowed to control a device by CIS-IP control.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable CIS-IP control function</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable CIS-IP control function</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DeviceMiscSettingsSWAutoUpdate" class="anchor">Auto Update</a></dt>
+<dd>Set whether to enable auto software update function or not.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Auto SW Update function</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Auto SW Update function</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="DeviceMiscSettingsTimeZone" class="anchor">Time Zone settings</a></dt>
+<dd>Set Time Zone unique name (Area/Location) used in
+<a href="http://cs.ucla.edu/~eggert/tz/tz-link.htm" target="_top">tz database</a> or offset value is also able to
+be added by the following format.<br>
+&lt;Time Zone unique name used in tz database&gt;|&lt;optional offset
+value (minutes)&gt;
+<ul class="exampleValues">
+<li>(ex) "America/New_York|-240"</li>
+<li>(ex) "Asia/Tokyo|540"</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><a name="OsdLanguage" class="anchor">OSD Language</a></dt>
+<dd>OSD language code represented by BCP47 (RFC4646 and RFC4647)
+<ul class="exampleValues">
+<li>(ex) "ja"</li>
+<li>(ex) "en-US"</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><a name="ClientLanguage" class="anchor">Client Language</a></dt>
+<dd>Client language code represented by BCP47 (RFC4646 and RFC4647)
+<ul class="exampleValues">
+<li>(ex) "ja"</li>
+<li>(ex) "en-US"</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><a name="PowerSettingsQuickStartMode" class="anchor">Quick Start Mode</a></dt>
+<dd>Set whether to set Standby mode during Power Off or not.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Standby mode is set during Power Off.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Standby mode is not set during Power Off.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="PowerSettingsAutoStandbyMode" class="anchor">Auto Standby</a></dt>
+<dd>A feature that this device automatically changes to Power OFF, when
+judged that there is no operation for a certain period of time. Set
+whether to Auto Standby feature or not.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Auto Standby.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Auto Standby.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="PowerSettingsWolMode" class="anchor">WOL mode</a></dt>
+<dd>Set whether to enable WOL mode settings.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable WOL mode.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable WOL mode.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="PowerSettingsNetworkStandby" class="anchor">Network standby mode</a></dt>
+<dd>Set whether to enable Network standby mode. When a device is Network
+standby state, network is available even in power off state.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Network standby mode.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Network standby mode.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="WirelessAmpSettingsSecureLinkMode" class="anchor">Secure Link mode</a></dt>
+<dd>Set Secure Link to a specific surround amplifier in range of wireless
+reception.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Secure Link function.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Secure Link function.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="WirelessAmpSettingsRFBand" class="anchor">RF Band</a></dt>
+<dd>User can choose the value of RF Band which RF Channel belongs to.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"auto"</span></td>
+<td class="boardcell">
+<div class="block">Set the value of RF Band automatically.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"5.2GHz"</span></td>
+<td class="boardcell">
+<div class="block">Set 5.2GHz as RF Band.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"5.8GHz"</span></td>
+<td class="boardcell">
+<div class="block">Set 5.8GHz as RF Band.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="WirelessAmpSettingsRFChannel" class="anchor">RF Channel</a></dt>
+<dd>Set RF Channel.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"auto"</span></td>
+<td class="boardcell">
+<div class="block">Set the value of RF Channel automatically.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"1"</span></td>
+<td class="boardcell">
+<div class="block">Set 1 channel as RF Channel.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"2"</span></td>
+<td class="boardcell">
+<div class="block">Set 2 channel as RF Channel.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"3"</span></td>
+<td class="boardcell">
+<div class="block">Set 3 channel as RF Channel.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="SleepTimerMin" class="anchor">Sleep Timer</a></dt>
+<dd>Set Sleep Timer (min) to turn off automatically at a specified time.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"120"</span></td>
+<td class="boardcell">
+<div class="block">120 min</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"90"</span></td>
+<td class="boardcell">
+<div class="block">90 min</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"80"</span></td>
+<td class="boardcell">
+<div class="block">80 min</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"70"</span></td>
+<td class="boardcell">
+<div class="block">70 min</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"60"</span></td>
+<td class="boardcell">
+<div class="block">60 min</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"50"</span></td>
+<td class="boardcell">
+<div class="block">50 min</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"40"</span></td>
+<td class="boardcell">
+<div class="block">40 min</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"30"</span></td>
+<td class="boardcell">
+<div class="block">30 min</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"20"</span></td>
+<td class="boardcell">
+<div class="block">20 min</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"10"</span></td>
+<td class="boardcell">
+<div class="block">10 min</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">OFF</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">""</span></td>
+<td class="boardcell">
+<div class="block">Sleep Timer Settings is Unknown.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="WuTangInfoPrivacySetting" class="anchor">Privacy Setting</a></dt>
+<dd>Set whether to enable Privacy setting or not.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Privacy setting</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Privacy setting</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="WuTangInfoActivateStatus" class="anchor">Activate status</a></dt>
+<dd>Set Activate status of Cast for Audio.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">Enable Activate status</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">Disable Activate status</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+<dl>
+<dt><a name="WuTangInfoCurrentVersion" class="anchor">Current Cast for Audio service version</a></dt>
+<dd>Current Cast for Audio service version information
+<ul class="exampleValues">
+<li>(ex) "Ver.xxx"</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><a name="RemoteDeviceAccessPermission" class="anchor">Remote device permission setting</a></dt>
+<dd>Set whether to permit access from remote device, which can access
+server device from outside the door.
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td class="valuecell"><span class="option-value">"on"</span></td>
+<td class="boardcell">
+<div class="block">access permitted.</div>
+</td>
+</tr>
+<tr>
+<td class="valuecell"><span class="option-value">"off"</span></td>
+<td class="boardcell">
+<div class="block">access not permitted.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+</div>
+</dd>
+</dl>
+
+  </div>
+
+  </ul> <!-- ./blockList -->
+
+</div> <!-- ./content container -->
+
+<!-- footer -->
+<div id="footer_bg">
+  <div id="footer_content">
+    <div class="footer-links">
+    <ul>
+      <li></li>
+      <li></li>
+    </ul>
+    </div>
+    <p class="copyright">Copyright 2013 -2015 (C) SONY Corp. All rights reserved.</p>
+  </div>
+</div> <!-- ./footer_bg -->
+
+</div> <!-- ./container -->
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+  <meta http-equiv="X-UA-Compatible" content="IE=8 ; IE=9">
+  <title>Data Encryption</title>
+  <link rel="stylesheet" href="./css/style.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="./css/prettify.css" type="text/css" title="prettify">
+  <link rel="shortcut icon" href="./res/favicon.ico">
+  <meta http-equiv="Content-Language" content="en-US">
+  <script type="text/javascript" src="./js/prettify.js"></script>
+  <script type="text/javascript">
+  <!--
+    (function() {
+      function init(event) {
+        prettyPrint();
+      }
+      if (window.addEventListener) {
+        window.addEventListener("load",init,false);
+      } else if (window.attachEvent) {
+        window.attachEvent("onload",init);
+      }
+    })();
+  //-->
+  </script>
+</head>
+
+<body>
+
+<!-- Page container -->
+<div id="container">
+
+<!-- Header -->
+<div id="header_bg">
+  <div id="header_content">
+    <h1><a title="Scalar WebAPI Developer" href="./index.html">Scalar WebAPI Developer</a></h1>
+    <div>
+      <ul class="header-menu">
+        <!-- Documents -->
+        <li id="documents" class="menu-item"><a title="Documents" href="Overview.html">Documents</a><ul id="doc"><li><a title="Overview" href="Overview.html">Overview</a></li><li><a title="Device Discovery" href="Device%2BDiscovery.html">Device Discovery</a></li><li><a title="Initialization" href="Initialization.html">Initialization</a></li><li><a title="Access Control" href="Access%2BControl.html">Access Control</a></li><li><a title="Data Encryption" href="Data%2BEncryption.html">Data Encryption</a></li></ul></li>
+
+        <!-- API Spec -->
+        <li id="apispec" class="menu-item"><a title="API Spec" href="../spec/index.html">API Spec</a><ul id="apimenu"><li><a title="Overview" href="../spec/index.html">Overview</a></li><li class="menu-subitem" id="apimenuli"><a class="menu-subitem-link" title="API Services" href="#">API Services</a><ul id="services"><li><a title="Common APIs" href="../spec/index.html?service/commonapi/v1_0/service-summary.html"><i><b>Common APIs</b></i></a></li><li><a title="guide" href="../spec/index.html?service/guide/v1_0/service-summary.html">guide</a></li><li><a title="accessControl" href="../spec/index.html?service/accesscontrol/v1_0/service-summary.html">accessControl</a></li><li><a title="appControl" href="../spec/index.html?service/appcontrol/v1_0/service-summary.html">appControl</a></li><li><a title="audio" href="../spec/index.html?service/audio/v1_0/service-summary.html">audio</a></li><li><a title="avContent" href="../spec/index.html?service/avcontent/v1_0/service-summary.html">avContent</a></li><li><a title="browser" href="../spec/index.html?service/browser/v1_0/service-summary.html">browser</a></li><li><a title="encryption" href="../spec/index.html?service/encryption/v1_0/service-summary.html">encryption</a></li><li><a title="notification" href="../spec/index.html?service/notification/v1_0/service-summary.html">notification</a></li><li><a title="recording" href="../spec/index.html?service/recording/v1_0/service-summary.html">recording</a></li><li><a title="system" href="../spec/index.html?service/system/v1_0/service-summary.html">system</a></li><li><a title="videoScreen" href="../spec/index.html?service/videoscreen/v1_0/service-summary.html">videoScreen</a></li><li><a title="cec" href="../spec/index.html?service/cec/v1_0/service-summary.html">cec</a></li><li><a title="photoshare" href="../spec/index.html?service/photoshare/v1_0/service-summary.html">photoshare</a></li><li><a title="broadcastLink" href="../spec/index.html?service/broadcastlink/v1_0/service-summary.html">broadcastLink</a></li><li><a title="contentshare" href="../spec/index.html?service/contentshare/v1_0/service-summary.html">contentshare</a></li></ul></li><li><a title="Device Resource URI" href="../spec/index.html?resource-uri-list.html">Device Resource URI</a></li><li><a title="Error Coce" href="../spec/index.html?errorcode-list.html">Error Code</a></li><li><a title="Index List" href="../spec/index.html?index-all.html">Index List</a></li></ul></li>
+
+        <!-- Device info -->
+        <li id="deviceinfo" class="menu-item"><a href="../doc/Device+Specific+Information.html" target="_top">Device Info</a>
+<ul>
+<li class="menu-subitem"><a href="../spec/index.html?device/tv/index.html" class="menu-subitem-link">TV</a>
+<ul>
+<li><a href="../spec/index.html?device/tv/v1_0_0/index.html">v1.0.0</a></li>
+<li><a href="../spec/index.html?device/tv/v1_1_0/index.html">v1.1.0</a></li>
+<li><a href="../spec/index.html?device/tv/v1_2_0/index.html">v1.2.x</a></li>
+<li><a href="../spec/index.html?device/tv/v2_0_0/index.html">v2.0.0</a></li>
+<li><a href="../spec/index.html?device/tv/v2_1_0/index.html">v2.1.0</a></li>
+<li><a href="../spec/index.html?device/tv/v2_2_0/index.html">v2.2.0</a></li>
+<li><a href="../spec/index.html?device/tv/v2_3_0/index.html">v2.3.0</a></li>
+<li><a href="../spec/index.html?device/tv/v2_4_0/index.html">v2.4.0</a></li>
+<li><a href="../spec/index.html?device/tv/v3_0_0/index.html">v3.0.0</a></li>
+<li><a href="../spec/index.html?device/tv/v3_1_0/index.html">v3.1.0</a></li>
+<li><a href="../spec/index.html?device/tv/v3_2_0/index.html">v3.2.0</a></li>
+<li><a href="../spec/index.html?device/tv/v3_3_0/index.html">v3.3.0</a></li>
+<li><a href="../spec/index.html?device/tv/v3_4_0/index.html">v3.4.0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+
+        <!-- TOOLS -->
+        
+
+        <!-- Support -->
+        
+
+
+      </ul>
+    </div>
+  </div>
+</div> <!-- ./Header -->
+
+
+<!-- Document body -->
+<div id="document_body">
+
+  <div id="content_body" class="content clear">
+
+    <!-- Menu links in left side -->
+    <div id="side_menu">
+    <h2 class="category-title">Documents</h2><ul id="sideTop"><li><a title="Overview" href="Overview.html">Overview</a></li><li><a title="Device Discovery" href="Device%2BDiscovery.html">Device Discovery</a></li><li><a title="Initialization" href="Initialization.html">Initialization</a></li><li><a title="Access Control" href="Access%2BControl.html">Access Control</a></li><li><a title="Data Encryption" href="Data%2BEncryption.html"> <b>Data Encryption</b></a></li></ul></div><!-- Menu links-->
+
+    <!-- Main content in right side -->
+    <div id="content_main"><div class="category-title"><h2>Data Encryption</h2></div>
+                    <h1 id="DataEncryption-Moduleoverview" class="anchor">Module overview<a href="#DataEncryption-Moduleoverview" class="anclink">+</a></h1><p>This section describes overview of the encryption system with Scalar Web API encryption module. To implement encryption API, use the module based on the following specification.</p><p>Encryption module provides the encryption/decryption functions for secure communication.</p><ul><li>This system encrypts and decrypts string format parameter which needs to be secretly communicated with standard 2048/1024bit RSA (<a href="http://www.ietf.org/rfc/rfc3447.txt" class="external-link" rel="nofollow">RFC3447</a>)&#xA0;and 128bit AES.CBC algorithm (<a href="http://www.ietf.org/rfc/rfc3602.txt" class="external-link" rel="nofollow">RFC3602</a>).</li><li>This system DOES NOT encrypt&#xA0;entire communication but only the specific parameters. That means, the communication takes place in the same way as any normal communication about JSON protocol.</li><li>This system is to prevent the interception of the communication, and not the countermeasure for illegal access or impersonation.</li></ul><h1 id="DataEncryption-Encryptionflow" class="anchor">Encryption flow<a href="#DataEncryption-Encryptionflow" class="anclink">+</a></h1><p>Encryption flow is shown in the following figure.</p><p><img class="confluence-embedded-image" src="attachments/401146660/424181870.png" data-image-src="attachments/401146660/424181870.png"></p><p>This encryption system is hybrid with public key and common key. Secret data is encrypted by AES common key, and RSA public key is used to share the common key safely between client and server. During initialization, server generates RSA public/private key. Client receives the RSA public key, and generates AES common key and encrypts it with the RSA public key. After the initializing, client can send and receive the encrypted data using both keys.</p><p>API which uses encryption has parameters of encrypted data and encrypted key. When encrypted API is called by client, server decrypts the common key with the RSA private key which was generated by server, and decrypts data with the common key.</p><p>The procedure to receive secret data from server is shown in the following figure.</p><p><img class="confluence-embedded-image" src="attachments/401146660/424181871.png" data-image-src="attachments/401146660/424181871.png"></p><p>The initializing process is same. In the both case, though public key, encrypted data and encrypted key are communicated, even if they are intercepted, third party can not get the original data.</p><h1 id="DataEncryption-APIdefinition" class="anchor">API definition<a href="#DataEncryption-APIdefinition" class="anclink">+</a></h1><p><a href="../spec/index.html?service/encryption/v1_0/getPublicKey.html" class="external-link" rel="nofollow">getPubicKey</a> API in encryption service is a common API for this encryption system.</p><p>Other API which sends or gets encrypted parameters has a &quot;encKey&quot; element and at least one encrypted data element. Even if an API has multiple encrypted elements, &quot;encKey&quot; is common and must be included in params.</p><h2 id="DataEncryption-JSONExample:send" class="anchor">JSON Example: send<a href="#DataEncryption-JSONExample:send" class="anclink">+</a></h2><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="prettyprint" style="font-size:12px;">{
+    &quot;method&quot;:&quot;sendSecretData&quot;,
+    &quot;params&quot;:[
+        {
+            &quot;secretData1&quot;:&quot;G9KgQDustrxplKFcy9fnVQ==&quot;,
+            &quot;secretData2&quot;:&quot;At2gQDgst6xplKFcy9fnVQ==&quot;,
+            &quot;encKey&quot;:&quot;hCkxUu4WydqDwrlq+PsSSxBaIVbPFNeCU7XYgBC9bVmXvcTORXMdY5FeSr3LYu9WywFbh1WwTBW/S+xTPHZQXhQMUsWEFQwUSldm5xK8vhOcdzGe8kdrixAL6zL9qx6rioR95gF50FO1RRVS7jdsabPvHK5gXZHM9B2h24QKON1FeTkYVGKcf8J3JJp9gEWeNYG2bfMSvnS9qrn2bLXgAX71vwEz7Btm/+qmX7/nsrL5QGBdbgxUlK7q5JzZxOdDuh592lfdEoMIgFR144XAnhfqyCcuZLJ/60VjOpREQ17vTj6+NNVrSOIq4eHnBlB7SfFWM/CBa+rCFmYAzmm3VQ==&quot;
+        }
+    ],
+    &quot;id&quot;:1,
+    &quot;version&quot;:&quot;1.0&quot;
+}</pre>
+</div></div><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="prettyprint" style="font-size:12px;">{
+    &quot;result&quot;:[],
+    &quot;id&quot;:1
+}</pre>
+</div><br><br><br></div><h2 id="DataEncryption-JSONExample:get" class="anchor">JSON Example: get<a href="#DataEncryption-JSONExample:get" class="anclink">+</a></h2><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="prettyprint" style="font-size:12px;">{
+    &quot;method&quot;:&quot;getSecretData&quot;,
+    &quot;params&quot;:[
+        {
+            &quot;encKey&quot;:&quot;hCkxUu4WydqDwrlq+PsSSxBaIVbPFNeCU7XYgBC9bVmXvcTORXMdY5FeSr3LYu9WywFbh1WwTBW/S+xTPHZQXhQMUsWEFQwUSldm5xK8vhOcdzGe8kdrixAL6zL9qx6rioR95gF50FO1RRVS7jdsabPvHK5gXZHM9B2h24QKON1FeTkYVGKcf8J3JJp9gEWeNYG2bfMSvnS9qrn2bLXgAX71vwEz7Btm/+qmX7/nsrL5QGBdbgxUlK7q5JzZxOdDuh592lfdEoMIgFR144XAnhfqyCcuZLJ/60VjOpREQ17vTj6+NNVrSOIq4eHnBlB7SfFWM/CBa+rCFmYAzmm3VQ==&quot;
+        }
+    ],
+    &quot;id&quot;:1,
+    &quot;version&quot;:&quot;1.0&quot;
+}</pre>
+</div></div><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="prettyprint" style="font-size:12px;">{
+    &quot;result&quot;:[
+        {
+           &quot;secretData&quot;:&quot;G9KgQDustrxplKFcy9fnVQ==&quot;
+        }
+    ],
+    &quot;id&quot;:1
+}</pre>
+</div><br><br><br></div><h1 id="DataEncryption-Implementationguide" class="anchor">Implementation guide<a href="#DataEncryption-Implementationguide" class="anclink">+</a></h1><p>Regarding the usage of encryption module, please refer the readme in each platform&apos;s module.</p><p>During initialization, server generates a RSA public/private key pair. Since it takes long time to generate a large key, define the bit size and management way of RSA key based on the policy of each system. During initialization, client gets server public key by calling getPublicKey and creates common key which it encrypts to &quot;encKey&quot;. After that client calls encryption APIs with these keys.</p><p>For maintaining consistency between server&apos;s private key and client&apos;s public key, server should not change the key after initialization. Client can use the same common key on different API calls. Also if necessary client can recreate common key and &quot;encKey&quot; to improve security.</p><p>When encryption module failed to encrypt or decrypt because of the illegal state such as key inconsistency, server returns <a href="../spec/index.html?errorcode-list.html" class="external-link" rel="nofollow">40002 Encryption Failed error</a>. If client receives the error, client goes back to initialization procedure.</p><p>The size of encryption keys can be defined in each system.&#xA0;In reference to STM&#xA0;(STM-0160), you should&#xA0;use the key of enough size for security.</p><h2 id="DataEncryption-InformativeReference&#xA0;" class="anchor">Informative Reference&#xA0;<a href="#DataEncryption-InformativeReference&#xA0;" class="anclink">+</a></h2><ol><li class="a">IETF RFC 3447, Public-Key Cryptography Standards (PKCS) #1: RSA Cryptography&#xA0; Specifications Version 2.1 <br><a href="http://www.ietf.org/rfc/rfc3447.txt" class="external-link" rel="nofollow">http://www.ietf.org/rfc/rfc3447.txt</a></li><li class="a">IETF RFC 3602, The AES-CBC Cipher Algorithm and Its Use with IPsec<br><a href="http://www.ietf.org/rfc/rfc3602.txt" class="external-link" rel="nofollow">http://www.ietf.org/rfc/rfc3602.txt</a></li><li class="a"><p class="TitleEXPLANATORY"><span>STM-0160&#xA0;GUIDELINES FOR SELECTING CRYPTOGRAPHIC ALGORITHMS AND KEY LENGTHS</span><br>https://www.engstd.sony.co.jp/ss-stm/ACT204FrameScr.html?docuKind=STM&amp;ssId=0160&amp;ssIdPart=0&amp;version=2&amp;time=20130827164706176&amp;otherLangEdition=1&amp;lang=en</p></li></ol>
+                    </div>
+  </div>
+</div> <!-- ./Document body -->
+
+
+<!-- Footer -->
+<div id="footer_bg">
+  <div id="footer_content">
+    <p class="copyright">Copyright 2013-2014 (C) Sony Corp. All rights reserved.</p>
+  </div>
+</div>
+
+</div> <!-- ./container -->
+
+</body>
+</html>

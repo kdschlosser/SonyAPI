@@ -1,0 +1,892 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<!--  -->
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <title>getSoundSettings - v1.1 (Scalar Web API Specification (TV))</title>
+  <link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+  <link rel="stylesheet" type="text/css" href="../../../resources/scripts/prettify.css" title="prettify">
+  <link rel="shortcut icon" href="../../../resources/favicon.ico">
+  <script type="text/javascript" src="../../../resources/scripts/prettify.js"></script>
+  <script type="text/javascript">
+  <!--
+    function windowTitle() {
+      if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="getSoundSettings - v1.1 (Scalar Web API Specification (TV))";
+      }
+    }
+    var tabMenu = {
+      init: function() {
+        var headers = this.setup.tabHeaders;
+        var pages = this.setup.tabPages;
+        for (i = 0; i < pages.length; i++) {
+          if (i !== 0) pages[i].style.display = 'none';
+          headers[i].onclick = function() { tabMenu.showpagebyheader(this); return false; };
+        }
+      },
+      showpage: function(num) {
+        var headers = this.setup.tabHeaders;
+        var pages = this.setup.tabPages;
+        for(var i = 0; i < pages.length; i++) {
+          if (i == num) {
+            headers[num].className = 'tab-present';
+            pages[num].style.display = 'block';
+          } else {
+            headers[i].className = null;
+            pages[i].style.display = 'none';
+          }
+        }
+      },
+      showpagebyheader: function(obj) {
+        var headers = this.setup.tabHeaders;
+        var pages = this.setup.tabPages;
+        var num;
+        for (num = 0; num < headers.length; num++) {
+          if (headers[num] === obj) break;
+        }
+        this.showpage(num);
+      },
+      showpagebyname: function(pagename) {
+        var num = 0;
+        switch (pagename) {
+          case 'request':      num = 0; break;
+          case 'response':     num = 1; break;
+          case 'notification': num = 2; break;
+          case 'reference':    num = 3; break;
+        }
+        this.showpage(num);
+      }
+    };
+    (function() {
+      function init(event) {
+        prettyPrint();
+      }
+      if (window.addEventListener) {
+        window.addEventListener("load",init,false);
+      } else if (window.attachEvent) {
+        window.attachEvent("onload",init);
+      }
+    })();
+  //-->
+  </script>
+</head>
+
+<body onload="windowTitle();">
+
+<!-- container -->
+<div id="container" class="">
+
+<!-- header -->
+<div id="header_bg">
+  <div id="header_content">
+<h1><a href="../../../index.html" target="_top">Scalar WebAPI Specification</a></h1>
+<div>
+<ul class="header-menu">
+<li id="deviceinfo" class="menu-item"><a href="../../../../doc/Device+Specific+Information.html" target="_top">Device Info</a>
+<ul>
+<li class="menu-subitem"><a href="../../../device/tv/index.html" class="menu-subitem-link">TV</a>
+<ul>
+<li><a href="../../../device/tv/v1_0_0/index.html">v1.0.0</a></li>
+<li><a href="../../../device/tv/v1_1_0/index.html">v1.1.0</a></li>
+<li><a href="../../../device/tv/v1_2_0/index.html">v1.2.x</a></li>
+<li><a href="../../../device/tv/v2_0_0/index.html">v2.0.0</a></li>
+<li><a href="../../../device/tv/v2_1_0/index.html">v2.1.0</a></li>
+<li><a href="../../../device/tv/v2_2_0/index.html">v2.2.0</a></li>
+<li><a href="../../../device/tv/v2_3_0/index.html">v2.3.0</a></li>
+<li><a href="../../../device/tv/v2_4_0/index.html">v2.4.0</a></li>
+<li><a href="../../../device/tv/v3_0_0/index.html">v3.0.0</a></li>
+<li><a href="../../../device/tv/v3_1_0/index.html">v3.1.0</a></li>
+<li><a href="../../../device/tv/v3_2_0/index.html">v3.2.0</a></li>
+<li><a href="../../../device/tv/v3_3_0/index.html">v3.3.0</a></li>
+<li><a href="../../../device/tv/v3_4_0/index.html">v3.4.0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li id="moreinfo" class="menu-item"><a>More...</a>
+<ul>
+<li><a href="../../../resource-uri-list.html">Device Resource URI</a></li>
+<li><a href="../../../errorcode-list.html">Error Code</a></li>
+<li><a href="../../../deprecated-list.html">Deprecated List</a></li>
+<li><a href="../../../index-all.html">Index List</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<!-- content header -->
+<div class="header header-padding">
+  <div class="subTitle">
+    <div class="desc1">
+      <a href="../../../service/audio/v1_0/service-summary.html">audio</a> - v1.1
+      <span class="authlevel authlevel-none">None</span>
+    </div>
+    <div class="desc2">
+      <a href="../../../device/tv/index.html"><img src="../../../resources/device_tv_min.png" title="TV" /></a>
+
+    </div>
+  </div>
+  <br/>
+
+  <h2 class="title">
+    <img src="../../../resources/api_standard.png" title="Standard API"> 
+    getSoundSettings
+    <a href="../../../index.html?service/audio/v1_1/getSoundSettings.html" target="_top" class="anchor-quiet-link">¶</a>
+  </h2>
+</div>
+
+<!-- content container -->
+<div class="contentContainer">
+
+  <div class="description">
+
+    <div class="contentContainer">
+       <div class="block">This API provides current settings and supported settings related to sound
+configuration items.</div>
+<dl class="api-overview"><dt><span class="strong">Syntax</span></dt>
+<dd>http://&lt;Base URL&gt;/audio</dd>
+<dd>ws://&lt;Base URL&gt;/audio</dd>
+<dt><span class="strong">Authentication Level</span></dt>
+  <dd>none</dd></dl>
+
+    </div> <!-- ./contentContainer -->
+
+  </div> <!-- ./description -->
+
+  <div class="details footer-padding">
+
+  <div class="contentContainer">
+
+    <ul id="tab_menu">
+      <li class="tab-present"><a href="#tab_page_request">Request</a></li>
+      <li class="tab-nopresent"><a href="#tab_page_response">Response</a></li>
+      <li class="tab-nopresent" style="display:none"><a href="#tab_page_notification">Notification</a></li>
+      <li class="tab-nopresent"><a href="#tab_page_references">See also</a></li>
+    </ul>
+
+    <div id="tab_page_request" class="tab-page">
+      <dl>
+<dt><i>params</i>' Elements</dt>
+<dd>An object composed by following pair(s).</dd>
+<dd>
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col">name</th>
+<th scope="col">type</th>
+<th scope="col">multiplicity</th>
+<th scope="col">default</th>
+<th scope="col">description</th>
+</tr>
+<tr>
+<td class="boardcell"><a name="target" class="anchor"><span class="parameter-name">target</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">?</td>
+<td class="boardcell">""</td>
+<td class="boardcell">
+<div class="block">Target name. Default value is "". It means settings of all targets.
+Client can get all sound settings information by setting empty string to
+"target". Client can get specific sound setting value by explicitly
+setting target name to "target".
+<ul class="paramValues">
+<li><span class="option-value">""</span> - It means settings of all targets.</li>
+<li><span class="option-value">"digitalAudioType"</span> - Set the output type for the digital signal from HDMI or DIGITAL OUT  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DigitalAudioType">more...</a>)</small></li>
+<li><span class="option-value">"dsdMode"</span> - Select Audio output mode from HDMI during SACD or DSD file format
+playback  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DsdMode">more...</a>)</small></li>
+<li><span class="option-value">"bdMixMode"</span> - Enabled during BDMV playback. Sets Mix state of Audio output.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#BdMixMode">more...</a>)</small></li>
+<li><span class="option-value">"aac"</span> - Sets the output method of AAC signal.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AAC">more...</a>)</small></li>
+<li><span class="option-value">"digitalMusicEnhancer"</span> - Set Digital Music Enhancer function for output when playing Internet
+content or USB content.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DigitalMusicEnhancer">more...</a>)</small></li>
+<li><span class="option-value">"dtsNeo6"</span> - Settings for DTS Neo:6.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DtsNeo6">more...</a>)</small></li>
+<li><span class="option-value">"convertToDolbyD"</span> - Settings for Dolby Digital Converter Dolby D Compatible Output
+function which converts DTS source to Dolby Digital by referring EDID  <small>(<a href="../../../service/audio/v1_0/service-summary.html#ConvertToDolbyD">more...</a>)</small></li>
+<li><span class="option-value">"inputAttenuation"</span> - Reduces the input sensitivity of audio signal input to Audio analog
+audio input terminal.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#InputAttenuation">more...</a>)</small></li>
+<li><span class="option-value">"outputTerminal"</span> - Selecting speakers or terminals to output sound.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#OutputTerminal">more...</a>)</small></li>
+<li><span class="option-value">"audioDRC"</span> - Setting for DRC function that makes even small sounds more audible
+when listening in low volume.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AudioDRC">more...</a>)</small></li>
+<li><span class="option-value">"downMix"</span> - Enabled when outputting BD LPCM, DTS HD, Dolby TrueHD, DD+, DD, DTS
+and AAC of Multi Channel source by Downmixed PCM 2ch. Multi channel
+source BD LPCM, DTS HD, Dolby TrueHD, DD+, DD, DTS, AAC are able to
+export when set as Downmix in PCM 2ch.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DownMix">more...</a>)</small></li>
+<li><span class="option-value">"autoGenreSelector"</span> - To provide suitable Sound Field depending on the kind of contents,
+switch Sound Field automatically according to "Genre Info" on CEC.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AutoGenreSelector">more...</a>)</small></li>
+<li><span class="option-value">"dseeHX"</span> - Set whether using the DSEE HX function. DSEE HX is advanced DSEE
+(Digital Sound Enhancement Engine) function and upscales existing
+sound sources to near hi-resolution sound quality.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DseeHX">more...</a>)</small></li>
+<li><span class="option-value">"clearAudio"</span> - Clear Audio+ function  <small>(<a href="../../../service/audio/v1_0/service-summary.html#ClearAudio">more...</a>)</small></li>
+<li><span class="option-value">"footballMode"</span> - Football Mode  <small>(<a href="../../../service/audio/v1_0/service-summary.html#FootballMode">more...</a>)</small></li>
+<li><span class="option-value">"autoFormatDirect_2ch"</span> - Set Auto Format Direct (A.F.D)/2-channel sound mode  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AutoFormatDirect_2ch">more...</a>)</small></li>
+<li><span class="option-value">"soundField"</span> - The sound quality according to the music genre.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SoundField">more...</a>)</small></li>
+<li><span class="option-value">"soundFiedlMovie"</span> - Set Sound Field Movie function.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SoundFieldMovie">more...</a>)</small></li>
+<li><span class="option-value">"nightMode"</span> - Set Night mode. Sound is output at low volume with minimum loss of
+fidelity and clarity of dialogue.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#NightMode">more...</a>)</small></li>
+<li><span class="option-value">"pureDirect"</span> - Set Pure Direct function. When the Pure Direct function is on, the
+display panel lights off to suppress noise that affects sound
+quality.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#PureDirect">more...</a>)</small></li>
+<li><span class="option-value">"optimizer"</span> - Set Sound Optimizer function. Enjoying clear and dynamic sound at a
+low volume.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#Optimizer">more...</a>)</small></li>
+<li><span class="option-value">"calibrationType"</span> - Set Calibration type after you have performed the Auto Calibration
+and saved the settings.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#CalibrationType">more...</a>)</small></li>
+<li><span class="option-value">"voice"</span> - Set Voice mode. This helps make dialogues clearer.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#Voice">more...</a>)</small></li>
+<li><span class="option-value">"avSyncMs"</span> - Set a delay time (ms) of input audio to adjust Audio and Video Sync.
+Note that the range and step values vary depending on device.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AVSyncMs">more...</a>)</small></li>
+<li><span class="option-value">"dualMono"</span> - Set Dual Mono mode.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DualMono">more...</a>)</small></li>
+<li><span class="option-value">"wideStereo"</span> - Set Wide Stereo mode for immersive stereo sound.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#WideStereo">more...</a>)</small></li>
+<li><span class="option-value">"sceneSelection"</span> - Set Custom Preset scene. Each preset scene saves various settings
+with the player, monitor, etc., according to listening and viewing
+style.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SceneSelection">more...</a>)</small></li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>JSON Example</dt>
+<dd>
+<pre class="prettyprint">{
+    "id": 73,
+    "method": "getSoundSettings",
+    "params": [{"target": "aac"}],
+    "version": "1.1"
+}
+</pre></dd>
+</dl>
+
+    </div>
+
+    <div id="tab_page_response" class="tab-page">
+      <dl>
+<dt><i>result</i>'s Elements</dt>
+<dd>An array of objects composed by following pairs.</dd>
+<dd>
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" colspan="2">name</th>
+<th scope="col">type</th>
+<th scope="col">multiplicity</th>
+<th scope="col">default</th>
+<th scope="col">description</th>
+</tr>
+<tr>
+<td class="boardcell" colspan="2"><a name="target" class="anchor"><span class="parameter-name">target</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">1</td>
+<td class="boardcell">&nbsp;</td>
+<td class="boardcell">
+<div class="block">Target name.
+<ul class="paramValues">
+<li><span class="option-value">"digitalAudioType"</span> - Set the output type for the digital signal from HDMI or DIGITAL OUT  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DigitalAudioType">more...</a>)</small></li>
+<li><span class="option-value">"dsdMode"</span> - Select Audio output mode from HDMI during SACD or DSD file format
+playback  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DsdMode">more...</a>)</small></li>
+<li><span class="option-value">"bdMixMode"</span> - Enabled during BDMV playback. Sets Mix state of Audio output.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#BdMixMode">more...</a>)</small></li>
+<li><span class="option-value">"aac"</span> - Sets the output method of AAC signal.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AAC">more...</a>)</small></li>
+<li><span class="option-value">"digitalMusicEnhancer"</span> - Set Digital Music Enhancer function for output when playing Internet
+content or USB content.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DigitalMusicEnhancer">more...</a>)</small></li>
+<li><span class="option-value">"dtsNeo6"</span> - Settings for DTS Neo:6.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DtsNeo6">more...</a>)</small></li>
+<li><span class="option-value">"convertToDolbyD"</span> - Settings for Dolby Digital Converter Dolby D Compatible Output
+function which converts DTS source to Dolby Digital by referring EDID  <small>(<a href="../../../service/audio/v1_0/service-summary.html#ConvertToDolbyD">more...</a>)</small></li>
+<li><span class="option-value">"inputAttenuation"</span> - Reduces the input sensitivity of audio signal input to Audio analog
+audio input terminal.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#InputAttenuation">more...</a>)</small></li>
+<li><span class="option-value">"outputTerminal"</span> - Selecting speakers or terminals to output sound.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#OutputTerminal">more...</a>)</small></li>
+<li><span class="option-value">"audioDRC"</span> - Setting for DRC function that makes even small sounds more audible
+when listening in low volume.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AudioDRC">more...</a>)</small></li>
+<li><span class="option-value">"downMix"</span> - Enabled when outputting BD LPCM, DTS HD, Dolby TrueHD, DD+, DD, DTS
+and AAC of Multi Channel source by Downmixed PCM 2ch. Multi channel
+source BD LPCM, DTS HD, Dolby TrueHD, DD+, DD, DTS, AAC are able to
+export when set as Downmix in PCM 2ch.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DownMix">more...</a>)</small></li>
+<li><span class="option-value">"autoGenreSelector"</span> - To provide suitable Sound Field depending on the kind of contents,
+switch Sound Field automatically according to "Genre Info" on CEC.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AutoGenreSelector">more...</a>)</small></li>
+<li><span class="option-value">"dseeHX"</span> - Set whether using the DSEE HX function. DSEE HX is advanced DSEE
+(Digital Sound Enhancement Engine) function and upscales existing
+sound sources to near hi-resolution sound quality.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DseeHX">more...</a>)</small></li>
+<li><span class="option-value">"clearAudio"</span> - Clear Audio+ function  <small>(<a href="../../../service/audio/v1_0/service-summary.html#ClearAudio">more...</a>)</small></li>
+<li><span class="option-value">"footballMode"</span> - Football Mode  <small>(<a href="../../../service/audio/v1_0/service-summary.html#FootballMode">more...</a>)</small></li>
+<li><span class="option-value">"autoFormatDirect_2ch"</span> - Set Auto Format Direct (A.F.D)/2-channel sound mode  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AutoFormatDirect_2ch">more...</a>)</small></li>
+<li><span class="option-value">"soundField"</span> - The sound quality according to the music genre.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SoundField">more...</a>)</small></li>
+<li><span class="option-value">"soundFiedlMovie"</span> - Set Sound Field Movie function.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SoundFieldMovie">more...</a>)</small></li>
+<li><span class="option-value">"nightMode"</span> - Set Night mode. Sound is output at low volume with minimum loss of
+fidelity and clarity of dialogue.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#NightMode">more...</a>)</small></li>
+<li><span class="option-value">"pureDirect"</span> - Set Pure Direct function. When the Pure Direct function is on, the
+display panel lights off to suppress noise that affects sound
+quality.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#PureDirect">more...</a>)</small></li>
+<li><span class="option-value">"optimizer"</span> - Set Sound Optimizer function. Enjoying clear and dynamic sound at a
+low volume.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#Optimizer">more...</a>)</small></li>
+<li><span class="option-value">"calibrationType"</span> - Set Calibration type after you have performed the Auto Calibration
+and saved the settings.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#CalibrationType">more...</a>)</small></li>
+<li><span class="option-value">"voice"</span> - Set Voice mode. This helps make dialogues clearer.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#Voice">more...</a>)</small></li>
+<li><span class="option-value">"avSyncMs"</span> - Set a delay time (ms) of input audio to adjust Audio and Video Sync.
+Note that the range and step values vary depending on device.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AVSyncMs">more...</a>)</small></li>
+<li><span class="option-value">"dualMono"</span> - Set Dual Mono mode.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DualMono">more...</a>)</small></li>
+<li><span class="option-value">"wideStereo"</span> - Set Wide Stereo mode for immersive stereo sound.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#WideStereo">more...</a>)</small></li>
+<li><span class="option-value">"sceneSelection"</span> - Set Custom Preset scene. Each preset scene saves various settings
+with the player, monitor, etc., according to listening and viewing
+style.  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SceneSelection">more...</a>)</small></li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td class="boardcell" colspan="2"><a name="currentValue" class="anchor"><span class="parameter-name">currentValue</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">1</td>
+<td class="boardcell">&nbsp;</td>
+<td class="boardcell">
+<div class="block">Current value of target.
+<ul class="targetParamValues">
+<li>In case <i>"target"</i> is <em><b>"digitalAudioType"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DigitalAudioType">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"auto"</span> - PCM and BitStream can switch automatically according to
+connection device.</li>
+<li><span class="option-value">"pcm"</span> - PCM output from HDMI or digital audio output.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"dsdMode"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DsdMode">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"auto"</span> - DSD output</li>
+<li><span class="option-value">"off"</span> - PCM output</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"bdMixMode"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#BdMixMode">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - Outputs Mixed Audio, that is Additional Audio mixed with Primary
+Audio.</li>
+<li><span class="option-value">"off"</span> - Outputs only Primary Audio.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"aac"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AAC">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"downmixPcm"</span> - Converted Downmix LPCM output</li>
+<li><span class="option-value">"aac"</span> - AAC output</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"digitalMusicEnhancer"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DigitalMusicEnhancer">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - Three elements (PAE+(Portable Audio Enhancer Plus), Dynamic Range
+Recovery, Advanced Auto Volume) are enabled to create better
+sound quality for Internet content or USB content.</li>
+<li><span class="option-value">"off"</span> - Turns off the Digital Music Enhancer function.</li>
+<li><span class="option-value">"soundBarMode"</span> - Same as setting value "off", the purpose of this setting value is
+to force sound bar users to use off.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"dtsNeo6"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DtsNeo6">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"cinema"</span> - Neo:6 Cinema settings for movie.</li>
+<li><span class="option-value">"music"</span> - Neo:6 Music settings for audio.</li>
+<li><span class="option-value">"off"</span> - Disable Neo:6 function.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"convertToDolbyD"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#ConvertToDolbyD">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - Convert DTS source to Dolby Digital by referring EDID.</li>
+<li><span class="option-value">"off"</span> - Not convert DTS source to Dolby Digital</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"inputAttenuation"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#InputAttenuation">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - Enable input attenuation function</li>
+<li><span class="option-value">"off"</span> - Disable input attenuation function</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"outputTerminal"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#OutputTerminal">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"speaker"</span> - Audio is output from speaker.</li>
+<li><span class="option-value">"speaker_hdmi"</span> - Audio is output from speaker and HDMI.</li>
+<li><span class="option-value">"hdmi"</span> - Audio is output from HDMI.</li>
+<li><span class="option-value">"audioSystem"</span> - Audio is output from HDMI or digital audio output.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"audioDRC"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AudioDRC">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"auto"</span> - Dynamic range specified by disc is set. (only BD-ROM)</li>
+<li><span class="option-value">"on"</span> - Dynamic range specified by recording engineer is set.</li>
+<li><span class="option-value">"off"</span> - Disable DRC function.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"downMix"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DownMix">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"surround"</span> - Audio with surround effect is output.</li>
+<li><span class="option-value">"stereo"</span> - Audio without surround effect is output.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"autoGenreSelector"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AutoGenreSelector">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - Enable Auto Genre Selector function.</li>
+<li><span class="option-value">"off"</span> - The Auto Genre selector function is disable.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"dseeHX"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DseeHX">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"off"</span> - Disable DSEE HX function</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"clearAudio"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#ClearAudio">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - Enable Clear Audio + function</li>
+<li><span class="option-value">"off"</span> - Disable Clear Audio + function</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"footballMode"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#FootballMode">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - Enable Football Mode with narration</li>
+<li><span class="option-value">"on_narration_off"</span> - Enable Football Mode without narration</li>
+<li><span class="option-value">"off"</span> - Disable Football Mode</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"autoFormatDirect_2ch"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AutoFormatDirect_2ch">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"2chStereo"</span> - 2ch Stereo. The receiver outputs the sound from the front
+left/right speakers only. There is no sound from the subwoofer.</li>
+<li><span class="option-value">"analogDirect"</span> - Analog Direct. You can switch the audio of the selected input to
+2-channel analog input. This function enables you to enjoy
+high-quality analog sources.</li>
+<li><span class="option-value">"auto"</span> - Auto Format Direct (A.F.D.) Presets the sound as it was
+recorded/encoded without adding any surround effects.</li>
+<li><span class="option-value">"multiStereo"</span> - Multi stereo. Outputs 2-channel left/right or monaural signals
+from all speakers.</li>
+<li><span class="option-value">"off"</span> - Disable A.F.D/2ch function</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"soundField"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SoundField">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"standard"</span> - Music Equalizer Standard. Sound effects are optimized for the
+individual source.</li>
+<li><span class="option-value">"rock"</span> - Music Equalizer Rock</li>
+<li><span class="option-value">"hiphop"</span> - Music Equalizer Hip Hop</li>
+<li><span class="option-value">"electronica"</span> - Music Equalizer Electronica</li>
+<li><span class="option-value">"sertanejo"</span> - Music Equalizer Sertanejo</li>
+<li><span class="option-value">"movie"</span> - Movie mode. Sound effects are optimized for movies. This mode
+replicates the density and rich expanse of sound.</li>
+<li><span class="option-value">"movie2"</span> - Movie2 mode. Sound effects are optimized for movies. This mode
+replicates sound looping around the listener to the rear.</li>
+<li><span class="option-value">"music"</span> - Music mode. Sound effects are optimized for music.</li>
+<li><span class="option-value">"game"</span> - Game mode. Sound effects are optimized for game play.</li>
+<li><span class="option-value">"compressionMusic"</span> - Digital Music mode</li>
+<li><span class="option-value">"night"</span> - Night mode</li>
+<li><span class="option-value">"flat"</span> - Flat mode</li>
+<li><span class="option-value">"pop"</span> - Pop mode</li>
+<li><span class="option-value">"jazz"</span> - Jazz mode. Reproduces the acoustics of a jazz club.</li>
+<li><span class="option-value">"latin"</span> - Latin mode</li>
+<li><span class="option-value">"classic"</span> - Classic mode</li>
+<li><span class="option-value">"custom"</span> - Custom mode</li>
+<li><span class="option-value">"clearAudio"</span> - Clear Audio + mode. The appropriate sound setting is
+automatically selected for the sound source.</li>
+<li><span class="option-value">"sports"</span> - Sports mode. Reproduces the feel of sports broadcasting.</li>
+<li><span class="option-value">"live"</span> - Live mode. Reproduces the acoustics of a 300-seat live house.</li>
+<li><span class="option-value">"stadium"</span> - Stadium mode. Reproduces the feel of a large open-air stadium</li>
+<li><span class="option-value">"proLogicIIMusic"</span> - Pro Logic II Music mode. Performs Dolby Pro Logic II Music mode
+decoding. This setting is ideal for normal stereo sources such as
+CDs.</li>
+<li><span class="option-value">"proLogicIIxMusic"</span> - Pro Logic IIx Music mode. Performs Dolby Pro Logic IIx Music mode
+decoding. This setting is ideal for normal stereo sources such as
+CDs.</li>
+<li><span class="option-value">"neo6Music"</span> - Neo6 Music mode. Performs DTS Neo:6 Music mode decoding. Sources
+recorded in 2-channel format are enhanced up to 7 channels. This
+setting is ideal for normal stereo sources such as CDs.</li>
+<li><span class="option-value">"concertHallA"</span> - Concert Hall A. Reproduces the acoustics of a vineyard style
+concert hall in Berlin famous for its clear acoustics.</li>
+<li><span class="option-value">"concertHallB"</span> - Concert Hall B. Reproduces the acoustics of a shoe box style
+concert hall with plaster walls in Amsterdam.</li>
+<li><span class="option-value">"concertHallC"</span> - Concert Hall C. Reproduces the acoustics of a wooden shoe box
+style concert hall in Vienna.</li>
+<li><span class="option-value">"portableAudio"</span> - Portable Audio. Reproduces clear enhanced sound from your
+portable audio device. This mode is ideal for MP3s and other
+compressed music.</li>
+<li><span class="option-value">"cinemaStudio"</span> - Cinema Studio. Sound effect are optimized for higher realistic
+sound like a cinema studio.</li>
+<li><span class="option-value">"musicArena"</span> - Music Arena. Sound effects like a live music concerts filled with
+great excitement created by Sony’s unique Audio DSP technology.</li>
+<li><span class="option-value">"off"</span> - Disable Sound Field function.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"soundFiedlMovie"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SoundFieldMovie">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"hdDcsDynamic"</span> - HD Digital Cinema Sound (HD-D.C.S.) Dynamic. This setting is
+suitable for an environment which is reverberant but lacks a
+spacious feel (where sound absorption is not sufficient). It
+emphasizes the reflection of sound and reproduces the sound of a
+large, classic movie theater.</li>
+<li><span class="option-value">"hdDcsTheater"</span> - HD Digital Cinema Sound (HD-D.C.S.) Theater. This setting is
+suitable for a general living room. It reproduces the
+reverberation of sound just like in a movie theater (dubbing
+theater). It is most appropriate for watching content recorded on
+a Blu-ray Disc when you want the atmosphere of a movie theater</li>
+<li><span class="option-value">"hdDcsStudio"</span> - HD Digital Cinema Sound (HD-D.C.S.) Studio. This setting is
+suitable for a living room with the appropriate sound devices. It
+reproduces the reverberation of sound provided when a theatrical
+sound source is remixed for a Blu-ray Disc to a volume level
+suitable for home use.</li>
+<li><span class="option-value">"proLogicII"</span> - Dolby Pro Logic II Movie mode decoding. This setting is ideal for
+movies encoded in Dolby Surround.</li>
+<li><span class="option-value">"proLogicIIx"</span> - Dolby Pro Logic IIx Movie mode decoding. This setting expands
+Dolby Pro Logic II Movie or Dolby Digital 5.1 to 7.1 discrete
+movie channels.</li>
+<li><span class="option-value">"neo6Cinema"</span> - DTS Neo:6 Cinema mode decoding. Sources recorded in 2-channel
+format are enhanced up to 7 channels.</li>
+<li><span class="option-value">"off"</span> - Disable Sound Field Movie function.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"nightMode"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#NightMode">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - Enable Night mode.</li>
+<li><span class="option-value">"off"</span> - Disable Night mode.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"pureDirect"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#PureDirect">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"on"</span> - Enable Pure Direct function.</li>
+<li><span class="option-value">"off"</span> - Disable Pure Direct function.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"optimizer"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#Optimizer">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"normal"</span> - Normal mode. Adjusts for the reference level of a movie.</li>
+<li><span class="option-value">"low"</span> - Low mode. Adjusts for a CD or other software whose average sound
+pressure level is processed highly.</li>
+<li><span class="option-value">"off"</span> - Disable Sound Optimizer function.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"calibrationType"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#CalibrationType">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"fullFlat"</span> - Full Flat. Makes the measurement of frequency from each speaker
+flat.</li>
+<li><span class="option-value">"engineer"</span> - Engineer. Sets to "the Sony listening room standard" frequency
+characteristics.</li>
+<li><span class="option-value">"frontReference"</span> - Front Reference. Adjusts the characteristics of all of the
+speakers to match the characteristics of the front speaker.</li>
+<li><span class="option-value">"off"</span> - Disable Calibration type.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"voice"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#Voice">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"type1"</span> - Type 1. Standard.</li>
+<li><span class="option-value">"type2"</span> - Type 2. Dialogue range is enhanced.</li>
+<li><span class="option-value">"type3"</span> - Type 3. Dialogue range is enhanced, and the parts of range
+difficult to be discerned by the elderly are boosted.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"avSyncMs"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#AVSyncMs">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">0</span> - Min value.</li>
+<li><span class="option-value">&nbsp;&nbsp;:</span>&nbsp;&nbsp;(step by 25)</li>
+<li><span class="option-value">300</span> - Max value.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"dualMono"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#DualMono">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"main_sub"</span> - Main/Sub mode. Sound in the main language will be output through
+the front left speaker and sound in the sub language will be
+output through the front right speaker simultaneously.</li>
+<li><span class="option-value">"main"</span> - Main mode. Sound in the main language will be output.</li>
+<li><span class="option-value">"sub"</span> - Sub mode. Sound in the sub language will be output.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"wideStereo"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#WideStereo">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"high"</span> - Wide Stereo High mode.</li>
+<li><span class="option-value">"standard"</span> - Wide Stereo Standard mode.</li>
+</ul>
+</li>
+<li>In case <i>"target"</i> is <em><b>"sceneSelection"</b></em>&nbsp;  <small>(<a href="../../../service/audio/v1_0/service-summary.html#SceneSelection">more...</a>)</small>
+<ul class="paramValues">
+<li><span class="option-value">"movie"</span> - Movie scene.</li>
+<li><span class="option-value">"music"</span> - Music scene.</li>
+<li><span class="option-value">"party"</span> - Party scene.</li>
+<li><span class="option-value">"night"</span> - Night scene.</li>
+<li><span class="option-value">""</span> - Scene Selection Settings is Unknown.</li>
+</ul>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td class="boardcell" colspan="2"><a name="deviceUIInfo" class="anchor"><span class="parameter-name">deviceUIInfo</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">?</td>
+<td class="boardcell">""</td>
+<td class="boardcell">
+<div class="block">This parameter provides information how devices display UI information.
+This format is product dependent and actual format should be explained in
+<a href="../../../../doc/Device+Specific+Information.html" target="_top">Device Specific Info</a> page .</div>
+</td>
+</tr>
+<tr>
+<td class="boardcell" colspan="2"><a name="title" class="anchor"><span class="parameter-name">title</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">?</td>
+<td class="boardcell">""</td>
+<td class="boardcell">
+<div class="block">Title of settings for display purpose. "" means no specified title.</div>
+</td>
+</tr>
+<tr>
+<td class="boardcell" colspan="2"><a name="titleTextID" class="anchor"><span class="parameter-name">titleTextID</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">?</td>
+<td class="boardcell">""</td>
+<td class="boardcell">
+<div class="block">The identifier, which is unique in product, assigned by server to
+identify title. "" means no specified title text ID.</div>
+</td>
+</tr>
+<tr>
+<td class="boardcell" colspan="2"><a name="type" class="anchor"><span class="parameter-name">type</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">?</td>
+<td class="boardcell">""</td>
+<td class="boardcell">
+<div class="block">Type of value to identify actual value type of target.
+<ul class="paramValues">
+<li><span class="option-value">"enumTarget"</span> - Enumeration type for specifying finite candidates.
+         (ex) "high", "mid", "low"</li>
+<li><span class="option-value">"booleanTarget"</span> - Boolean type only two candidates available. (ex)
+         "off, "on"/"false", "true"</li>
+<li><span class="option-value">"integerTarget"</span> - Integer type. (ex) "1", "-10"</li>
+<li><span class="option-value">"doubleNumberTarget"</span> - Number type including double defined in
+         Scalar Web API. (ex) "1.5", "-10.0"</li>
+<li><span class="option-value">"stringTarget"</span> - String type. (ex) "hello"</li>
+<li><span class="option-value">""</span> - no type information.</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td class="boardcell" colspan="2"><a name="isAvailable" class="anchor"><span class="parameter-name">isAvailable</span></a></td>
+<td class="boardcell">boolean</td>
+<td class="boardcell">?</td>
+<td class="boardcell">true</td>
+<td class="boardcell">
+<div class="block">This target is currently available or not.</div>
+</td>
+</tr>
+<tr>
+<td class="nestParent" colspan="2"><a name="candidate" class="anchor"><span class="parameter-name">candidate</span></a></td>
+<td class="boardcell">(object-array)</td>
+<td class="boardcell">?</td>
+<td class="boardcell">null</td>
+<td class="boardcell">
+<div class="block">Candidates of specified settings. Only If there is no candidate, null is
+set.</div>
+</td>
+</tr>
+<tr>
+<td class="nestPadding">&nbsp;</td>
+<td class="boardcell"><a name="title" class="anchor"><span class="parameter-name">title</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">?</td>
+<td class="boardcell">""</td>
+<td class="boardcell">
+<div class="block">Title of candidate for UI display purpose. "" means no specified title</div>
+</td>
+</tr>
+<tr>
+<td class="nestPadding">&nbsp;</td>
+<td class="boardcell"><a name="titleTextID" class="anchor"><span class="parameter-name">titleTextID</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">?</td>
+<td class="boardcell">""</td>
+<td class="boardcell">
+<div class="block">The unique identifier, which is unique in product, assigned by server to
+identify title. "" means no specified title text ID.</div>
+</td>
+</tr>
+<tr>
+<td class="nestPadding">&nbsp;</td>
+<td class="boardcell"><a name="value" class="anchor"><span class="parameter-name">value</span></a></td>
+<td class="boardcell">string</td>
+<td class="boardcell">?</td>
+<td class="boardcell">""</td>
+<td class="boardcell">
+<div class="block">Value of candidate. "" can be set only when settings value is integer and
+the candidate can be represented by "max", "min", and "step".</div>
+</td>
+</tr>
+<tr>
+<td class="nestPadding">&nbsp;</td>
+<td class="boardcell"><a name="isAvailable" class="anchor"><span class="parameter-name">isAvailable</span></a></td>
+<td class="boardcell">boolean</td>
+<td class="boardcell">?</td>
+<td class="boardcell">true</td>
+<td class="boardcell">
+<div class="block">This candidate is currently available or not.</div>
+</td>
+</tr>
+<tr>
+<td class="nestPadding">&nbsp;</td>
+<td class="boardcell"><a name="max" class="anchor"><span class="parameter-name">max</span></a></td>
+<td class="boardcell">double</td>
+<td class="boardcell">?</td>
+<td class="boardcell">-1</td>
+<td class="boardcell">
+<div class="block">Max value of specified settings. Only If value of target is not indicated
+by numerical number, -1 is set.</div>
+</td>
+</tr>
+<tr>
+<td class="nestPadding">&nbsp;</td>
+<td class="boardcell"><a name="min" class="anchor"><span class="parameter-name">min</span></a></td>
+<td class="boardcell">double</td>
+<td class="boardcell">?</td>
+<td class="boardcell">-1</td>
+<td class="boardcell">
+<div class="block">Min value of specified settings. Only If value of target is not indicated
+by numerical number, -1 is set.</div>
+</td>
+</tr>
+<tr>
+<td class="nestPadding">&nbsp;</td>
+<td class="boardcell"><a name="step" class="anchor"><span class="parameter-name">step</span></a></td>
+<td class="boardcell">double</td>
+<td class="boardcell">?</td>
+<td class="boardcell">-1</td>
+<td class="boardcell">
+<div class="block">Step value of specified settings. Only If value of target is not
+indicated by numerical number, -1 is set.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>JSON Example</dt>
+<dd>
+<pre class="prettyprint">{
+    "id": 73,
+    "result": [[{
+        "target": "aac",
+        "candidate": [
+            {
+                "value": "downmixPcm",
+                "isAvailable": true
+            },
+            {
+                "value": "aac",
+                "isAvailable": true
+            }
+        ],
+        "currentValue": "downmixPcm"
+    }]]
+}
+</pre></dd>
+<dt>Error Code</dt>
+<dd>No additional error code is defined. Refer to <a href="../../../errorcode-list.html">error code</a> for common errors.</dd>
+</dl>
+
+    </div>
+
+    <div id="tab_page_notification" class="tab-page">
+      
+    </div>
+
+    <div id="tab_page_references" class="tab-page">
+      <dl>
+<dt>Related APIs</dt>
+<dd>
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="colFirst">name</th>
+<th scope="col" class="colLast">description</th>
+</tr>
+<tr>
+<td class="colFirst"><a href="../../../service/audio/v1_1/setSoundSettings.html">setSoundSettings <small>(v1.1)</small></a></td>
+<td class="colLast">
+<div class="block">This API provides a function to change settings related to sound setting
+items.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>Supported Devices</dt>
+<dd>
+<table class="apiParameters" border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="colFirst">Device</th>
+<th scope="col">Interface Version</th>
+<th scope="col" class="colLast">description</th>
+</tr>
+<tr>
+<td class="colFirst">TV</td>
+<td class="colFirst"><a href="../../../device/tv/v3_1_0/index.html">v3.1.0</a></td>
+<td class="colLast">
+<div class="block">List of all APIs supported by FY15 TV after software update called OTA0.</div>
+</td>
+</tr>
+<tr>
+<td class="colFirst">TV</td>
+<td class="colFirst"><a href="../../../device/tv/v3_2_0/index.html">v3.2.0</a></td>
+<td class="colLast">
+<div class="block">List of all APIs supported by FY15 TV after software update called OTA2.<br></div>
+</td>
+</tr>
+<tr>
+<td class="colFirst">TV</td>
+<td class="colFirst"><a href="../../../device/tv/v3_3_0/index.html">v3.3.0</a></td>
+<td class="colLast">
+<div class="block">List of all APIs supported by FY15 TV after software update called OTA3.<br>
+getRemoteDeviceSettings(v1.0) is added in "system" service.</div>
+</td>
+</tr>
+<tr>
+<td class="colFirst">TV</td>
+<td class="colFirst"><a href="../../../device/tv/v3_4_0/index.html">v3.4.0</a></td>
+<td class="colLast">
+<div class="block">List of all APIs supported by FY15 TV after software update called OTA4.<br>
+"broadcastLink" service is added.</div>
+</td>
+</tr>
+</table>
+</dd>
+</dl>
+
+    </div>
+
+  </div> <!-- ./contentContainer -->
+
+  </div> <!-- ./details -->
+
+</div> <!-- ./contentContainer -->
+
+<!-- footer -->
+<div id="footer_bg">
+  <div id="footer_content">
+    <div class="footer-links">
+    <ul>
+      <li></li>
+      <li></li>
+    </ul>
+    </div>
+    <p class="copyright">Copyright 2013 -2015 (C) SONY Corp. All rights reserved.</p>
+  </div>
+</div> <!-- ./footer_bg -->
+
+</div> <!-- ./container -->
+
+<!-- Script for Tabs -->
+<script type="text/javascript">
+  <!--
+    tabMenu.setup = {
+      tabHeaders: document.getElementById('tab_menu').getElementsByTagName('li'),
+      tabPages: [
+        document.getElementById('tab_page_request'),
+        document.getElementById('tab_page_response'),
+        document.getElementById('tab_page_notification'),
+        document.getElementById('tab_page_references')
+      ]
+    };
+    tabMenu.init();
+
+    if (1 < window.location.search.length) {
+      var query = window.location.search.substring(1);
+      tabMenu.showpagebyname(query);
+    } else {
+      tabMenu.showpagebyname('request');
+    }
+  //-->
+</script>
+
+</body>
+
+</html>

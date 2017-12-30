@@ -38,14 +38,12 @@ DATE = '%Y-%m-%dT%H:%M:%S'
 
 
 def get_mac_addresses(ip_addresses):
-    for ip_address in ip_addresses:
+    for ip_address, _ in ip_addresses.keys():
         Popen(["ping", "-c 1", ip_address], stdout=PIPE)
     proc = Popen("arp -a", stdout=PIPE)
     data = proc.communicate()[0]
 
-    results = []
-
-    for ip_address in ip_addresses[:]:
+    for ip_address, port in ip_addresses.keys()[:]:
         if ip_address in data:
             ip_data = data[data.find(ip_address):]
             mac = re.search(r"(([a-f\d]{1,2}:){5}[a-f\d]{1,2})", ip_data)
@@ -55,16 +53,14 @@ def get_mac_addresses(ip_addresses):
                 mac = mac.groups()[0].replace('-', ':').upper()
             else:
                 mac = '00:00:00:00:00:00'
-            results += [[ip_address, mac]]
-            ip_addresses.remove(ip_address)
+
+            ip_addresses[(ip_address, port)]['mac'] = mac
+
             _LOGGER.debug(
                 '||',
-                results=results,
                 ip_address=ip_address,
                 mac=mac
             )
-
-    return results
 
 
 def cache_icons(sony_api, event):
@@ -107,15 +103,18 @@ def cache_icons(sony_api, event):
                 thread.join(3.0)
 
 
-def get_icon(url):
-    icon_data = requests.get(url).content
+def create_icon(str_icon):
     icon = StringIO()
     try:
-        icon.write(icon_data)
+        icon.write(str_icon)
     except:
         pass
     icon.seek(0)
     return icon
+
+
+def get_icon(url):
+    return create_icon(requests.get(url).content)
 
 
 class PlayTimeMixin(object):
@@ -125,6 +124,10 @@ class PlayTimeMixin(object):
     @property
     def duration(self):
         return time.gmtime(self._duration)
+
+    @duration.setter
+    def duration(self, value):
+        raise NotImplementedError
 
     @property
     def start_time(self):

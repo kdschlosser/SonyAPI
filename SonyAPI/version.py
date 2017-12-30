@@ -24,7 +24,12 @@ __version__ = '0.1.1b2'
 __version_info__ = (0, 1, 1, 'b2')
 __description__ = 'Sony Bravia TV interface (generation 3)'
 __url__ = 'https://github.com/kdschlosser/SonyAPI'
-__requirements__ = ['requests >= 2.18.4', 'setuptools >= 36.3.0']
+__requirements__ = [
+    'requests >= 2.18.4',
+    'setuptools >= 36.3.0',
+    'pyCrypto',
+    'Crypto'
+]
 __keywords__ = 'Sony SonyAPI Bravia BraviaAPI SonyTV BraviaTV'
 __license__ = 'GPL-2.0'
 __download_url__ = (

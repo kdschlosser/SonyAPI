@@ -1,0 +1,1378 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<!--  -->
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <title>Error Code (Scalar Web API Specification (TV))</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+  <link rel="stylesheet" type="text/css" href="resources/scripts/prettify.css" title="prettify">
+  <link rel="shortcut icon" href="resources/favicon.ico">
+  <script type="text/javascript" src="resources/scripts/prettify.js"></script>
+  <script type="text/javascript">
+    <!--
+      function windowTitle() {
+        if (location.href.indexOf('is-external=true') == -1) {
+          parent.document.title="Error Code (Scalar Web API Specification (TV))";
+        }
+      }
+    //-->
+  </script>
+</head>
+
+<body onload="windowTitle();">
+
+<!-- container -->
+<div id="container">
+
+<!-- header -->
+<div id="header_bg">
+  <div id="header_content">
+<h1><a href="index.html" target="_top">Scalar WebAPI Specification</a></h1>
+<div>
+<ul class="header-menu">
+<li id="deviceinfo" class="menu-item"><a href="../doc/Device+Specific+Information.html" target="_top">Device Info</a>
+<ul>
+<li class="menu-subitem"><a href="device/tv/index.html" class="menu-subitem-link">TV</a>
+<ul>
+<li><a href="device/tv/v1_0_0/index.html">v1.0.0</a></li>
+<li><a href="device/tv/v1_1_0/index.html">v1.1.0</a></li>
+<li><a href="device/tv/v1_2_0/index.html">v1.2.x</a></li>
+<li><a href="device/tv/v2_0_0/index.html">v2.0.0</a></li>
+<li><a href="device/tv/v2_1_0/index.html">v2.1.0</a></li>
+<li><a href="device/tv/v2_2_0/index.html">v2.2.0</a></li>
+<li><a href="device/tv/v2_3_0/index.html">v2.3.0</a></li>
+<li><a href="device/tv/v2_4_0/index.html">v2.4.0</a></li>
+<li><a href="device/tv/v3_0_0/index.html">v3.0.0</a></li>
+<li><a href="device/tv/v3_1_0/index.html">v3.1.0</a></li>
+<li><a href="device/tv/v3_2_0/index.html">v3.2.0</a></li>
+<li><a href="device/tv/v3_3_0/index.html">v3.3.0</a></li>
+<li><a href="device/tv/v3_4_0/index.html">v3.4.0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li id="moreinfo" class="menu-item"><a>More...</a>
+<ul>
+<li><a href="resource-uri-list.html">Device Resource URI</a></li>
+<li><a href="errorcode-list.html">Error Code</a></li>
+<li><a href="deprecated-list.html">Deprecated List</a></li>
+<li><a href="index-all.html">Index List</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<!-- content header -->
+<div class="header header-padding">
+  <h1 title="Error Code" class="title">
+    Error Code
+    <a href="index.html?errorcode-list.html" target="_top" class="anchor-quiet-link">¶</a>
+  </h1>
+</div>
+
+<!-- content container -->
+<div class="contentContainer">
+  <div class="description footer-padding">
+
+  <div class="contentContainer">
+    <div class="block">
+      <div>In Scalar Web API Protocol, HTTP and JSON-RPC are used, so we can use status
+code of both layers. This document describes about error handling in
+different layers and lists examples for major errors.</div>
+
+    </div>
+
+    <div class="block error-code-define">
+    <dl>
+      <dt>Overview</dt>
+
+        <dd>
+        Error code is defined between 0-65535. The error code is divided into
+        two areas (Scalar Web API system area and user area).
+        <table>
+        <tr>
+        <th width="200">error code</th>
+        <th>area</th>
+        </tr>
+        <tr>
+        <td>0 - 32767</td>
+        <td>Scalar Web API system area</td>
+        </tr>
+        <tr>
+        <td>32768 - 65535</td>
+        <td>user area</td>
+        </tr>
+        </table>
+        </dd>
+
+        <dd>
+        User area is divided for common area and each service.
+        <table>
+        <tr>
+        <th width="200">error code</th>
+        <th>area</th>
+        </tr>
+        <tr>
+        <td>32768 - 39999</td>
+        <td>unused area</td>
+        </tr>
+        <tr>
+        <td>40000 - 40199</td>
+        <td>service common area</td>
+        </tr>
+        <tr>
+        <td>40200 - 40399</td>
+        <td>system service area</td>
+        </tr>
+        <tr>
+        <td>40400 - 40599</td>
+        <td>camera service area</td>
+        </tr>
+        <tr>
+        <td>40600 - 40799</td>
+        <td>videoScreen service area</td>
+        </tr>
+        <tr>
+        <td>40800 - 40999</td>
+        <td>audio service area</td>
+        </tr>
+        <tr>
+        <td>41000 - 41199</td>
+        <td>avContent service area</td>
+        </tr>
+        <tr>
+        <td>41200 - 41399</td>
+        <td>recording service area</td>
+        </tr>
+        <tr>
+        <td>41400 - 41599</td>
+        <td>appControl service area</td>
+        </tr>
+        <tr>
+        <td>41600 - 41799</td>
+        <td>browser service area</td>
+        </tr>
+        <tr>
+        <td>42000 - 42199</td>
+        <td>accessControl service</td>
+        </tr>
+
+        <tr>
+        <td>42200 - 42399</td>
+        <td>contentDownload service</td>
+        </tr>
+        <tr>
+        <td>42400 - 42599</td>
+        <td>encryption service</td>
+        </tr>
+        <tr>
+        <td>42600 - 42799</td>
+        <td>contentSync service</td>
+        </tr>
+        <tr>
+        <td>42800 - 42999</td>
+        <td>contentSync service</td>
+        </tr>
+        <tr>
+        <td>43000 - 65535</td>
+        <td>reserved area</td>
+        </tr>
+        </table>
+        </dd>
+
+        <dd>
+        This is legend of error code's explanation table.
+        <table>
+        <tr>
+        <th>code</th>
+        <th>Reason phrase example</th>
+        <th>JSON example</th>
+        <th>Explanation</th>
+        </tr>
+        <tr>
+        <td>Error code. This is 1st Element of "error".</td>
+        <td>Error reason message example. This is 2nd Element of "error".</td>
+        <td>"error" member's example in response. This is shown by Bold and
+        Italic.</td>
+        <td>Explanation of error case.</td>
+        </tr>
+        </table>
+        </dd><dt>HTTP Major Error Code in Scalar Web API</dt>
+
+        <dd>
+        This is basic policy.
+
+        <ul>
+        <li>Should follow original HTTP Definition</li>
+        <li>Should not map others to HTTP error forcibly</li>
+        </ul>
+        In case HTTP status code is other than 200 OK and if HTTP server
+        returns response body in accordance with Scalar Web API protocol,
+        error code must be same as HTTP error code. Here, major error codes
+        are listed up.
+        <table>
+        <tr>
+        <th class="error-code">code</th>
+        <th class="error-code-example">Reason phrase example</th>
+        <th class="error-code-json">JSON example</th>
+        <th>Explanation</th>
+        </tr>
+        <tr>
+        <td><strong>401</strong></td>
+        <td>Unauthorized</td>
+        <td><i>"error": [401, "Unauthorized"]</i></td>
+        <td>The request requires user authentication.</td>
+        </tr>
+        <tr>
+        <td><strong>403</strong></td>
+        <td>Forbidden</td>
+        <td><i>"error": [403, "Forbidden"]</i></td>
+        <td>The server understood the request, but is refusing to fulfill it.
+        Client does not have permission to access.</td>
+        </tr>
+        <tr>
+        <td><strong>404</strong></td>
+        <td>Not Found</td>
+        <td><i>"error": [404, "Not Found"]</i></td>
+        <td>For cases where request is not matched to any supported API
+        version.</td>
+        </tr>
+        <tr>
+        <td><strong>413</strong></td>
+        <td>Request Entity Too Large</td>
+        <td><i>"error": [413, "Request Entity Too Large"]</i></td>
+        <td>The accepted body size of a client request exceeds maximum.</td>
+        </tr>
+        <tr>
+        <td><strong>414</strong></td>
+        <td>Request-URI Too Long</td>
+        <td><i>"error": [414, "Request-URI Too Long"]</i></td>
+        <td>The accepted URI length of a client request exceeds maximum.</td>
+        </tr>
+        <tr>
+        <td><strong>501</strong></td>
+        <td>Not Implemented</td>
+        <td><i>"error": [501, "Not Implemented"]</i></td>
+        <td>When the request method is not implemented on the server.</td>
+        </tr>
+        <tr>
+        <td><strong>503</strong></td>
+        <td>Service Unavailable</td>
+        <td><i>"error": [503, "Service Unavailable"]</i></td>
+        <td>When server is in temporally unavailable state which may occur
+        due to over concurrent connections. (We don't define the number of
+        max connections because it depends on servers.)</td>
+        </tr>
+        </table>
+        </dd>
+
+      <!-- error codes -->
+      <dt>System Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="1" class="anchor">1</a></strong></td>
+<td>
+<div class="block">Any</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [1, "Any"]</span></div>
+</td>
+<td>
+<div class="block">A generic error code which can be used with any error. But it is
+recommended not to use.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="2" class="anchor">2</a></strong></td>
+<td>
+<div class="block">Timeout</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [2, "Timeout"]</span></div>
+</td>
+<td>
+<div class="block">For cases server can not reply in time.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="3" class="anchor">3</a></strong></td>
+<td>
+<div class="block">Illegal Argument</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [3, "Illegal Argument"]</span></div>
+</td>
+<td>
+<div class="block">For cases "params" value in request does not follow API specification.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="5" class="anchor">5</a></strong></td>
+<td>
+<div class="block">Illegal Request</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [5, "Illegal Request"]</span></div>
+</td>
+<td>
+<div class="block">For cases request body is empty, has no id or invalid id, has no method,
+has no params, or params is not an array.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="7" class="anchor">7</a></strong></td>
+<td>
+<div class="block">Illegal State</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [7, "Illegal State"]</span></div>
+</td>
+<td>
+<div class="block">For cases server can not handle the request at this time.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="12" class="anchor">12</a></strong></td>
+<td>
+<div class="block">No Such Method</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [12, "No Such Method"]</span></div>
+</td>
+<td>
+<div class="block">For cases requested API does not exist.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="14" class="anchor">14</a></strong></td>
+<td>
+<div class="block">Unsupported Version</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [14, "Unsupported Version"]</span></div>
+</td>
+<td>
+<div class="block">For cases requested version is not supported in the specified service.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="15" class="anchor">15</a></strong></td>
+<td>
+<div class="block">Unsupported Operation</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [15, "Unsupported Operation"]</span></div>
+</td>
+<td>
+<div class="block">For cases server can not handle the request with respect to the specified
+parameters.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>Common Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="40000" class="anchor">40000</a></strong></td>
+<td>
+<div class="block">Request Retry</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40000, "Request Retry"]</span></div>
+</td>
+<td>
+<div class="block">Long Polling timeout happens.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="40001" class="anchor">40001</a></strong></td>
+<td>
+<div class="block">Client Over Maximum</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40001, "Clients Over Maximum"]</span></div>
+</td>
+<td>
+<div class="block">The number of Long Polling client exceeds maximum.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="40002" class="anchor">40002</a></strong></td>
+<td>
+<div class="block">Encryption Failed</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40002, "Encryption Failed"]</span></div>
+</td>
+<td>
+<div class="block">Encryption error. Failed to encrypt/decrypt in encryption API.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="40003" class="anchor">40003</a></strong></td>
+<td>
+<div class="block">Request Duplicated</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40003, "Request Duplicated"]</span></div>
+</td>
+<td>
+<div class="block">A client must wait for previous response.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="40004" class="anchor">40004</a></strong></td>
+<td>
+<div class="block">Multiple Settings Failed</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40004, "Multiple Settings Failed"]</span></div>
+</td>
+<td>
+<div class="block">One or more settings are not set by error when multiple settings are set.
+Client needs to call paired APIs (getXXXSettings) to identify which
+parameters fail to be updated.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="40005" class="anchor">40005</a></strong></td>
+<td>
+<div class="block">Display is turned off</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40005, "Display is turned off"]</span></div>
+</td>
+<td>
+<div class="block">Display is turned off.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>camera Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="40400" class="anchor">40400</a></strong></td>
+<td>
+<div class="block">Shooting Fail</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40400, "Shooting Fail"]</span></div>
+</td>
+<td>
+<div class="block">Failed to photograph.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="40401" class="anchor">40401</a></strong></td>
+<td>
+<div class="block">Camera Not Ready</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40401, "Camera Not Ready"]</span></div>
+</td>
+<td>
+<div class="block">Camera is not ready.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="40402" class="anchor">40402</a></strong></td>
+<td>
+<div class="block">Already Running Polling API</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40402, "Already Running Polling API"]</span></div>
+</td>
+<td>
+<div class="block">Already Running Polling API.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="40403" class="anchor">40403</a></strong></td>
+<td>
+<div class="block">Still Capturing Not Finished</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40403, "Still Capturing Not Finished"]</span></div>
+</td>
+<td>
+<div class="block">Capturing has Not Finished.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>videoScreen Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="40600" class="anchor">40600</a></strong></td>
+<td>
+<div class="block">Screen Change in Progress</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40600, "Screen Change in Progress"]</span></div>
+</td>
+<td>
+<div class="block">Another request in progress.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>audio Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="40800" class="anchor">40800</a></strong></td>
+<td>
+<div class="block">Target Not Supported</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40800, "Target Not Supported"]</span></div>
+</td>
+<td>
+<div class="block">Target is not supported or can not be controlled for some device specific
+reason.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="40801" class="anchor">40801</a></strong></td>
+<td>
+<div class="block">Volume Out of Range</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [40801, "Volume Out of Range"]</span></div>
+</td>
+<td>
+<div class="block">Volume is out of range.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>avContent Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="41000" class="anchor">41000</a></strong></td>
+<td>
+<div class="block">Content is Protected</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41000, "Content is Protected"]</span></div>
+</td>
+<td>
+<div class="block">Content is protected.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41001" class="anchor">41001</a></strong></td>
+<td>
+<div class="block">Content does Not Exist</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41001, "Content does Not Exist"]</span></div>
+</td>
+<td>
+<div class="block">Content does not exist.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41002" class="anchor">41002</a></strong></td>
+<td>
+<div class="block">Storage has no content.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41002, "Storage has no content."]</span></div>
+</td>
+<td>
+<div class="block">Storage has no content.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41003" class="anchor">41003</a></strong></td>
+<td>
+<div class="block">Some content could not be deleted</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41003, "Some content could not be deleted"]</span></div>
+</td>
+<td>
+<div class="block">Some content could not be deleted.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41011" class="anchor">41011</a></strong></td>
+<td>
+<div class="block">Channel Fixed by USB Recording</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41011, "Channel Fixed by USB Recording"]</span></div>
+</td>
+<td>
+<div class="block">Channel fixed by USB recording.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41012" class="anchor">41012</a></strong></td>
+<td>
+<div class="block">Channel Fixed by SCART Recording</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41012, "Channel Fixed by SCART Recording"]</span></div>
+</td>
+<td>
+<div class="block">Channel fixed by SCART recording.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41013" class="anchor">41013</a></strong></td>
+<td>
+<div class="block">Chapter doesn't exist</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41013, "Chapter doesn't exist"]</span></div>
+</td>
+<td>
+<div class="block">Chapter doesn't exist.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41014" class="anchor">41014</a></strong></td>
+<td>
+<div class="block">Channel can’t be uniquely determind.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41014, "Channel can’t be uniquely determind"]</span></div>
+</td>
+<td>
+<div class="block">Channel can’t be uniquely determind.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41015" class="anchor">41015</a></strong></td>
+<td>
+<div class="block">Empty Channel list.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41015, "Empty Channel list"]</span></div>
+</td>
+<td>
+<div class="block">Empty Channel list.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41020" class="anchor">41020</a></strong></td>
+<td>
+<div class="block">Storage doesn't exist</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41020, "Storage doesn't exist"]</span></div>
+</td>
+<td>
+<div class="block">Storage doesn't exist.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41021" class="anchor">41021</a></strong></td>
+<td>
+<div class="block">Storage is full</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41021, "Storage is full"]</span></div>
+</td>
+<td>
+<div class="block">Storage is full.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41022" class="anchor">41022</a></strong></td>
+<td>
+<div class="block">Content attribute setting failed.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41022, "Content attribute setting failed."]</span></div>
+</td>
+<td>
+<div class="block">Content attribute setting failed.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41023" class="anchor">41023</a></strong></td>
+<td>
+<div class="block">Unknown group id.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41023, "Unknown group id."]</span></div>
+</td>
+<td>
+<div class="block">Unknown group id.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>recording Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="41200" class="anchor">41200</a></strong></td>
+<td>
+<div class="block">Unmatched Request</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41200, "Unmatched request"]</span></div>
+</td>
+<td>
+<div class="block">Scheduled item specified in the request does not exist.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41201" class="anchor">41201</a></strong></td>
+<td>
+<div class="block">Now Already Recording</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41201, "Now Already Recording"]</span></div>
+</td>
+<td>
+<div class="block">Middle of recording.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41221" class="anchor">41221</a></strong></td>
+<td>
+<div class="block">Number of Schedule Over Maximum</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41221, "Number of Schedule Over Maximum"]</span></div>
+</td>
+<td>
+<div class="block">Device can not accept this item because number of registered items
+exceeds the capacity.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41222" class="anchor">41222</a></strong></td>
+<td>
+<div class="block">Overlapped with Other Schedules</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41222, "Overlapped with Other Schedules"]</span></div>
+</td>
+<td>
+<div class="block">Timeline of this item overlaps w/ other items.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41223" class="anchor">41223</a></strong></td>
+<td>
+<div class="block">Duration Too Short</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41223, "Duration Too Short"]</span></div>
+</td>
+<td>
+<div class="block">The duration of the scheduled item too short.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41224" class="anchor">41224</a></strong></td>
+<td>
+<div class="block">End Time Passed</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41224, "End Time Passed"]</span></div>
+</td>
+<td>
+<div class="block">The end time of item has already passed.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41225" class="anchor">41225</a></strong></td>
+<td>
+<div class="block">B-CAS Error</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41225, "B-CAS Error"]</span></div>
+</td>
+<td>
+<div class="block">Conditional access related error (Some device is possible to check this
+on registering item)</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41226" class="anchor">41226</a></strong></td>
+<td>
+<div class="block">Program not found</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41226, "Program not found"]</span></div>
+</td>
+<td>
+<div class="block">Program not found</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41227" class="anchor">41227</a></strong></td>
+<td>
+<div class="block">recording not allowed due to copy control</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41227,
+              "recording not allowed due to copy control"]</span></div>
+</td>
+<td>
+<div class="block">recording not allowed due to copy control</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41228" class="anchor">41228</a></strong></td>
+<td>
+<div class="block">channel is not contracted.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41228, "channel is not contracted"]</span></div>
+</td>
+<td>
+<div class="block">channel is not contracted</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41229" class="anchor">41229</a></strong></td>
+<td>
+<div class="block">program has rating information.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41229, "program has rating information"]</span></div>
+</td>
+<td>
+<div class="block">failure due to rating information</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41230" class="anchor">41230</a></strong></td>
+<td>
+<div class="block">reminder already exists for this eventId.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41230,
+              "reminder already exists for this eventId."]</span></div>
+</td>
+<td>
+<div class="block">reminder already exists for this eventId.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41231" class="anchor">41231</a></strong></td>
+<td>
+<div class="block">the start time of item has already passed.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41231,
+              "the start time of item has already passed."]</span></div>
+</td>
+<td>
+<div class="block">the start time of item has already passed.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41232" class="anchor">41232</a></strong></td>
+<td>
+<div class="block">program will start in less than 30 seconds.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41232,
+              "program will start in less than 30 seconds."]</span></div>
+</td>
+<td>
+<div class="block">program will start in less than 30 seconds.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41233" class="anchor">41233</a></strong></td>
+<td>
+<div class="block">storage is not ready.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41233, "storage is not ready."]</span></div>
+</td>
+<td>
+<div class="block">storage is not ready.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41234" class="anchor">41234</a></strong></td>
+<td>
+<div class="block">storage is not registered.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41234, "storage is not registered."]</span></div>
+</td>
+<td>
+<div class="block">storage is not registered.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41235" class="anchor">41235</a></strong></td>
+<td>
+<div class="block">event is not contracted.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41235, "event is not contracted"]</span></div>
+</td>
+<td>
+<div class="block">event is not contracted.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>appControl Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="41400" class="anchor">41400</a></strong></td>
+<td>
+<div class="block">Another Request in Progress</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41400, "Another Request in Progress"]</span></div>
+</td>
+<td>
+<div class="block">Another request in progress.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41401" class="anchor">41401</a></strong></td>
+<td>
+<div class="block">Failed to Launch</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41401, "Failed to Launch"]</span></div>
+</td>
+<td>
+<div class="block">Failed to launch, for example, because another application is running.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41402" class="anchor">41402</a></strong></td>
+<td>
+<div class="block">Request In Progress</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41402, "Request In Progress"]</span></div>
+</td>
+<td>
+<div class="block">Request is accepted, but the completion of application launch can not be
+decided.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41403" class="anchor">41403</a></strong></td>
+<td>
+<div class="block">Failed to Terminate</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41403, "Failed to Terminate"]</span></div>
+</td>
+<td>
+<div class="block">Some applications can't be terminated.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>photoshare Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="41801" class="anchor">41801</a></strong></td>
+<td>
+<div class="block">count out of range</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41801, "count out of range"]</span></div>
+</td>
+<td>
+<div class="block">Specified count is out of range.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41802" class="anchor">41802</a></strong></td>
+<td>
+<div class="block">index out of range</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41802, "index out of range"]</span></div>
+</td>
+<td>
+<div class="block">Specified index is out of range.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41804" class="anchor">41804</a></strong></td>
+<td>
+<div class="block">not found</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41804, "not found"]</span></div>
+</td>
+<td>
+<div class="block">Specified file is not found.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41806" class="anchor">41806</a></strong></td>
+<td>
+<div class="block">wrong uuid</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41806, "wrong uuid"]</span></div>
+</td>
+<td>
+<div class="block">Specified uuid is invalid.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="41807" class="anchor">41807</a></strong></td>
+<td>
+<div class="block">wrong nickname</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [41807, "wrong nickname"]</span></div>
+</td>
+<td>
+<div class="block">Specified nickname is invalid.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>accessControl Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="42000" class="anchor">42000</a></strong></td>
+<td>
+<div class="block">Cannot Register Any More</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42000, "Cannot Register Any More"]</span></div>
+</td>
+<td>
+<div class="block">Client cannot be registered any more.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>contentDownload Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="42200" class="anchor">42200</a></strong></td>
+<td>
+<div class="block">Storage is full</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42200, "Storage is full"]</span></div>
+</td>
+<td>
+<div class="block">Storage is full.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="42201" class="anchor">42201</a></strong></td>
+<td>
+<div class="block">Storage DB is full</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42201, "Storage DB is full"]</span></div>
+</td>
+<td>
+<div class="block">Data base is full.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="42202" class="anchor">42202</a></strong></td>
+<td>
+<div class="block">E1000</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42202, "E1000"]</span></div>
+</td>
+<td>
+<div class="block">General error with Error ID which is defined by system.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>encryption Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="42400" class="anchor">42400</a></strong></td>
+<td>
+<div class="block">Key doesn't exist</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42400, "Key doesn't exist"]</span></div>
+</td>
+<td>
+<div class="block">Key doesn't exist yet.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>contentSync Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="42600" class="anchor">42600</a></strong></td>
+<td>
+<div class="block">Client application is not already paired</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42600,
+              "Client application is not already paired."]</span></div>
+</td>
+<td>
+<div class="block">Client application is not already paired.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="42601" class="anchor">42601</a></strong></td>
+<td>
+<div class="block">Server device is not under pairing mode</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42601, "Server device is not under pairing mode"]</span></div>
+</td>
+<td>
+<div class="block">Server device is not under pairing mode.</div>
+</td>
+</tr>
+</table>
+</dd>
+<dt>messaging Service Error Code</dt>
+<dd>
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<th scope="col" class="error-code">code</th>
+<th scope="col" class="error-code-example">Reason phrase example</th>
+<th scope="col" class="error-code-json">JSON Example</th>
+<th scope="col">Explanation</th>
+</tr>
+<tr>
+<td><strong><a name="42800" class="anchor">42800</a></strong></td>
+<td>
+<div class="block">Login operation is required.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42800, "Login operation is required."]</span></div>
+</td>
+<td>
+<div class="block">Client application needs log in operation.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="42801" class="anchor">42801</a></strong></td>
+<td>
+<div class="block">Client has already logged in.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42801, "Client has already logged in"]</span></div>
+</td>
+<td>
+<div class="block">Client has already logged in.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="42802" class="anchor">42802</a></strong></td>
+<td>
+<div class="block">Registration full.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42802, "Registration full"]</span></div>
+</td>
+<td>
+<div class="block">Registration full.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="42803" class="anchor">42803</a></strong></td>
+<td>
+<div class="block">Requested operation was rejected.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42803, "Requested operation is rejected by host"]</span></div>
+</td>
+<td>
+<div class="block">Requested operation was rejected by host.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="42804" class="anchor">42804</a></strong></td>
+<td>
+<div class="block">ID can not be assigned, because the ID is already assinged.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42804, "Duplicated ID can not be assigned"]</span></div>
+</td>
+<td>
+<div class="block">ID can not be assigned due to server error.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="42805" class="anchor">42805</a></strong></td>
+<td>
+<div class="block">Client has already joined the group.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42805, "Client has already joined the group"]</span></div>
+</td>
+<td>
+<div class="block">Client has already joined the group.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="42806" class="anchor">42806</a></strong></td>
+<td>
+<div class="block">Client does not join the group.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42806, "Client does not join the group"]</span></div>
+</td>
+<td>
+<div class="block">Client does not join the group.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="42807" class="anchor">42807</a></strong></td>
+<td>
+<div class="block">Group ID not found.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42807, "Group ID not found"]</span></div>
+</td>
+<td>
+<div class="block">Group ID not found.</div>
+</td>
+</tr>
+<tr>
+<td><strong><a name="42808" class="anchor">42808</a></strong></td>
+<td>
+<div class="block">Application information is not set.</div>
+</td>
+<td>
+<div class="block"><span class="errorExample">"error": [42808, "Application info is not set"]</span></div>
+</td>
+<td>
+<div class="block">Application information is not set.</div>
+</td>
+</tr>
+</table>
+</dd>
+ <!-- ./system errors -->
+    </dl>
+    </div> <!-- ./block -->
+  </div> <!-- ./contentContainer -->
+
+</div> <!-- ./description -->
+</div> <!-- ./contentContainer -->
+
+<!-- footer -->
+<div id="footer_bg">
+  <div id="footer_content">
+    <div class="footer-links">
+    <ul>
+      <li></li>
+      <li></li>
+    </ul>
+    </div>
+    <p class="copyright">Copyright 2013 -2015 (C) SONY Corp. All rights reserved.</p>
+  </div>
+</div> <!-- ./footer_bg -->
+
+</div> <!-- ./container -->
+
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<!--  -->
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <title>Scalar Web API Specification (TV)</title>
+  <link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+  <script type="text/javascript">
+    <!--
+    function selectservice(ref1, ref2) {
+      parent.packageFrame.location.href = ref1;
+      parent.classFrame.location.href = ref2;
+    }
+
+    var tabMenu = {
+      init: function() {
+        var headers = this.setup.tabHeaders;
+        var pages = this.setup.tabPages;
+        for (i = 0; i < pages.length; i++) {
+          if (i !== 0) pages[i].style.display = 'none';
+          headers[i].onclick = function() { tabMenu.showpagebyheader(this); return false; };
+        }
+      },
+      showpage: function(num) {
+        var headers = this.setup.tabHeaders;
+        var pages = this.setup.tabPages;
+        for(var i = 0; i < pages.length; i++) {
+          if (i == num) {
+            headers[num].className = 'tab-present';
+            pages[num].style.display = 'block';
+          } else {
+            headers[i].className = null;
+            pages[i].style.display = 'none';
+          }
+        }
+      },
+      showpagebyheader: function(obj) {
+        var headers = this.setup.tabHeaders;
+        var pages = this.setup.tabPages;
+        var num;
+        for (num = 0; num < headers.length; num++) {
+          if (headers[num] === obj) break;
+        }
+        this.showpage(num);
+      },
+      showpagebyname: function(pagename) {
+        var num = 0;
+        switch (pagename) {
+          case 'sort_category': num = 0; break;
+          case 'sort_az':  num = 1; break;
+          case 'sort_za':  num = 2; break;
+        }
+        this.showpage(num);
+      }
+    };
+    //-->
+  </script>
+</head>
+
+<body id="side_menu_page">
+
+<!-- header -->
+<div id="header_bg">
+  <div id="header_content">
+<ul id="api-service-menu" class="header-menu">
+<li id="apispec" class="menu-item"><a>Service <b>photoshare</b></a>
+<ul>
+<li><a href="../../../allapis-frame.html"><i><b>All APIs</b></i></a></li>
+<li><a href="#" onClick="selectservice('../../../service/commonapi/v1_0/service-frame.html', '../../../service/commonapi/v1_0/service-summary.html'); return false;"><i><b>Common APIs</b></i></a></li>
+<li><a href="#" onClick="selectservice('../../../service/guide/v1_0/service-frame.html', '../../../service/guide/v1_0/service-summary.html'); return false;">guide</a></li>
+<li><a href="#" onClick="selectservice('../../../service/accesscontrol/v1_0/service-frame.html', '../../../service/accesscontrol/v1_0/service-summary.html'); return false;">accessControl</a></li>
+<li><a href="#" onClick="selectservice('../../../service/appcontrol/v1_0/service-frame.html', '../../../service/appcontrol/v1_0/service-summary.html'); return false;">appControl</a></li>
+<li><a href="#" onClick="selectservice('../../../service/audio/v1_0/service-frame.html', '../../../service/audio/v1_0/service-summary.html'); return false;">audio</a></li>
+<li><a href="#" onClick="selectservice('../../../service/avcontent/v1_0/service-frame.html', '../../../service/avcontent/v1_0/service-summary.html'); return false;">avContent</a></li>
+<li><a href="#" onClick="selectservice('../../../service/browser/v1_0/service-frame.html', '../../../service/browser/v1_0/service-summary.html'); return false;">browser</a></li>
+<li><a href="#" onClick="selectservice('../../../service/encryption/v1_0/service-frame.html', '../../../service/encryption/v1_0/service-summary.html'); return false;">encryption</a></li>
+<li><span class="deprecated-element"><a href="#" onClick="selectservice('../../../service/notification/v1_0/service-frame.html', '../../../service/notification/v1_0/service-summary.html'); return false;">notification</a></span></li>
+<li><a href="#" onClick="selectservice('../../../service/recording/v1_0/service-frame.html', '../../../service/recording/v1_0/service-summary.html'); return false;">recording</a></li>
+<li><a href="#" onClick="selectservice('../../../service/system/v1_0/service-frame.html', '../../../service/system/v1_0/service-summary.html'); return false;">system</a></li>
+<li><a href="#" onClick="selectservice('../../../service/videoscreen/v1_0/service-frame.html', '../../../service/videoscreen/v1_0/service-summary.html'); return false;">videoScreen</a></li>
+<li><a href="#" onClick="selectservice('../../../service/cec/v1_0/service-frame.html', '../../../service/cec/v1_0/service-summary.html'); return false;">cec</a></li>
+<li><a href="#" onClick="selectservice('../../../service/photoshare/v1_0/service-frame.html', '../../../service/photoshare/v1_0/service-summary.html'); return false;">photoshare</a></li>
+<li><a href="#" onClick="selectservice('../../../service/broadcastlink/v1_0/service-frame.html', '../../../service/broadcastlink/v1_0/service-summary.html'); return false;">broadcastLink</a></li>
+<li><a href="#" onClick="selectservice('../../../service/contentshare/v1_0/service-frame.html', '../../../service/contentshare/v1_0/service-summary.html'); return false;">contentshare</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div class="header-padding-frame">
+</div>
+
+    <ul id="tab_menu_side">
+      <li class="tab-present">
+        <a href="#tab_page_sort_az">
+          <img src="../../../resources/sort_az.png" boarder="0" />
+        </a></li>
+      <li class="tab-nopresent">
+        <a href="#tab_page_sort_za">
+          <img src="../../../resources/sort_za.png" boarder="0" />
+        </a></li>
+      <li class="tab-nopresent">
+        <a href="#tab_page_sort_category">
+          <img src="../../../resources/sort_category.png" boarder="0" />
+        </a></li>
+    </ul>
+
+    <div id="tab_page_sort_az" class="tab-page-side">
+      <ul class="frame-api-group">
+<li><span class="api-group-caption">C</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/closePhotoShare.html" title="API in photoshare service" target="classFrame">closePhotoShare <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption">G</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/getPhotoList.html" title="API in photoshare service" target="classFrame">getPhotoList <small>(v1.0)</small></a></li>
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/getPhotoShareServerInfo.html" title="API in photoshare service" target="classFrame">getPhotoShareServerInfo <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption">P</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/playPhotoContent.html" title="API in photoshare service" target="classFrame">playPhotoContent <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption">R</span>
+<ul class="frame-api-list">
+<li class="api-longpolling"><a href="../../../service/photoshare/v1_0/requestToNotifyEvent.html" title="API in photoshare service" target="classFrame">requestToNotifyEvent <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption">S</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/setBgmControlMode.html" title="API in photoshare service" target="classFrame">setBgmControlMode <small>(v1.0)</small></a></li>
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/setQuickInvitationMode.html" title="API in photoshare service" target="classFrame">setQuickInvitationMode <small>(v1.0)</small></a></li>
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/setUserNickName.html" title="API in photoshare service" target="classFrame">setUserNickName <small>(v1.0)</small></a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    <div id="tab_page_sort_za" class="tab-page-side">
+      <ul class="frame-api-group">
+<li><span class="api-group-caption">S</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/setBgmControlMode.html" title="API in photoshare service" target="classFrame">setBgmControlMode <small>(v1.0)</small></a></li>
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/setQuickInvitationMode.html" title="API in photoshare service" target="classFrame">setQuickInvitationMode <small>(v1.0)</small></a></li>
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/setUserNickName.html" title="API in photoshare service" target="classFrame">setUserNickName <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption">R</span>
+<ul class="frame-api-list">
+<li class="api-longpolling"><a href="../../../service/photoshare/v1_0/requestToNotifyEvent.html" title="API in photoshare service" target="classFrame">requestToNotifyEvent <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption">P</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/playPhotoContent.html" title="API in photoshare service" target="classFrame">playPhotoContent <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption">G</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/getPhotoList.html" title="API in photoshare service" target="classFrame">getPhotoList <small>(v1.0)</small></a></li>
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/getPhotoShareServerInfo.html" title="API in photoshare service" target="classFrame">getPhotoShareServerInfo <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption">C</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/closePhotoShare.html" title="API in photoshare service" target="classFrame">closePhotoShare <small>(v1.0)</small></a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    <div id="tab_page_sort_category" class="tab-page-side">
+      <ul class="frame-api-group">
+<li><span class="api-group-caption-min">...BgmControlMode</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/setBgmControlMode.html" title="API in photoshare service" target="classFrame">setBgmControlMode <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption-min">...Event</span>
+<ul class="frame-api-list">
+<li class="api-longpolling"><a href="../../../service/photoshare/v1_0/requestToNotifyEvent.html" title="API in photoshare service" target="classFrame">requestToNotifyEvent <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption-min">...PhotoContent</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/playPhotoContent.html" title="API in photoshare service" target="classFrame">playPhotoContent <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption-min">...PhotoList</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/getPhotoList.html" title="API in photoshare service" target="classFrame">getPhotoList <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption-min">...PhotoShare</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/closePhotoShare.html" title="API in photoshare service" target="classFrame">closePhotoShare <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption-min">...PhotoShareServerInfo</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/getPhotoShareServerInfo.html" title="API in photoshare service" target="classFrame">getPhotoShareServerInfo <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption-min">...QuickInvitationMode</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/setQuickInvitationMode.html" title="API in photoshare service" target="classFrame">setQuickInvitationMode <small>(v1.0)</small></a></li>
+</ul>
+</li>
+<li><span class="api-group-caption-min">...UserNickName</span>
+<ul class="frame-api-list">
+<li class="api-standard"><a href="../../../service/photoshare/v1_0/setUserNickName.html" title="API in photoshare service" target="classFrame">setUserNickName <small>(v1.0)</small></a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+<!-- Script for Tabs -->
+<script type="text/javascript">
+  <!--
+    tabMenu.setup = {
+      tabHeaders: document.getElementById('tab_menu_side').getElementsByTagName('li'),
+      tabPages: [
+        document.getElementById('tab_page_sort_az'),
+        document.getElementById('tab_page_sort_za'),
+        document.getElementById('tab_page_sort_category')
+      ]
+    };
+    tabMenu.init();
+
+    if (1 < window.location.search.length) {
+      var query = window.location.search.substring(1);
+      tabMenu.showpagebyname(query);
+    }
+  //-->
+</script>
+
+</body>
+</html>
