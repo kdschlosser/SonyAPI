@@ -17,8 +17,453 @@
 # with EventGhost. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-from . import singleton
+from . import singleton, container
 from .exception import ContentProtectedError
+
+"""
+notifyPlayingContentInfo
+"""
+
+
+class ExternalTerminal(object):
+
+    # noinspection PyPep8Naming
+    def __init__(
+        self,
+        sony_api,
+        uri
+    ):
+        self.__icon_url = None
+        self.__meta = None
+        self.__outputs = None
+        self.__label = None
+        self.__active = None
+        self.__connection = None
+        self.__title = None
+        self.__uri = uri
+        self.__sony_api = sony_api
+
+    def __send(self, method, **params):
+        return self.__sony_api.send('avContent', method, **params)
+
+    @property
+    def icon_url(self):
+        """
+        Gets the icon URL that the service uses for the terminal.
+
+        :return: URL
+        :rtype: str
+        """
+        self.__update()
+        return self.__icon_url
+
+    @property
+    def meta(self):
+        """
+        Gets describes the type of terminal.
+
+        For example, this can provide a hint to an application as to which
+        icon to show to the user. The type is provided using a "meta" URI
+        format. Your application should customize its UI based on the type of
+        the terminal, such as choosing an appropriate image.
+
+        :return: Possible values:
+            "" - No meta information is available for this terminal
+            "meta:audiosystem" - An audio system type CEC device is connected
+                to the terminal
+            "meta:avamp" - An AV amplifier is connected to the terminal
+            "meta:bd-dvd" - BD/DVD input
+            "meta:btaudio" - Bluetooth audio input
+            "meta:btphone" - BT phone input
+            "meta:camcoder" - A video camera is connected to the terminal
+            "meta:coaxial" - Coaxial digital audio input
+            "meta:complex" - A complex device is connected to the terminal
+            "meta:component" - Component input (Y and Pb/Cb and Pr/Cr
+                connectors)
+            "meta:componentd" - D-Component input
+            "meta:composite" - Composite input
+            "meta:composite_componentd" - Composite and D-Component combined
+                input
+            "meta:digitalcamera" - A digital camera is connected to the
+                terminal
+            "meta:disc" - A disk player is connected to the terminal
+            "meta:dsub15" - D-subminiature 15pin input
+            "meta:game" - A game console is connected to the terminal
+            "meta:hdmi" - HDMI input
+            "meta:hdmi:output" - HDMI output
+            "meta:hometheater" - A home theater device is connected to the
+                terminal
+            "meta:line" - Axillary input
+            "meta:linemini" - A mini audio port, the exact hardware port is
+                device dependent
+            "meta:optical" - Optical digital audio input
+            "meta:pc" - A personal computer is connected to the terminal
+            "meta:playbackdevice" - A playback type CEC device is connected to
+                the terminal
+            "meta:recordingdevice" - A recording type CEC device is connected
+                to the terminal
+            "meta:scart" - SCART input
+            "meta:svideo" - S-Video input
+            "meta:tape" - A tape player is connected to the terminal
+            "meta:tuner" - A tuner is connected to the terminal
+            "meta:tunerdevice" - A tuner type CEC device is connected to the
+                terminal
+            "meta:tv" - A TV type CEC device is connected to the terminal
+            "meta:usbdac" - USB DAC input
+            "meta:wifidisplay" - WiFi Display input
+            "meta:wirelessTransceiver:output" - Wireless transceiver
+            "meta:source" - Source input
+            "meta:sacd-cd" - SACD/CD input
+            "meta:sat-catv" - SAT/CATV input
+            "meta:video" - Video input
+            "meta:zone:output" - Zone output
+        :rtype: str
+        """
+        self.__update()
+        return self.__meta
+
+    @property
+    def outputs(self):
+        """
+        An array of the URIs of the output terminals that are available for
+        this input terminal.
+
+        :return: list of URI's
+        :rtype: list
+        """
+        self.__update()
+        return self.__outputs
+
+    @property
+    def label(self):
+        """
+        Gets the label that the user assigned to this terminal.
+
+        :return: Example: "Game"
+        :rtype: str
+        """
+        self.__update()
+        return self.__label
+
+    @property
+    def active(self):
+        """
+        Gets active status of the terminal.
+
+        For a terminal type of "meta:zone:output", the active status indicates
+        whether the zone is enabled. For all other terminal types, the active
+        status indicates whether the source is selected as an input source for
+        any output zone.
+
+        :return: Possible values:
+            None - The active status could not be determined.
+            True - "active", The terminal is enabled or a selected input
+                source.
+            False - "inactive" - The terminal is disabled or not a selected
+                input source.
+        :rtype: bool, None
+        """
+        self.__update()
+        return (
+            True if self.__active == 'active' else
+            False if self.__active == 'inactive' else
+            None
+        )
+
+    @active.setter
+    def active(self, value):
+        """
+        Sets this terminal as active.
+
+        :param value: Possible values:
+            True - "active", Terminal is active.
+            False - "inactive", Terminal is inactive
+        :type value: bool
+        :return: None
+        :rtype: None
+        """
+        self.__send(
+            'setActiveTerminal',
+            active='active' if value else 'inactive',
+            uri=self.uri
+        )
+
+    @property
+    def is_connected(self):
+        """
+        Gets the connection status of the terminal.
+
+        :return: Possible values:
+            True - "connected", The terminal is connected.
+            False - "unconnected", The terminal is not connected.
+            None - "unknown", The connection status is unknown.
+        :rtype: bool, None
+        """
+        self.__update()
+        return (
+            True if self.__connection == 'connected' else
+            False if self.__connection == 'unconnected' else
+            None
+        )
+
+    @property
+    def title(self):
+        """
+        Gets the name of the input or output terminal.
+
+        :return: Examples:
+            "HDMI 2"
+            "Component 1"
+        :rtype: str
+        """
+        self.__update()
+        return self.__title
+
+    @property
+    def uri(self):
+        """
+        Gets the URI of the external terminal.
+        :return: Example: "extInput:hdmi?port=2"
+        :rtype: str
+        """
+        return self.__uri
+
+    @property
+    def playing_content(self):
+        playing_content = self.__send(
+            'getPlayingContentInfo',
+            output=self.uri
+        )[0]
+        playing_content['output'] = self
+
+        if 'source' in playing_content and playing_content['source']:
+            scheme_name, source_name = playing_content['source'].split(':')
+            scheme = getattr(self.__sony_api.av_content, scheme_name)
+            source = getattr(scheme, source_name)
+            playing_content['source'] = source
+
+        return ContentItem(sony_api=self.__sony_api, **playing_content)
+
+    def pause(self):
+        """
+        Pauses playing content.
+
+        :return: None
+        :rtype: None
+
+        """
+        self.__send('pausePlayingContent', output=self.uri)
+
+    def scan_forward(self):
+        """
+        Fast Forward playing content.
+
+        :return: None
+        :rtype: None
+        """
+        self.__send('scanPlayingContent', direction='fwd', output=self.uri)
+
+    def scan_backwards(self):
+        """
+        Rewind playing content.
+
+        :return: None
+        :rtype: None
+        """
+        self.__send('scanPlayingContent', direction='bwd', output=self.uri)
+
+    def stop(self):
+        """
+        Stop playing content.
+
+        :return: None
+        :rtype: None
+        """
+
+        self.__send('stopPlayingContent', output=self.uri)
+
+    def play_next(self):
+        """
+        Skip to next content in queue.
+
+        :return: None
+        :rtype: None
+        """
+        self.__send('setPlayNextContent', output=self.uri)
+
+    def play_previous(self):
+        """
+        Skip to previous content in queue.
+
+        :return: None
+        :rtype: None
+        """
+        self.__send('setPlayPreviousContent', output=self.uri)
+
+    def __update(self):
+        terminals = self.__send('getCurrentExternalTerminalsStatus')[0]
+        for terminal in terminals:
+            if terminal['uri'] == self.uri:
+                self.__icon_url = terminal['iconUrl']
+                self.__meta = terminal['meta']
+                self.__outputs = terminal['outputs']
+                self.__label = terminal['label']
+                self.__active = terminal['active']
+                self.__connection = terminal['connection']
+                self.__title = terminal['title']
+                self.__uri = terminal['uri']
+                break
+        else:
+            raise AttributeError
+
+
+class PlaybackMode(object):
+    def __init__(self, sony_api):
+        self.__sony_api = sony_api
+
+    def __send(self, method, **params):
+        return self.__sony_api.send('avContent', method, **params)
+
+    @property
+    def auto_playback(self):
+        """
+
+        :return: Possible values:
+            True - "on", Auto playback mode enabled.
+            False = "off", Auto playback mode disabled.
+        :rtype: bool
+        """
+        return self.__send(
+            'getPlaybackModeSettings',
+            target='autoPlayback'
+        )[0]['currentValue'] == 'on'
+
+    @property
+    def play_type(self):
+        """
+        Gets the playback mode
+
+        :return: Possible values:
+            "normal" - Normal playback
+            "folder" - Playback enabled for a unit of folder and its sub
+                folder.
+            "repeatAll" - In case current composed of multiple parts, repeat
+                playback enabled for whole parts.
+            "repeatFolder" - Repeat playback enabled for a unit of folder and
+            its sub folder.
+            "repeatTrack" - Repeat playback enabled for a unit of track (audio
+                content) or title (video content).
+            "shuffleAll" - In case current composed of multiple parts, shuffle
+                playback enabled for whole parts.
+        :rtype: str
+        """
+        return self.__send(
+            'getPlaybackModeSettings',
+            target='playType'
+        )[0]['currentValue']
+
+    @play_type.setter
+    def play_type(self, value):
+        """
+        Sets the playback mode.
+
+        :param value: Allowed values:
+            "normal" - Normal playback
+            "folder" - Playback enabled for a unit of folder and its sub folder
+            "repeatAll" - In case current composed of multiple parts, repeat
+                playback enabled for whole parts.
+            "repeatFolder" - Repeat playback enabled for a unit of folder and
+                its sub folder.
+            "repeatTrack" - Repeat playback enabled for a unit of track (audio
+                content) or title (video content).
+            "shuffleAll" - In case current composed of multiple parts, shuffle
+                playback enabled for whole parts.
+        :return: None
+        :rtype: None
+        """
+
+        self.__send(
+            'setPlaybackModeSettings',
+            settings=[dict(target='playType', value=value)]
+        )
+
+    @property
+    def repeat_type(self):
+        """
+        Gets the repeat mode.
+
+        :return: Possible values:
+            "all" - In case current composed of multiple parts, repeat
+                playback enabled for whole parts.
+            "folder" - Repeat playback enabled for a unit of folder and its
+                sub folder.
+            "track" - Repeat playback enabled for a unit of track (audio
+                content) or title (video content).
+            "chapter" - Repeat playback enabled for a unit of chapter.
+            "off" - Repeat playback disabled as a device setting.
+        :rtype: str
+        """
+        return self.__send(
+            'getPlaybackModeSettings',
+            target='repeatType'
+        )[0]['currentValue']
+
+    @repeat_type.setter
+    def repeat_type(self, value):
+        """
+        Sets the repeat mode.
+
+        :param value: Allowed values:
+            "all" - In case current composed of multiple parts, repeat
+                playback enabled for whole parts.
+            "folder" - Repeat playback enabled for a unit of folder and its
+                sub folder.
+            "track" - Repeat playback enabled for a unit of track (audio
+                content) or title (video content).
+            "chapter" - Repeat playback enabled for a unit of chapter.
+            "off" - Repeat playback disabled as a device setting.
+        :return: None
+        :rtype: None
+        """
+
+        self.__send(
+            'setPlaybackModeSettings',
+            settings=[dict(target='repeatType', value=value)]
+        )
+
+    @property
+    def shuffle_type(self):
+        """
+        Gets the shuffle mode.
+
+        :return: Possible values:
+            "folder" - Shuffle of a unit of folder and its sub folder. of file
+                name.
+            "off" - Shuffle playback disabled as a device setting.
+        :rtype: str
+        """
+        return self.__send(
+            'getPlaybackModeSettings',
+            target='shuffleType'
+        )[0]['currentValue']
+
+    @shuffle_type.setter
+    def shuffle_type(self, value):
+        """
+        Sets the shuffle mode.
+
+        :param value: Allowed values:
+            "folder" - Shuffle of a unit of folder and its sub folder. of file
+                name.
+            "off" - Shuffle playback disabled as a device setting
+        :return: None
+        :rtype: None
+        """
+
+        self.__send(
+            'setPlaybackModeSettings',
+            settings=[dict(target='shuffleType', value=value)]
+        )
 
 
 class ContentItem(object):
@@ -95,7 +540,7 @@ class ContentItem(object):
         program_num: Program number on broadcasting data table.
             TV type 1
 
-        programMediaType: Media type of broadcast program.
+        program_media_type: Media type of broadcast program.
             TV type 1
             Example values:
                 "tv" - means TV program
@@ -103,12 +548,12 @@ class ContentItem(object):
                 "data" - means data program
                 "" - unknown type
 
-        directRemoteNum: Mapped number button on remote controller.
+        direct_remote_num: Mapped number button on remote controller.
             TV type 1
             Example values:
                 int(1 through 12)
 
-        epgVisibility: Getting the visibility on EPG application.
+        epg_visibility: Getting the visibility on EPG application.
             TV type 2
             Example values:
                 "visible" - This content is shown in EPG.
@@ -116,8 +561,8 @@ class ContentItem(object):
                 "auto" - This content is shown if this content is main channel
                     in EPG.
 
-        channelSurfingVisibility: Getting the visibility on pushing <Channel+>
-        / <Channel-> button.
+        channel_surfing_visibility: Getting the visibility on pushing
+            <Channel+> / <Channel-> button.
             TV type 2
             Example values:
                 "visible" - This content is shown.
@@ -129,50 +574,195 @@ class ContentItem(object):
                 "visible" - This content is shown.
                 "invisible" - This content is hidden.
 
-        startDateTime: Scheduled date and time to start.
+        start_date_time: Scheduled date and time to start.
             storage
             Example values:
                 ISO-8601 time format YYYY-MM-DDTHH:MM:SS.sTZD.
 
-        channelName: Broadcaster channel name of the recorded content.
+        channel_name: Broadcaster channel name of the recorded content.
             storage
             Example values:
                 "NBC", "ABC", "FOX", "HBO"
 
-        fileSizeByte: File size of the content in bytes.
+        file_size_byte: File size of the content in bytes.
             storage
             Example values:
                 int(1024)
 
-        isAlreadyPlayed: Gets if the content been played.
+        is_already_played: Gets if the content been played.
             storage
             Example values:
                 True - already played
                 False - not played yet
 
-        durationSec: Duration in seconds.
+        duration_sec: Duration in seconds.
             storage
             Example values:
                 int(300) (5 minutes)
 
-        userContentFlag: No information
-        createdTime: No information
+        user_content_flag: No information
+
+        created_time: No information
+
         sizeMb: No information
-        parentalCountry: No information
-        parentalSystem: No information
-        parentalRating: No information
-        subtitleTitle: No information
-        subtitleLanguage: No information
-        audioChannel: No information
-        audioFrequency: No information
-        audioCodec: No information
-        chapterCount: No information
-        videoCodec: No information
-        storageUri: No information
-        contentType: No information
-        productId: No information
+
+        parental_country: No information
+
+        parental_system: No information
+
+        parental_rating: No information
+
+        subtitle_title: No information
+
+        subtitle_language: No information
+
+        audio_channel: No information
+
+        audio_frequency: No information
+
+        audio_codec: No information
+
+        chapter_count: No information
+
+        video_codec: No information
+
+        storage_uri: No information
+
+        product_id: No information
+
         idx: No information
+
         status: No information
+
+    The following variables are available when using this API with a
+    home audio device.
+
+        application_name: The name of the application that is playing the
+            content, or null or omitted if it is undefined. If the content is
+            streaming via the Cast for Audio service, the name of the casted
+            application is used.
+
+        service: The URI for service information if the device is playing
+            network service content; otherwise "". You can use this URI to
+            retrieve service information about the playing content.
+
+        content_kind: Identifies the content type.
+            Possible values:
+                "" - Unknown
+                "directory" - Directory
+                "input" - External input
+                "movie" - Movie
+                "movie_avi" - AVI movie
+                "movie_mp4" - MP4 movie
+                "movie_xavcs" - XAVC S movie
+                "music" - Music
+                "radio" - Radio
+                "service" - Network service
+                "still" - Still image
+                "still_group" - Still group
+
+        album_name: The Album name for the content, or null or omitted if no
+            album name is defined.
+
+        artist: The artist's name, or null or omitted if no artist name is
+            defined.
+
+        state_info: The playback status of the device. If a value for this
+            field is included in the notification, at least one of its fields
+            will contain a value.
+            The returned value of this wil be a Container instance
+
+        output: instance of ExternalTerminal.
+
+        parent_uri: The URI of the parent directory if the source is browsable;
+            otherwise "".
+
+        dab_info: Digital Audio Broadcasting ( DAB ) information for the
+            playing content. If a value for this field is included in the
+            notification, at least one of its fields will contain a value.
+            The returned value of this wil be a Container instance
+
+        broadcast_freq_band: The broadcast frequency band for the content.
+            Possible values:
+                "" - No band data
+                "am" - AM
+                "fm" - FM
+                "lw" - LW
+                "mw" - MW
+                "sw" - SW
+        broadcast_freq: The broadcast frequency for the content, in Hz.
+            Example: float(105.9)
+
+        total_count: The number of content items in the playback scope.
+
+        file_no: The file number of the content. What a file represents depends
+            on the content type, such as a track or a broadcast preset item.
+
+        video_info: Video information for the playing content. If a value for
+            this field is included in the notification, at least one of its
+            fields will contain a value.
+            The returned value of this wil be a Container instance
+
+        index: The index of the content list.
+
+        audio_info: Audio information for the playing content. If a value for
+            this field is included in the notification, at least one of its
+            fields will contain a value.
+            The returned value of this wil be a Container instance
+
+        podcast_name: The name of the podcast, or null or omitted if this
+            content is not from a podcast.
+
+        playlist_name: The name of the playlist in which the content is
+            included, or null or omitted if no playlist is defined.
+
+        genre: The genres assigned to the content, or null or omitted if no
+            genres are assigned. This is used for display purpose and is
+            device-dependent.
+
+        duration_msec: The length of the content, in milliseconds.
+
+        position_msec: The playing position within the content, in
+            milliseconds.
+
+        source_label: The display name of the source of the playing content.
+
+        play_speed: The current play speed, expressed as a number with one
+            decimal place.
+            Example values:
+                "1.0"
+                "1.5"
+
+        media_type: The media type of the playing content.
+            Possible values:
+                "" - unknown type
+                "audio" - audio(music) content
+                "image" - image(photo) content
+                "video" - video content
+
+        repeat_type: The repeat setting for the current content.
+            "off" - Repeat playback disabled for the single unit of content
+                currently playing.
+            "on" - Repeat playback enabled for the single unit of content
+                currently playing.
+
+        play_speed_step: The playback speed setting of the content. Positive
+            numbers represent fast-forward settings, with greater numbers
+            representing faster speeds. Negative numbers represent slow-motion
+            settings, with lesser numbers representing slower speeds. The
+            playback speed for each setting is device dependent.
+            Possible values:
+                3 - Fast forward
+                2 - Fast forward
+                1 - Fast forward
+                0 - Normal speed
+                -1 - Slow motion
+                -2 - Slow motion
+                -3 - Slow motion
+
+        position_sec: Deprecated for unit consistency with other APIs. The
+            playing position within the content, in seconds.
+
 
     And that is what I have so far. If you have any further information please
     feel free to add to this doc and submit the changes to
@@ -189,13 +779,13 @@ class ContentItem(object):
         index,
         **kwargs
     ):
-        self._uri = uri
-        self._title = title
-        self._index = index
-        self._source = source
+        self.__uri = uri
+        self.__title = title
+        self.__index = index
+        self.__source = source
         self.__sony_api = sony_api
 
-        self._variables = dict()
+        self.__variables = dict()
 
         for key in kwargs.keys():
             attr_name = '_'
@@ -214,16 +804,20 @@ class ContentItem(object):
             return self.__dict__[item]
 
         if '_' + item in self._variables:
-            return self._variables['_' + item]
+            attr = self.__variables['_' + item]
+
+            if isinstance(attr, dict):
+                return container.Container(**attr)
+            return attr
 
         raise AttributeError
 
     def __setattr__(self, key, value):
         if (
-            key == '_variables' or
+            key == '__variables' or
             (
                 key.startswith('_') and
-                '_' + key not in self._variables
+                '_' + key not in self.__variables
             )
         ):
             object.__setattr__(self, key, value)
@@ -235,7 +829,7 @@ class ContentItem(object):
 
     @property
     def source(self):
-        return self._source
+        return self.__source
 
     @property
     def uri(self):
@@ -245,7 +839,7 @@ class ContentItem(object):
         :return: URI, (ex) "tv:isdbt?trip=11.22.33"
         :rtype: str
         """
-        return self._uri
+        return self.__uri
 
     @property
     def title(self):
@@ -255,7 +849,7 @@ class ContentItem(object):
         :return: Title, (ex) "Sports Channel"
         :rtype: str
         """
-        return self._title
+        return self.__title
 
     @property
     def index(self):
@@ -265,7 +859,7 @@ class ContentItem(object):
         :return: Source content index.
         :rtype: int
         """
-        return self._index
+        return self.__index
 
     @property
     def is_protected(self):
@@ -289,10 +883,10 @@ class ContentItem(object):
         :rtype: bool
         :raise: AttributeError if the source is not one of the above.
         """
-        if '_is_protected' not in self._variables:
+        if '_is_protected' not in self.__variables:
             raise AttributeError
 
-        return self._variables['_is_protected']
+        return self.__variables['_is_protected']
 
     @is_protected.setter
     def is_protected(self, value=False):
@@ -319,10 +913,10 @@ class ContentItem(object):
         :rtype: None
         :raise: AttributeError if the source is not one of the above.
         """
-        if '_is_protected' not in self._variables:
+        if '_is_protected' not in self.__variables:
             raise AttributeError
 
-        self.__dict__['_is_protected'] = value
+        self.__variables['_is_protected'] = value
         self.__send('setDeleteProtection', uri=self.uri, isProtected=value)
 
     def delete(self):
@@ -335,10 +929,10 @@ class ContentItem(object):
             AttributeError: If method is not supported
             ContentProtectedError: If is_protected is True
         """
-        if '_is_protected' not in self._variables:
+        if '_is_protected' not in self.__variables:
             raise AttributeError
 
-        if self._variables['_is_protected'] is True:
+        if self.__variables['_is_protected'] is True:
             raise ContentProtectedError([
                 41000,
                 'This content item is protected from deletion'
@@ -346,13 +940,25 @@ class ContentItem(object):
 
         self.__send('deleteContent', uri=self.uri)
 
-    def play(self):
+    def play(self, zone=None):
         """
         Plays this content item.
 
+        :param zone: Zone number.
+            Only used if the device is a multi zone device.
+        :type zone: int
         :return: None
         :rtype: None
         """
+
+        interface_info = self.__sony_api.system.interface_information
+
+        if interface_info.product_category not in ('tv', 'camera'):
+            if zone is not None:
+                zone = 'extOutput:zone?zone=' + str(zone)
+                self.__send('setPlayContent', uri=self.uri, output=zone)
+                return
+
         self.__send('setPlayContent', uri=self.uri)
 
 
@@ -361,7 +967,7 @@ class SchemeItem(object):
 
     def __init__(self, sony_api, name):
         self.__sony_api = sony_api
-        self._name = name.replace('_', '-')
+        self.__name = name.replace('_', '-')
 
         self.__name__ = ''
         for item in name.split('_'):
@@ -372,7 +978,7 @@ class SchemeItem(object):
 
     @property
     def name(self):
-        return self._name
+        return self.__name
 
     @property
     def sources(self):
@@ -633,9 +1239,9 @@ class SourceItem(object):
 
     def __init__(self, scheme, sony_api, name):
         self.__sony_api = sony_api
-        self._name = name.replace('_', '-')
-        self._scheme = scheme
-        self._uri = scheme.name + ':' + self._name
+        self.__name = name.replace('_', '-')
+        self.__scheme = scheme
+        self.__uri = scheme.name + ':' + self._name
 
         self.__name__ = ''
         for item in name.split('_'):
@@ -643,15 +1249,15 @@ class SourceItem(object):
 
     @property
     def uri(self):
-        return self._uri
+        return self.__uri
 
     @property
     def name(self):
-        return self._name
+        return self.__name
 
     @property
     def scheme(self):
-        return self._scheme
+        return self.__scheme
 
     def __send(self, method, **params):
         return self.__sony_api.send('avContent', method, **params)
@@ -668,6 +1274,16 @@ class SourceItem(object):
     @property
     def content_count(self):
         return self.__send('getContentCount', source=self.uri)[0]['count']
+
+    @property
+    def playing_content(self):
+        if self.__sony_api.interface_information.product_category == 'tv':
+            return ContentItem(
+                self,
+                self.__sony_api, **self.__send('getPlayingContentInfo')[0]
+            )
+        else:
+            raise AttributeError
 
     @property
     def content(self):
@@ -724,13 +1340,20 @@ class SourceItem(object):
 class AVContent(object):
     def __init__(self, sony_api):
         self.__sony_api = sony_api
-        self._parental_ratings = None
+        self.__parental_ratings = None
+        self.__tuner = None
 
     def __send(self, method, **params):
         return self.__sony_api.send('avContent', method, **params)
 
     @property
-    def schemes(self):
+    def tuner(self):
+        if self.__tuner is None:
+            self.__tuner = Tuner(self.__sony_api)
+        return self.__tuner
+
+    @property
+    def __schemes(self):
         """
         Gets schemes.
 
@@ -753,31 +1376,145 @@ class AVContent(object):
             "hdrl" - HDRL resources
         :rtype: list
         """
-        return self.__send('getSchemeList')
+        return self.__send('getSchemeList')[0]
 
     @property
     def parental_ratings(self):
 
-        if self._parental_ratings is None:
-            self._parental_ratings = ParentalRatings(self.__sony__api)
+        if self.__parental_ratings is None:
+            self.__parental_ratings = ParentalRatings(self.__sony__api)
 
-        return self._parental_ratings
+        return self.__parental_ratings
+
+    def pause(self):
+        """
+        Pauses all content on all outputs.
+
+        :return: None
+        :rtype: None
+
+        """
+        self.__send('pausePlayingContent')
 
     def __getattr__(self, item):
         if item in self.__dict__:
             return self.__dict__[item]
 
         if not item.startswith('_'):
-            item = item.replace('_', '-')
-            if item.replace('_', '-') in self.scheme_list:
-                return SchemeItem(self.__sony_api, item)
+            interface_info = self.__sony_api.system.interface_information
+
+            if interface_info.product_category == 'tv':
+                if item.replace('_', '-') in self.__schemes:
+                    return SchemeItem(self.__sony_api, item)
+            elif interface_info.product_category != 'camera':
+                terminals = self.__send('getCurrentExternalTerminalsStatus')[0]
+                for terminal in terminals:
+                    if terminal['uri'].endswith(item.replace('_', '-')):
+                        return ExternalTerminal(
+                            self.__sony_api,
+                            terminal['uri']
+                        )
+
         raise AttributeError
 
-    def __getitem__(self, item):
-        try:
-            return getattr(self, item.replace('-', '_'))
-        except AttributeError:
-            raise KeyError
+    def __setattr__(self, key, value):
+        if key.startswith('_'):
+            object.__setattr__(self, key, value)
+        else:
+            raise AttributeError
+
+
+class Tuner(object):
+
+    def __init__(self, sony_api):
+        self.__sony_api = sony_api
+        self.__auto_tune = True
+
+    def __send(self, direction):
+
+        self.__sony_api.send(
+            'avContent',
+            'seekBroadcastStation',
+            tuning='auto' if self.__auto_tune else 'manual',
+            direction=direction
+        )
+
+    @property
+    def auto_tune(self):
+        """
+        Gets tuning mode.
+
+        :return: Possible values:
+            True - "auto", Automatic tuning enabled.
+            False - "manual", Manual tuning enabled.
+        :rtype: bool
+        """
+        return self.__auto_tune
+
+    @auto_tune.setter
+    def auto_tune(self, value):
+        """
+        Sets the tuning mode.
+
+        :param value: Allowed values:
+            True - "auto", Automatic tuning enabled.
+            False - "manual", Manual tuning enabled.
+        :type value: bool
+        :return: None
+        :rtype: None
+        """
+        self.__auto_tune = value
+
+    def up(self):
+        """
+        Tunes up.
+
+        :return: None
+        :rtype: None
+        """
+        self.__send('fwd')
+
+    def down(self):
+        """
+        Tunes down.
+
+        :return: None
+        :rtype: None
+        """
+        self.__send('bwd')
+
+    def preset_station(self, preset_number, frequency, band):
+        """
+        Sets a tuner preset.
+
+        :param preset_number: The preset number.
+        :type preset_number: int
+
+        :param frequency: The station frequency.
+        :type frequency: int, float
+
+        :param band: Frequency band.
+            Allowed values:
+                "am"
+                "fm"
+        :type band: str
+
+        :return: None
+        :rtype: None
+        """
+
+        while frequency < 999999:
+            frequency *= 10
+        frequency = int(frequency)
+
+        uri = 'radio:{0}?contentId={1}'.format(band, preset_number)
+
+        self.__sony_api.send(
+            'audio',
+            'presetBroadcastStation',
+            uri=uri,
+            frequency=frequency
+        )
 
 
 class ParentalRatings(object):

@@ -23,13 +23,13 @@ from exception import UnsupportedError
 
 
 class SendBase(object):
-    _key = ''
+    __key = ''
 
     def __init__(self, sony_api):
         self.__sony_api = sony_api
 
     def __send(self, target, **params):
-        target = self._key + target
+        target = self.__key + target
         if params:
             params = dict(
                 settings=[
@@ -125,6 +125,84 @@ class SpeakerBase(SendBase):
 
 class PositionBase(SendBase):
 
+    def __verify_position_type(self):
+        if self.__key not in ('front', 'frontHigh', 'center', 'surround'):
+            raise AttributeError
+
+    @property
+    def bass(self):
+        """
+        Gets the bass level of this speaker group.
+
+        :return: 10 to -10 step of 1
+        :rtype: int
+        """
+        self.__verify_position_type()
+
+        return int(
+            self.__sony_api.send(
+                'audio',
+                'getCustomEqualizerSettings',
+                target=self.__key + 'BassLevel'
+            )[0][0]['currentValue']
+        )
+
+    @bass.setter
+    def bass(self, value):
+        """
+        Sets the bass level of this speaker group.
+
+        :param value: 10 to -10 step of 1
+        :type value: int
+
+        :return: None
+        :rtype: None
+        """
+        self.__verify_position_type()
+
+        self.__sony_api.send(
+            'audio',
+            'setCustomEqualizerSettings',
+            settings=[dict(target=self.__key + 'BassLevel', value=value)]
+        )
+
+    @property
+    def treble(self):
+        """
+        Gets the treble level of this speaker group.
+
+        :return: 10 to -10 step of 1
+        :rtype: int
+        """
+        self.__verify_position_type()
+
+        return int(
+            self.__sony_api.send(
+                'audio',
+                'getCustomEqualizerSettings',
+                target=self.__key + 'TrebleLevel'
+            )[0][0]['currentValue']
+        )
+
+    @treble.setter
+    def treble(self, value):
+        """
+        Sets the treble level of this speaker group.
+
+        :param value: 10 to -10 step of 1
+        :type value: int
+
+        :return: None
+        :rtype: None
+        """
+        self.__verify_position_type()
+
+        self.__sony_api.send(
+            'audio',
+            'setCustomEqualizerSettings',
+            settings=[dict(target=self.__key + 'TrebleLevel', value=value)]
+        )
+
     @property
     def size(self):
         """
@@ -188,39 +266,39 @@ class PositionBase(SendBase):
 
 
 class FrontLeft(SpeakerBase):
-    _key = 'frontL'
+    __key = 'frontL'
 
 
 class FrontRight(SpeakerBase):
-    _key = 'frontR'
+    __key = 'frontR'
 
 
 class SurroundLeft(SpeakerBase):
-    _key = 'surroundL'
+    __key = 'surroundL'
 
 
 class SurroundRight(SpeakerBase):
-    _key = 'surroundR'
+    __key = 'surroundR'
 
 
 class SurroundBackLeft(SpeakerBase):
-    _key = 'surroundBackL'
+    __key = 'surroundBackL'
 
 
 class SurroundBackRight(SpeakerBase):
-    _key = 'surroundBackR'
+    __key = 'surroundBackR'
 
 
 class FrontHighLeft(SpeakerBase):
-    _key = 'frontHighL'
+    __key = 'frontHighL'
 
 
 class FrontHightRight(SpeakerBase):
-    _key = 'frontHighR'
+    __key = 'frontHighR'
 
 
 class FrontHigh(PositionBase):
-    _key = 'frontHigh'
+    __key = 'frontHigh'
 
     def __init__(self, sony_api):
         PositionBase.__init__(self, sony_api)
@@ -229,7 +307,7 @@ class FrontHigh(PositionBase):
 
 
 class Front(PositionBase):
-    _key = 'front'
+    __key = 'front'
 
     def __init__(self, sony_api):
         PositionBase.__init__(self, sony_api)
@@ -251,11 +329,11 @@ class Front(PositionBase):
         :rtype: str
         :raises: SonyAPI.UnsupportedError, if feature not available.
         """
-        self._key = ''
+        self.__key = ''
         try:
             return self.__send('speakerPosition')
         finally:
-            self._key = 'front'
+            self.__key = 'front'
 
     @speaker_position.setter
     def speaker_position(self, value):
@@ -271,9 +349,9 @@ class Front(PositionBase):
         :rtype: None
         :raises: SonyAPI.UnsupportedError, if feature not available.
         """
-        self._key = ''
+        self.__key = ''
         self.__send('speakerPosition', value=value)
-        self._key = 'front'
+        self.__key = 'front'
 
     @property
     def ceiling_height(self):
@@ -287,11 +365,11 @@ class Front(PositionBase):
         :rtype: int
         :raises: SonyAPI.UnsupportedError, if feature not available.
         """
-        self._key = ''
+        self.__key = ''
         try:
             return self.__send('ceilingSpeakerHeight')
         finally:
-            self._key = 'front'
+            self.__key = 'front'
 
     @ceiling_height.setter
     def ceiling_height(self, value):
@@ -307,9 +385,9 @@ class Front(PositionBase):
         :rtype: None
         :raises: SonyAPI.UnsupportedError, if feature not available.
         """
-        self._key = ''
+        self.__key = ''
         self.__send('ceilingSpeakerHeight', value=value)
-        self._key = 'front'
+        self.__key = 'front'
 
     @property
     def in_ceiling_speaker_mode(self):
@@ -326,13 +404,13 @@ class Front(PositionBase):
         :rtype: bool
         :raises: SonyAPI.UnsupportedError, if feature not available.
         """
-        self._key = ''
+        self.__key = ''
         try:
             return (
                 True if self.__send('inCeilingSpeakerMode') == 'on' else False
             )
         finally:
-                self._key = 'front'
+                self.__key = 'front'
 
     @in_ceiling_speaker_mode.setter
     def in_ceiling_speaker_mode(self, value):
@@ -350,13 +428,13 @@ class Front(PositionBase):
         :rtype: None
         :raises: SonyAPI.UnsupportedError, if feature not available.
         """
-        self._key = ''
+        self.__key = ''
         self.__send('inCeilingSpeakerMode', value='on' if value else 'off')
-        self._key = 'front'
+        self.__key = 'front'
 
 
 class SurroundBack(SpeakerBase):
-    _key = 'surroundBack'
+    __key = 'surroundBack'
 
     def __init__(self, sony_api):
         SpeakerBase.__init__(self, sony_api)
@@ -404,7 +482,7 @@ class SurroundBack(SpeakerBase):
 
 
 class Surround(PositionBase, SpeakerBase):
-    _key = 'surround'
+    __key = 'surround'
 
     def __init__(self, sony_api):
         PositionBase.__init__(self, sony_api)
@@ -443,7 +521,7 @@ class Surround(PositionBase, SpeakerBase):
 
 
 class Subwoofer(PositionBase, SpeakerBase):
-    _key = 'subwoofer'
+    __key = 'subwoofer'
 
     def __init__(self, sony_api):
         PositionBase.__init__(self, sony_api)
@@ -644,7 +722,7 @@ class Subwoofer(PositionBase, SpeakerBase):
 
 
 class Center(PositionBase, SpeakerBase):
-    _key = 'center'
+    __key = 'center'
 
     def __init__(self, sony_api):
         PositionBase.__init__(self, sony_api)
@@ -757,7 +835,7 @@ class Settings(object):
             hdmi_pcm_level
     """
 
-    _key = ''
+    __key = ''
 
     def __init__(self, sony_api):
         self.__sony_api = sony_api

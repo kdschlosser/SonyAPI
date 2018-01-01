@@ -24,20 +24,28 @@ from .api_const import PY2
 
 
 class VolumeBase(object):
+
+    # noinspection PyPep8Naming
     def __init__(
         self,
         sony_api,
-        target='speakers',
         minVolume=0,
         maxVolume=0,
         **kwargs
     ):
-        self._sony_api = sony_api
-        self.target = target
+        self.__sony_api = sony_api
+
+        if 'target' in kwargs:
+            self.__target = kwargs['target']
+            self.__output = None
+        else:
+            self.__output = kwargs['output']
+            self.__target = None
+
         self.min_volume = int(minVolume)
         self.max_volume = int(maxVolume)
 
-    def _set_volume(self, value):
+    def __set_volume(self, value):
         volume = int(value)
         if volume < self.min_volume:
             volume = self.min_volume
@@ -45,125 +53,187 @@ class VolumeBase(object):
         if volume > self.max_volume:
             volume = self.max_volume
 
-        self._sony_api.send(
+        if self.__target is None:
+            params = dict(output=self.__output)
+        else:
+            params = dict(target=self.__target)
+
+        self.__sony_api.send(
             'audio',
             'setAudioVolume',
-            target=self.target,
-            volume=str(volume)
+            volume=str(volume),
+            **params
         )
 
-    @property
-    def _volume(self):
-        return int(self._volume_info['volume'])
+    def __send(self, method, **params):
+        return self.__sony_api('audio', method, **params)
 
     @property
-    def _volume_info(self):
-        for volume_info in self._sony_api.send('audio', 'getVolumeInformation'):
-            if volume_info['target'] == self.target:
-                return volume_info
+    def __volume_info(self):
+        if self.__target is None:
+            target = dict(output=self.__output)
+        else:
+            target = dict(target=self.__target)
+
+        return self.__send('getVolumeInformation', **target)[0][0]
 
     def up(self):
-        self._set_volume(self._volume + 1)
+        self.__set_volume(int(self.__volume_info['volume']) + 1)
 
     def down(self):
-        self._set_volume(self._volume - 1)
+        self.__set_volume(int(self.__volume_info['volume']) - 1)
 
     @property
     def mute(self):
-        return self._volume_info['mute']
+        return self.__volume_info['mute'] in ('on', True)
 
     @mute.setter
     def mute(self, status):
-        if self._sony_api.power:
-            self._sony_api.send('audio', 'setAudioMute', status=status)
+        if not isinstance(self.__volume_info['mute'], bool):
+            params = dict(
+                mute='on' if status else 'off'
+            )
+        else:
+            params = dict(status=status)
+
+        self.__send('setAudioMute', **params)
 
     def toggle_mute(self):
         self.mute = not self.mute
 
     def __lt__(self, other):
-        return self._volume < int(other)
+        return int(self.__volume_info['volume']) < int(other)
 
     def __le__(self, other):
-        return self._volume <= int(other)
+        return int(self.__volume_info['volume']) <= int(other)
 
     def __eq__(self, other):
-        return self._volume == int(other)
+        return int(self.__volume_info['volume']) == int(other)
 
     def __ne__(self, other):
-        return self._volume != int(other)
+        return int(self.__volume_info['volume']) != int(other)
 
     def __gt__(self, other):
-        return self._volume > int(other)
+        return int(self.__volume_info['volume']) > int(other)
 
     def __ge__(self, other):
-        return self._volume >= int(other)
+        return int(self.__volume_info['volume']) >= int(other)
 
     def __add__(self, other):
-        return self._volume + int(other)
+        return int(self.__volume_info['volume']) + int(other)
 
     def __sub__(self, other):
-        return self._volume - int(other)
+        return int(self.__volume_info['volume']) - int(other)
 
     def __mul__(self, other):
-        return self._volume * int(other)
+        return int(self.__volume_info['volume']) * int(other)
 
     def __div__(self, other):
-        return self._volume / int(other)
+        return int(self.__volume_info['volume']) / int(other)
 
     def __iadd__(self, other):
-        self._set_volume(self._volume + int(other))
+        self.__set_volume(int(self.__volume_info['volume']) + int(other))
         return self
 
     def __isub__(self, other):
-        self._set_volume(self._volume - int(other))
+        self.__set_volume(int(self.__volume_info['volume']) - int(other))
         return self
 
     def __imul__(self, other):
-        self._set_volume(self._volume * int(other))
+        self.__set_volume(int(self.__volume_info['volume']) * int(other))
         return self
 
     def __idiv__(self, other):
-        self._set_volume(self._volume / int(other))
+        self.__set_volume(int(self.__volume_info['volume']) / int(other))
         return self
 
     def __float__(self):
-        return float(self._volume)
+        return float(int(self.__volume_info['volume']))
 
     def __int__(self):
-        return self._volume
+        return int(self.__volume_info['volume'])
 
     def __str__(self):
-        return str(self._volume)
+        return str(int(self.__volume_info['volume']))
 
     if PY2:
         def __unicode__(self):
             return unicode(str(self))
 
 
-class Volume(VolumeBase):
+class OutputBase(object):
+
+    def __init__(self, sony_api, name):
+        self.__sony_api = sony_api
+        self.__name__ = ''
+        for item in name.split('_'):
+            self.__name__ += item[0].upper() + item[1:]
+
+        self.__name = name.replace('_', '-')
+
+    def __send(self, method, **params):
+        return self.__sony_api.send('audio', method, **params)
+
+    @property
+    def name(self):
+        return self.__name
+
+    def __getattr__(self, item):
+        if item in self.__dict__:
+            return self.__dict__[item]
+        for device in self.__send('getVolumeInformation')[0]:
+            if 'output' in device and device['output'].startswith(self.name):
+                split_output = device['output'].split('?')
+                if len(split_output) == 1:
+                    attr_name = split_output[0].split(':')[1]
+                else:
+                    attr_name = split_output[1].replace('=', '')
+
+                if attr_name == item:
+                    self.__dict__[item] = attr = VolumeBase(
+                        self.__sony_api,
+                        **device
+                    )
+                    return attr
+        raise AttributeError
+
+    def __setattr__(self, key, value):
+        if key.startswith('_'):
+            object.__setattr__(self, key, value)
+        else:
+            raise AttributeError
+
+
+class Volume(object):
     def __init__(self, sony_api):
-        self._sony_api = sony_api
-        self._headphone = None
-        self._speaker = None
-        VolumeBase.__init__(self, sony_api)
+        self.__sony_api = sony_api
 
-        results = self._sony_api.send('audio', 'getVolumeInformation')
-        for result in results:
-            v_device = VolumeBase(sony_api, **result)
-            setattr(self, '_' + result['target'], v_device)
+    def __send(self, method, **params):
+        return self.__sony_api.send('audio', method, **params)
 
-    @property
-    def speaker(self):
-        return self._speaker
+    def __getattr__(self, item):
+        if item in self.__dict__:
+            return self.__dict__[item]
 
-    @speaker.setter
-    def speaker(self, value):
-        self._speaker._set_volume(value)
+        for device in self.__send('getVolumeInformation')[0]:
+            if "target" in device and device['target'] == item:
+                self.__dict__[item] = attr = VolumeBase(
+                    self.__sony_api,
+                    **device
+                )
+                return attr
+            if (
+                'output' in device and
+                device['output'].startswith(item.replace('_', '-'))
+            ):
+                self.__dict__[item] = attr = OutputBase(self.__sony_api, item)
+                return attr
 
-    @property
-    def headphone(self):
-        return self._headphone
+        raise AttributeError
 
-    @headphone.setter
-    def headphone(self, value):
-        self._headphone._set_volume(value)
+    def __setattr__(self, key, value):
+        if key.startswith('_'):
+            object.__setattr__(self, key, value)
+        else:
+            raise AttributeError
+

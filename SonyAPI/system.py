@@ -20,7 +20,13 @@
 from __future__ import absolute_import
 
 from datetime import datetime
-from.exception import UnsupportedError
+from .exception import UnsupportedError
+from . import container
+
+"""
+notifyPowerStatus
+notifySWUpdateInfo
+"""
 
 
 class System(object):
@@ -30,21 +36,74 @@ class System(object):
         self._interface_information = None
         self._system_information = None
         self._system_supported_function = None
+        self._network_settings = None
+
+    @property
+    def network_settings(self):
+        """
+        Gets the network settings for the device.
+
+        When this is called a system.NetworkSettings instance is returned. It
+        gets constructed when the call is made, it only gets constructed once.
+        This is so that if you are not using it at all it doesn't consume any
+        system resources.
+
+        :return: system.NetworkSettings instance
+        :rtype: system.NetworkSettings
+        """
+        if self._network_settings is None:
+            self._network_settings = NetworkSettings(self.__sony_api)
+        return self._network_settings
 
     @property
     def interface_information(self):
+        """
+        Gets the api interface information for the device.
+
+        When this is called a system.InterfaceInformation instance is returned.
+        It gets constructed when the call is made, it only gets constructed
+        once. This is so that if you are not using it at all it doesn't
+        consume any system resources.
+
+        :return: system.InterfaceInformation instance
+        :rtype: system.InterfaceInformation
+        """
         if self._interface_information is None:
             self._interface_information = InterfaceInformation(self.__sony_api)
         return self._interface_information
 
     @property
     def system_information(self):
+        """
+        Gets the system information for the device.
+
+        When this is called a system.SystemInformation instance is returned.
+        It gets constructed when the call is made, it only gets constructed
+        once. This is so that if you are not using it at all it doesn't
+        consume any system resources.
+
+        :return: system.SystemInformation instance
+        :rtype: system.SystemInformation
+        """
         if self._system_information is None:
             self._system_information = SystemInformation(self.__sony_api)
         return self._system_information
 
     @property
     def system_supported_function(self):
+        """
+        Gets the system supported functions for the device.
+
+        The system supported functions are mainly various GUI related settings.
+
+        When this is called a system.SystemSupportedFunction instance is
+        returned. It gets constructed when the call is made, it only gets
+        constructed once. This is so that if you are not using it at all it
+        doesn't consume any system resources.
+
+        :return: system.SystemSupportedFunction instance
+        :rtype: system.SystemSupportedFunction
+        """
         if self._system_supported_function is None:
             self._system_supported_function = SystemSupportedFunction(
                 self.__sony_api
@@ -53,6 +112,74 @@ class System(object):
 
     def __send(self, method, **params):
         return self.__sony_api.send('system', method, **params)
+
+    @property
+    def available_firmware_updates(self):
+        """
+        Checks to see if thee are available firmware updates.
+
+        :return: container.Container instance that holds information about an
+            available update.
+        :rtype: container.Container
+        """
+        result = self.__send('getSWUpdateInfo', network=True)[0]['swInfo']
+        return container.Container(**result)
+
+    @property
+    def sleep_timer(self):
+        """
+        Gets the sleep timer.
+
+        :return: Possible values:
+            120 - After 120 minutes.
+            90 - After 90 minutes.
+            80 - After 80 minutes.
+            70 - After 70 minutes.
+            60 - After 60 minutes.
+            50 - After 50 minutes.
+            40 - After 40 minutes.
+            30 - After 30 minutes.
+            20 - After 20 minutes.
+            10 - After 10 minutes.
+            0 - Do not automatically turn off.
+        :rtype: int
+        """
+        result = self.__send(
+                'getSleepTimerSettings',
+                target='sleepTimerMin'
+            )[0]['currentValue']
+
+        if result == 'off':
+            result = 0
+        return int(result)
+
+    @sleep_timer.setter
+    def sleep_timer(self, value):
+        """
+        Sets the sleep timer.
+
+        :param value: Allowed values:
+            120 - After 120 minutes.
+            90 - After 90 minutes.
+            80 - After 80 minutes.
+            70 - After 70 minutes.
+            60 - After 60 minutes.
+            50 - After 50 minutes.
+            40 - After 40 minutes.
+            30 - After 30 minutes.
+            20 - After 20 minutes.
+            10 - After 10 minutes.
+            0 - Do not automatically turn off.
+        :return: None:
+        :rtype: None
+        """
+        if not value:
+            value = 'off'
+
+        self.__send(
+            'setSleepTimerSettings',
+            settings=[dict(target='sleepTimerMin', value=str(value))]
+        )
 
     @property
     def time_format(self):
@@ -609,7 +736,7 @@ class SystemSupportedFunction(object):
             return True
 
 
-class Network(object):
+class NetworkSettings(object):
 
     def __init__(self, sony_api):
         self.__sony_api = sony_api
@@ -857,6 +984,139 @@ class SystemInformation(object):
         :raises: UnsupportedError
         """
         return self.__send('product')
+
+    @property
+    def help_url(self):
+        """
+        Gets the help url for the device
+
+        :return: url.
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('helpUrl')
+
+    @property
+    def device_id(self):
+        """
+        Gets the general device ID for the device
+
+        :return: device ID.
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('deviceID')
+
+    @property
+    def version(self):
+        """
+        Gets the version information for the device
+
+        :return: version information.
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('version')
+
+    @property
+    def duid(self):
+        """
+        Gets the support DUID (DHCP Unique Identifier) for the device
+
+        :return: DHCP Unique Identifier.
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('duid')
+
+    @property
+    def wireless_mac_address(self):
+        """
+        Gets the wireless MAC address for the device
+
+        :return: MAC address.
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('wirelessMacAddr')
+
+    @property
+    def esn(self):
+        """
+        Gets the esn of the device for Netflix.
+
+        :return: Model name (10 joists) and ID (22 joists).
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('esn')
+
+    @property
+    def icon_url(self):
+        """
+        Gets the icon URL of the service for the device.
+
+        :return: icon url.
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('iconUrl')
+
+    @property
+    def ssid(self):
+        """
+        Gets the network SSID of the access point to which the device is
+        connected.
+
+        :return: ssid.
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('ssid')
+
+    @property
+    def blueteeth_address(self):
+        """
+        Gets the Bluetooth address of the device.
+
+        :return: address.
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('bdAddr')
+
+    @property
+    def initial_power_on_time(self):
+        """
+        Gets the initial power-on time for the device.
+
+        :return: ISO8601 formatted date/time.
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('initialPowerOnTime')
+
+    @property
+    def last_power_on_time(self):
+        """
+        Gets the last time the device was powered on.
+
+        :return: ISO8601 formatted date/time.
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('lastPowerOnTime')
+
+    @property
+    def blueteeth_id(self):
+        """
+        Gets the Bluetooth Low Energy ID for the device.
+
+        :return: id.
+        :rtype: str
+        :raises: UnsupportedError
+        """
+        return self.__send('bleID')
 
     @property
     def mac(self):

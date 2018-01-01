@@ -368,7 +368,6 @@ class SonyAPIBase(object):
 
         _LOGGER.file_writer = tmp_debug
 
-
     @staticmethod
     def debug(writer):
         if writer in (False, None):
@@ -631,24 +630,31 @@ class SonyAPIBase(object):
     @property
     def power(self):
         response = self.send('system', 'getPowerStatus')
-        return response['status'] == 'active'
+        return response['status'] in ('active', 'activating')
 
     @power.setter
     def power(self, state):
-        if state and not self.power:
-            try:
-                self.send_command('TvPower')
-                self.send('system', 'setPowerStatus', status='true')
-            except (SonyAPI.CommandError, SonyAPI.JSONRequestError):
-                pass
+        if self.system.interface_information.product_category == 'tv':
+            if state and not self.power:
+                try:
+                    self.send_command('TvPower')
+                    self.send('system', 'setPowerStatus', status=state)
+                except exception.SonyAPIError:
+                    pass
 
-            if not self.power:
-                if not self.wol_mode:
-                    self.wol_mode = True
-                self._wake_on_lan()
+                if not self.power:
+                    if not self.system.network_settings.wol:
+                        self.system.network_settings.wol = True
+                    self._wake_on_lan()
 
-        elif not state and self.power:
-            self.send_command('PowerOff')
+            elif not state and self.power:
+                self.send_command('PowerOff')
+        else:
+            self.send(
+                'system',
+                'setPowerStatus',
+                status='on' if state else 'standby'
+            )
 
     def __getattr__(self, item):
         if item in self.__dict__:

@@ -58,10 +58,10 @@ class Settings(object):
 
         :return: Possible values:
             "auto" - PCM and BitStream can switch automatically according to
-            connection device.
+                connection device.
             "pcm" - PCM output from HDMI or digital audio output.
             "multiPcm" - Multi channel PCM output from HDMI or digital audio
-            output.
+                output.
             "2chPcm" - 2 channel PCM output from HDMI or digital audio output.
         :rtype: str
         """
@@ -74,10 +74,10 @@ class Settings(object):
 
         :param value: Possible values:
             "auto" - PCM and BitStream can switch automatically according to
-            connection device.
+                connection device.
             "pcm" - PCM output from HDMI or digital audio output.
             "multiPcm" - Multi channel PCM output from HDMI or digital audio
-            output.
+                output.
             "2chPcm" - 2 channel PCM output from HDMI or digital audio output.
         :type value: str
         :return: None
@@ -120,7 +120,7 @@ class Settings(object):
 
         :return: Possible values:
             True - "on", Outputs Mixed Audio, that is Additional Audio mixed
-            with Primary Audio.
+                with Primary Audio.
             False - "off", Outputs only Primary Audio.
         :rtype: bool
         """
@@ -133,7 +133,7 @@ class Settings(object):
 
         :param value: Possible values:
             True - "on", Outputs Mixed Audio, that is Additional Audio mixed
-            with Primary Audio.
+                with Primary Audio.
             False - "off", Outputs only Primary Audio.
         :type value: bool
         :return: None
@@ -177,11 +177,11 @@ class Settings(object):
 
         :return: Possible values:
             "on" - Three elements (PAE+(Portable Audio Enhancer Plus), Dynamic
-            Range Recovery, Advanced Auto Volume) are enabled to create better
-            sound quality for Internet content or USB content.
+                Range Recovery, Advanced Auto Volume) are enabled to create
+                better sound quality for Internet content or USB content.
             "off" - Turns off the Digital Music Enhancer function.
             "soundBarMode" - Same as setting value "off", the purpose of this
-            setting value is to force sound bar users to use off.
+                setting value is to force sound bar users to use off.
         :rtype: str
         """
         return self.__send('digitalMusicEnhancer')
@@ -195,11 +195,11 @@ class Settings(object):
 
         :param value: Possible values:
             "on" - Three elements (PAE+(Portable Audio Enhancer Plus), Dynamic
-            Range Recovery, Advanced Auto Volume) are enabled to create better
-            sound quality for Internet content or USB content.
+                Range Recovery, Advanced Auto Volume) are enabled to create
+                better sound quality for Internet content or USB content.
             "off" - Turns off the Digital Music Enhancer function.
             "soundBarMode" - Same as setting value "off", the purpose of this
-            setting value is to force sound bar users to use off.
+                setting value is to force sound bar users to use off.
         :type value: str
 
         :return: None
@@ -337,10 +337,10 @@ class Settings(object):
             "on" - Dynamic range specified by recording engineer is set.
             "off" - Disable DRC function.
             "standard" - Dynamic range is adjusted between "tv" and
-            "wideRange".
+                "wideRange".
             "tv" - a faint sound is emphasized for TV speaker
             "wideRange" - you can enjoy dynamic sound. This is more effective
-            when using Hi-Fi speaker.
+                when using Hi-Fi speaker.
         :rtype: str
         """
         return self.__send('audioDRC')
@@ -357,10 +357,10 @@ class Settings(object):
             "on" - Dynamic range specified by recording engineer is set.
             "off" - Disable DRC function.
             "standard" - Dynamic range is adjusted between "tv" and
-            "wideRange".
+                "wideRange".
             "tv" - a faint sound is emphasized for TV speaker
             "wideRange" - you can enjoy dynamic sound. This is more effective
-            when using Hi-Fi speaker.
+                when using Hi-Fi speaker.
         :type value: str
         :return: None
         :rtype: None
@@ -447,7 +447,7 @@ class Settings(object):
         :return: Possible values:
             "auto" - Enable DSEE HX function only when sound is 2ch.
             "on" - Enable DSEE HX function always regardless of the number of
-            channel.
+                channel.
             "off" - Disable DSEE HX function.
         :rtype: str
         """
@@ -465,13 +465,51 @@ class Settings(object):
         :param value: Possible values:
             "auto" - Enable DSEE HX function only when sound is 2ch.
             "on" - Enable DSEE HX function always regardless of the number of
-            channel.
+                channel.
             "off" - Disable DSEE HX function.
         :type value: str
         :return: None
         :rtype: None
         """
-        self.__send('dseeHX', value=value)
+        self.__send('dseeHXTmp', value=value)
+
+    @property
+    def dsee_hx_tmp(self):
+        """
+        Gets whether using the DSEE HX Tmp function.
+
+        DSEE HX is advanced DSEE (Digital Sound Enhancement Engine) function
+        and up scales existing sound sources to near hi-resolution sound
+        quality.
+
+        :return: Possible values:
+            "auto" - Enable DSEE HX function only when sound is 2ch.
+            "on" - Enable DSEE HX function always regardless of the number of
+                channel.
+            "off" - Disable DSEE HX function.
+        :rtype: str
+        """
+        return self.__send('dseeHX')
+
+    @dsee_hx_tmp.setter
+    def dsee_hx_tmp(self, value):
+        """
+        Sets whether using the DSEE HX Tmp function.
+
+        DSEE HX is advanced DSEE (Digital Sound Enhancement Engine) function
+        and up scales existing sound sources to near hi-resolution sound
+        quality.
+
+        :param value: Possible values:
+            "auto" - Enable DSEE HX function only when sound is 2ch.
+            "on" - Enable DSEE HX function always regardless of the number of
+                channel.
+            "off" - Disable DSEE HX function.
+        :type value: str
+        :return: None
+        :rtype: None
+        """
+        self.__send('dseeHXTmp', value=value)
 
     @property
     def clear_audio(self):
@@ -534,17 +572,18 @@ class Settings(object):
 
         :return: Possible values:
             "2chStereo" - 2ch Stereo.
-            The receiver outputs the sound from the front left/right speakers
-            only. There is no sound from the subwoofer.
+                The receiver outputs the sound from the front left/right
+                speakers only. There is no sound from the subwoofer.
             "analogDirect" - Analog Direct.
-            You can switch the audio of the selected input to 2-channel analog
-            input. This function enables you to enjoy high-quality analog
-            sources.
+                You can switch the audio of the selected input to 2-channel
+                analog input. This function enables you to enjoy high-quality
+                analog sources.
             "auto" - Auto Format Direct (A.F.D.).
-            Presets the sound as it was recorded/encoded without adding any
-            surround effects.
+                Presets the sound as it was recorded/encoded without adding any
+                surround effects.
             "multiStereo" - Multi stereo.
-            Outputs 2-channel left/right or monaural signals from all speakers.
+                Outputs 2-channel left/right or monaural signals from all
+                speakers.
             "off" - Disable A.F.D/2ch function
         :rtype: str
         """
@@ -557,17 +596,18 @@ class Settings(object):
 
         :param value: Possible values:
             "2chStereo" - 2ch Stereo.
-            The receiver outputs the sound from the front left/right speakers
-            only. There is no sound from the subwoofer.
+                The receiver outputs the sound from the front left/right
+                speakers only. There is no sound from the subwoofer.
             "analogDirect" - Analog Direct.
-            You can switch the audio of the selected input to 2-channel analog
-            input. This function enables you to enjoy high-quality analog
-            sources.
+                You can switch the audio of the selected input to 2-channel
+                analog input. This function enables you to enjoy high-quality
+                analog sources.
             "auto" - Auto Format Direct (A.F.D.).
-            Presets the sound as it was recorded/encoded without adding any
-            surround effects.
+                Presets the sound as it was recorded/encoded without adding any
+                surround effects.
             "multiStereo" - Multi stereo.
-            Outputs 2-channel left/right or monaural signals from all speakers.
+                Outputs 2-channel left/right or monaural signals from all
+                speakers.
             "off" - Disable A.F.D/2ch function
         :type value: str
         :return: None
@@ -582,71 +622,72 @@ class Settings(object):
 
         :return: Possible values:
             "standard" - Music Equalizer Standard.
-            Sound effects are optimized for the individual source.
+                Sound effects are optimized for the individual source.
             "rock" - Music Equalizer Rock
             "hiphop" - Music Equalizer Hip Hop
             "electronica" - Music Equalizer Electronica
             "sertanejo" - Music Equalizer Sertanejo
             "movie" - Movie mode.
-            Sound effects are optimized for movies. This mode replicates the
-            density and rich expanse of sound.
+                Sound effects are optimized for movies. This mode replicates
+                the density and rich expanse of sound.
             "movie2" - Movie2 mode.
-            Sound effects are optimized for movies. This mode replicates sound
-            looping around the listener to the rear.
+                Sound effects are optimized for movies. This mode replicates
+                sound looping around the listener to the rear.
             "music" - Music mode.
-            Sound effects are optimized for music.
+                Sound effects are optimized for music.
             "game" - Game mode.
-            Sound effects are optimized for game play.
+                Sound effects are optimized for game play.
             "compressionMusic" - Digital Music mode
             "night" - Night mode
             "flat" - Flat mode
             "pop" - Pop mode
             "jazz" - Jazz mode.
-            Reproduces the acoustics of a jazz club.
+                Reproduces the acoustics of a jazz club.
             "latin" - Latin mode
             "classic" - Classic mode
             "custom" - Custom mode
             "clearAudio" - Clear Audio + mode.
-            The appropriate sound setting is automatically selected for the
-            sound source.
+                The appropriate sound setting is automatically selected for the
+                sound source.
             "sports" - Sports mode.
-            Reproduces the feel of sports broadcasting.
+                Reproduces the feel of sports broadcasting.
             "live" - Live mode.
-            Reproduces the acoustics of a 300-seat live house.
+                Reproduces the acoustics of a 300-seat live house.
             "stadium" - Stadium mode.
-            Reproduces the feel of a large open-air stadium
+                Reproduces the feel of a large open-air stadium
             "proLogicIIMusic" - Pro Logic II Music mode.
-            Performs Dolby Pro Logic II Music mode decoding. This setting is
-            ideal for normal stereo sources such as CDs.
+                Performs Dolby Pro Logic II Music mode decoding. This setting
+                is ideal for normal stereo sources such as CDs.
             "proLogicIIxMusic" - Pro Logic IIx Music mode.
-            Performs Dolby Pro Logic IIx Music mode decoding. This setting is
-            ideal for normal stereo sources such as CDs.
+                Performs Dolby Pro Logic IIx Music mode decoding. This setting
+                is ideal for normal stereo sources such as CDs.
             "neo6Music" - Neo6 Music mode.
-            Performs DTS Neo:6 Music mode decoding. Sources recorded in
-            2-channel format are enhanced up to 7 channels. This setting is
-            ideal for normal stereo sources such as CDs.
+                Performs DTS Neo:6 Music mode decoding. Sources recorded in
+                2-channel format are enhanced up to 7 channels. This setting is
+                ideal for normal stereo sources such as CDs.
             "concertHallA" - Concert Hall A.
-            Reproduces the acoustics of a vineyard style concert hall in
-            Berlin famous for its clear acoustics.
+                Reproduces the acoustics of a vineyard style concert hall in
+                Berlin famous for its clear acoustics.
             "concertHallB" - Concert Hall B.
-            Reproduces the acoustics of a shoe box style concert hall with
-            plaster walls in Amsterdam.
+                Reproduces the acoustics of a shoe box style concert hall with
+                plaster walls in Amsterdam.
             "concertHallC" - Concert Hall C.
-            Reproduces the acoustics of a wooden shoe box style concert hall
-            in Vienna.
+                Reproduces the acoustics of a wooden shoe box style concert
+                hall in Vienna.
             "portableAudio" - Portable Audio.
-            Reproduces clear enhanced sound from your portable audio device.
-            This mode is ideal for MP3s and other compressed music.
+                Reproduces clear enhanced sound from your portable audio
+                device. This mode is ideal for MP3s and other compressed music.
             "cinemaStudio" - Cinema Studio.
-            Sound effect are optimized for higher realistic sound like a
-            cinema studio.
+                Sound effect are optimized for higher realistic sound like a
+                cinema studio.
             "musicArena" - Music Arena.
-            Sound effects like a live music concerts filled with great
-            excitement created by Sony’s unique Audio DSP technology.
+                Sound effects like a live music concerts filled with great
+                excitement created by Sony’s unique Audio DSP technology.
             "headPhone2ch" - This mode is selected automatically when
-            connecting headphones. Standard 2-channel stereo sources
-            completely bypass the sound field processing and multi-channel
-            surround formats are downmixed to 2 channels except LFE signals.
+                connecting headphones. Standard 2-channel stereo sources
+                completely bypass the sound field processing and multi-channel
+                surround formats are downmixed to 2 channels except LFE
+                signals.
             "off" - Disable Sound Field function.
         :rtype: str
         """
@@ -659,71 +700,72 @@ class Settings(object):
 
         :param value: Possible values:
             "standard" - Music Equalizer Standard.
-            Sound effects are optimized for the individual source.
+                Sound effects are optimized for the individual source.
             "rock" - Music Equalizer Rock
             "hiphop" - Music Equalizer Hip Hop
             "electronica" - Music Equalizer Electronica
             "sertanejo" - Music Equalizer Sertanejo
             "movie" - Movie mode.
-            Sound effects are optimized for movies. This mode replicates the
-            density and rich expanse of sound.
+                Sound effects are optimized for movies. This mode replicates
+                the density and rich expanse of sound.
             "movie2" - Movie2 mode.
-            Sound effects are optimized for movies. This mode replicates sound
-            looping around the listener to the rear.
+                Sound effects are optimized for movies. This mode replicates
+                sound looping around the listener to the rear.
             "music" - Music mode.
-            Sound effects are optimized for music.
+                Sound effects are optimized for music.
             "game" - Game mode.
-            Sound effects are optimized for game play.
+                Sound effects are optimized for game play.
             "compressionMusic" - Digital Music mode
             "night" - Night mode
             "flat" - Flat mode
             "pop" - Pop mode
             "jazz" - Jazz mode.
-            Reproduces the acoustics of a jazz club.
+                Reproduces the acoustics of a jazz club.
             "latin" - Latin mode
             "classic" - Classic mode
             "custom" - Custom mode
             "clearAudio" - Clear Audio + mode.
-            The appropriate sound setting is automatically selected for the
-            sound source.
+                The appropriate sound setting is automatically selected for the
+                sound source.
             "sports" - Sports mode.
-            Reproduces the feel of sports broadcasting.
+                Reproduces the feel of sports broadcasting.
             "live" - Live mode.
-            Reproduces the acoustics of a 300-seat live house.
+                Reproduces the acoustics of a 300-seat live house.
             "stadium" - Stadium mode.
-            Reproduces the feel of a large open-air stadium
+                Reproduces the feel of a large open-air stadium
             "proLogicIIMusic" - Pro Logic II Music mode.
-            Performs Dolby Pro Logic II Music mode decoding. This setting is
-            ideal for normal stereo sources such as CDs.
+                Performs Dolby Pro Logic II Music mode decoding. This setting
+                is ideal for normal stereo sources such as CDs.
             "proLogicIIxMusic" - Pro Logic IIx Music mode.
-            Performs Dolby Pro Logic IIx Music mode decoding. This setting is
-            ideal for normal stereo sources such as CDs.
+                Performs Dolby Pro Logic IIx Music mode decoding. This setting
+                is ideal for normal stereo sources such as CDs.
             "neo6Music" - Neo6 Music mode.
-            Performs DTS Neo:6 Music mode decoding. Sources recorded in
-            2-channel format are enhanced up to 7 channels. This setting is
-            ideal for normal stereo sources such as CDs.
+                Performs DTS Neo:6 Music mode decoding. Sources recorded in
+                2-channel format are enhanced up to 7 channels. This setting is
+                ideal for normal stereo sources such as CDs.
             "concertHallA" - Concert Hall A.
-            Reproduces the acoustics of a vineyard style concert hall in
-            Berlin famous for its clear acoustics.
+                Reproduces the acoustics of a vineyard style concert hall in
+                Berlin famous for its clear acoustics.
             "concertHallB" - Concert Hall B.
-            Reproduces the acoustics of a shoe box style concert hall with
-            plaster walls in Amsterdam.
+                Reproduces the acoustics of a shoe box style concert hall with
+                plaster walls in Amsterdam.
             "concertHallC" - Concert Hall C.
-            Reproduces the acoustics of a wooden shoe box style concert hall
-            in Vienna.
+                Reproduces the acoustics of a wooden shoe box style concert
+                hall in Vienna.
             "portableAudio" - Portable Audio.
-            Reproduces clear enhanced sound from your portable audio device.
-            This mode is ideal for MP3s and other compressed music.
+                Reproduces clear enhanced sound from your portable audio
+                device. This mode is ideal for MP3s and other compressed music.
             "cinemaStudio" - Cinema Studio.
-            Sound effect are optimized for higher realistic sound like a
-            cinema studio.
+                Sound effect are optimized for higher realistic sound like a
+                cinema studio.
             "musicArena" - Music Arena.
-            Sound effects like a live music concerts filled with great
-            excitement created by Sony’s unique Audio DSP technology.
+                Sound effects like a live music concerts filled with great
+                excitement created by Sony’s unique Audio DSP technology.
             "headPhone2ch" - This mode is selected automatically when
-            connecting headphones. Standard 2-channel stereo sources
-            completely bypass the sound field processing and multi-channel
-            surround formats are downmixed to 2 channels except LFE signals.
+                connecting headphones. Standard 2-channel stereo sources
+                completely bypass the sound field processing and multi-channel
+                surround formats are downmixed to 2 channels except LFE
+                signals.
             "off" - Disable Sound Field function.
         :type value: str
         :return: None
@@ -738,29 +780,31 @@ class Settings(object):
 
         :return: Possible values:
             "hdDcsDynamic" - HD Digital Cinema Sound (HD-D.C.S.) Dynamic.
-            This setting is suitable for an environment which is reverberant
-            but lacks a spacious feel (where sound absorption is not
-            sufficient). It emphasizes the reflection of sound and reproduces
-            the sound of a large, classic movie theater.
+                This setting is suitable for an environment which is
+                reverberant but lacks a spacious feel (where sound absorption
+                is not sufficient). It emphasizes the reflection of sound and
+                reproduces the sound of a large, classic movie theater.
             "hdDcsTheater" - HD Digital Cinema Sound (HD-D.C.S.) Theater.
-            This setting is suitable for a general living room. It reproduces
-            the reverberation of sound just like in a movie theater (dubbing
-            theater). It is most appropriate for watching content recorded on
-            a Blu-ray Disc when you want the atmosphere of a movie theater
+                This setting is suitable for a general living room. It
+                reproduces the reverberation of sound just like in a movie
+                theater (dubbing theater). It is most appropriate for watching
+                content recorded on a Blu-ray Disc when you want the
+                atmosphere of a movie theater
             "hdDcsStudio" - HD Digital Cinema Sound (HD-D.C.S.) Studio.
-            This setting is suitable for a living room with the appropriate
-            sound devices. It reproduces the reverberation of sound provided
-            when a theatrical sound source is remixed for a Blu-ray Disc to a
-            volume level suitable for home use.
+                This setting is suitable for a living room with the appropriate
+                sound devices. It reproduces the reverberation of sound
+                provided when a theatrical sound source is remixed for a
+                Blu-ray Disc to a volume level suitable for home use.
             "proLogicII" - Dolby Pro Logic II Movie mode decoding.
-            This setting is ideal for movies encoded in Dolby Surround.
+                This setting is ideal for movies encoded in Dolby Surround.
             "proLogicIIx" - Dolby Pro Logic IIx Movie mode decoding.
-            This setting expands Dolby Pro Logic II Movie or Dolby Digital 5.1
-            to 7.1 discrete movie channels.
+                This setting expands Dolby Pro Logic II Movie or Dolby Digital
+                5.1 to 7.1 discrete movie channels.
             "neo6Cinema" - DTS Neo:6 Cinema mode decoding.
-            Sources recorded in 2-channel format are enhanced up to 7 channels.
+                Sources recorded in 2-channel format are enhanced up to 7
+                channels.
             "frontSurround" - An immersive virtual surround sound experience
-            with only front speakers.
+                with only front speakers.
             "off" - Disable Sound Field Movie function.
         :rtype: str
 
@@ -774,29 +818,31 @@ class Settings(object):
 
         :param value: Possible values:
             "hdDcsDynamic" - HD Digital Cinema Sound (HD-D.C.S.) Dynamic.
-            This setting is suitable for an environment which is reverberant
-            but lacks a spacious feel (where sound absorption is not
-            sufficient). It emphasizes the reflection of sound and reproduces
-            the sound of a large, classic movie theater.
+                This setting is suitable for an environment which is
+                reverberant but lacks a spacious feel (where sound absorption
+                is not sufficient). It emphasizes the reflection of sound and
+                reproduces the sound of a large, classic movie theater.
             "hdDcsTheater" - HD Digital Cinema Sound (HD-D.C.S.) Theater.
-            This setting is suitable for a general living room. It reproduces
-            the reverberation of sound just like in a movie theater (dubbing
-            theater). It is most appropriate for watching content recorded on
-            a Blu-ray Disc when you want the atmosphere of a movie theater
+                This setting is suitable for a general living room. It
+                reproduces the reverberation of sound just like in a movie
+                theater (dubbing theater). It is most appropriate for watching
+                content recorded on a Blu-ray Disc when you want the
+                atmosphere of a movie theater
             "hdDcsStudio" - HD Digital Cinema Sound (HD-D.C.S.) Studio.
-            This setting is suitable for a living room with the appropriate
-            sound devices. It reproduces the reverberation of sound provided
-            when a theatrical sound source is remixed for a Blu-ray Disc to a
-            volume level suitable for home use.
+                This setting is suitable for a living room with the appropriate
+                sound devices. It reproduces the reverberation of sound
+                provided when a theatrical sound source is remixed for a
+                Blu-ray Disc to a volume level suitable for home use.
             "proLogicII" - Dolby Pro Logic II Movie mode decoding.
-            This setting is ideal for movies encoded in Dolby Surround.
+                This setting is ideal for movies encoded in Dolby Surround.
             "proLogicIIx" - Dolby Pro Logic IIx Movie mode decoding.
-            This setting expands Dolby Pro Logic II Movie or Dolby Digital 5.1
-            to 7.1 discrete movie channels.
+                This setting expands Dolby Pro Logic II Movie or Dolby Digital
+                5.1 to 7.1 discrete movie channels.
             "neo6Cinema" - DTS Neo:6 Cinema mode decoding.
-            Sources recorded in 2-channel format are enhanced up to 7 channels.
+                Sources recorded in 2-channel format are enhanced up to 7
+                channels.
             "frontSurround" - An immersive virtual surround sound experience
-            with only front speakers.
+                with only front speakers.
             "off" - Disable Sound Field Movie function.
         :type value: str
         :return: None
@@ -835,6 +881,38 @@ class Settings(object):
         :rtype: None
         """
         self.__send('nightMode', value='on' if value else 'off')
+
+    @property
+    def night_mode_tmp(self):
+        """
+        Gets Night mode tmp.
+
+        Sound is output at low volume with minimum loss of fidelity and
+        clarity of dialogue.
+
+        :return: Possible values:
+            True - "on", Enable Night mode.
+            False - "off", Disable Night mode.
+        :rtype: bool
+        """
+        return self.__send('nightModeTmp')
+
+    @night_mode_tmp.setter
+    def night_mode_tmp(self, value):
+        """
+        Sets Night mode tmp.
+
+        Sound is output at low volume with minimum loss of fidelity and
+        clarity of dialogue.
+
+        :param value: Possible values:
+            True - "on", Enable Night mode.
+            False - "off", Disable Night mode.
+        :type value: bool
+        :return: None
+        :rtype: None
+        """
+        self.__send('nightModeTmp', value='on' if value else 'off')
 
     @property
     def pure_direct(self):
@@ -878,7 +956,7 @@ class Settings(object):
         :return: Possible values:
             "normal" - Normal mode. Adjusts for the reference level of a movie.
             "low" - Low mode. Adjusts for a CD or other software whose average
-            sound pressure level is processed highly.
+                sound pressure level is processed highly.
             "off" - Disable Sound Optimizer function.
         :rtype: str
         """
@@ -894,7 +972,7 @@ class Settings(object):
         :param value: Possible values:
             "normal" - Normal mode. Adjusts for the reference level of a movie.
             "low" - Low mode. Adjusts for a CD or other software whose average
-            sound pressure level is processed highly.
+                sound pressure level is processed highly.
             "off" - Disable Sound Optimizer function.
         :type value: str
         :return: None
@@ -910,12 +988,12 @@ class Settings(object):
 
         :return: Possible values:
             "fullFlat" - Full Flat. Makes the measurement of frequency from
-            each speaker flat.
+                each speaker flat.
             "engineer" - Engineer. Sets to "the Sony listening room standard"
-            frequency characteristics.
+                frequency characteristics.
             "frontReference" - Front Reference. Adjusts the characteristics of
-            all of the speakers to match the characteristics of the front
-            speaker.
+                all of the speakers to match the characteristics of the front
+                speaker.
             "off" - Disable Calibration type.
         :rtype: str
         """
@@ -929,12 +1007,12 @@ class Settings(object):
 
         :param value: Possible values:
             "fullFlat" - Full Flat. Makes the measurement of frequency from
-            each speaker flat.
+                each speaker flat.
             "engineer" - Engineer. Sets to "the Sony listening room standard"
-            frequency characteristics.
+                frequency characteristics.
             "frontReference" - Front Reference. Adjusts the characteristics of
-            all of the speakers to match the characteristics of the front
-            speaker.
+                all of the speakers to match the characteristics of the front
+                speaker.
             "off" - Disable Calibration type.
         :type value: str
         :return: None
@@ -1010,8 +1088,9 @@ class Settings(object):
 
         :return: Possible values:
             "main_sub" - Main/Sub mode. Sound in the main language will be
-            output through the front left speaker and sound in the sub language
-            will be output through the front right speaker simultaneously.
+                output through the front left speaker and sound in the sub
+                language will be output through the front right speaker
+                simultaneously.
             "main" - Main mode. Sound in the main language will be output.
             "sub" - Sub mode. Sound in the sub language will be output.
         :rtype: str
@@ -1025,8 +1104,9 @@ class Settings(object):
 
         :param value: Possible values:
             "main_sub" - Main/Sub mode. Sound in the main language will be
-            output through the front left speaker and sound in the sub language
-            will be output through the front right speaker simultaneously.
+                output through the front left speaker and sound in the sub
+                language will be output through the front right speaker
+                simultaneously.
             "main" - Main mode. Sound in the main language will be output.
             "sub" - Sub mode. Sound in the sub language will be output.
         :type value: str
@@ -1129,5 +1209,36 @@ class Settings(object):
         """
         self.__send(
             'audioPurenessControl',
+            value='on' if value else 'off'
+        )
+
+    @property
+    def audio_pureness_control_tmp(self):
+        """
+
+
+        :return: Possible Values
+            True - "on", Enable APC function
+            False - "off", Disable APC function
+        :rtype: bool
+
+        """
+        return self.__send('audioPurenessControlTmp')
+
+    @audio_pureness_control_tmp.setter
+    def audio_pureness_control_tmp(self, value):
+        """
+
+
+        :param value: Possible Values
+            True - "on", Enable APC function
+            False - "off", Disable APC function
+        :type value: bool
+        :return: None
+        :rtype: None
+
+        """
+        self.__send(
+            'audioPurenessControlTmp',
             value='on' if value else 'off'
         )
