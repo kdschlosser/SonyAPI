@@ -18,13 +18,22 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+__package_name__ = 'Sony API'
 __author__ = 'Kevin G. Schlosser'
 __author_email__ = 'Kevin.G.Schlosser@gmail.com'
 __version__ = '0.1.1b2'
-__version_info__ = (0, 1, 1, 'b2')
+__version_info__ = (0, 2, 0, 'pre')
 __description__ = 'Sony Bravia TV interface (generation 3)'
 __url__ = 'https://github.com/kdschlosser/SonyAPI'
-__requirements__ = ['requests >= 2.18.4', 'setuptools >= 36.3.0']
+__requirements__ = [
+    'requests >= 2.18.4',
+    'setuptools >= 36.3.0',
+    'pyCrypto',
+    'Crypto',
+    'sphinx >= 1.6.5',
+    'Jinja2 >= 2.10',
+    'sphinx_rtd_theme == 0.2.4'
+]
 __keywords__ = 'Sony SonyAPI Bravia BraviaAPI SonyTV BraviaTV'
 __license__ = 'GPL-2.0'
 __download_url__ = (

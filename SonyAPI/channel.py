@@ -19,8 +19,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from __future__ import absolute_import
-from . import media
 from .api_const import PY2
+from . import av_content
 
 
 class Channels(object):
@@ -47,7 +47,7 @@ class Channels(object):
                 for content in content_list:
                     content['source'] = source
                     content_items += [
-                        media.ContentItem(self._sony_api, **content)
+                        av_content.ContentItem(self._sony_api, **content)
                     ]
         return content_items
 
