@@ -28,190 +28,193 @@ class VideoScreen(object):
     @property
     def audio_source_screen(self):
         """
-        Gets the current screen audio is playing from.
+        Audio source screen.
 
-        :return: Possible values:
-            "main" - Main screen.
-            "sub" - PIP screen.
-        :rtype: str
+        **Getter:** Gets the current screen audio is playing from.
+
+            *Returns:*
+
+                * ``"main"`` - Main screen.
+                * ``"sub"`` - PIP screen.
+
+            *Return type:* `str`
+
+        **Setter:** Sets the screen audio is playing from.
+
+            *Accepted values:*
+
+                * ``"main"`` - Main screen.
+                * ``"sub"`` - PIP screen.
+
+            *Value type:* `str`
         """
-
         return self.__send('getAudioSourceScreen')[0]['screen']
 
     @audio_source_screen.setter
     def audio_source_screen(self, value):
-        """
-        Sets the screen audio is playing from.
-
-        :param value: Possible values:
-            "main" - Main screen.
-            "sub" - PIP screen.
-        :type value: str
-        :return: None
-        :rtype: None
-        """
-
         self.__send('setAudioSourceScreen', screen=value)
 
     @property
     def banner_mode(self):
         """
-        Gets the banner mode.
+        Banner mode.
 
-        :return: Possible values:
-            "large" - Long banner.
-            "small" - Short banner.
-            "hidden" - No banner displayed.
-        :rtype: str
+        **Getter:** Gets the banner mode.
+
+            *Returns:*
+
+                * ``"large"`` - Long banner.
+                * ``"small"`` - Short banner.
+                * ``"hidden"`` - No banner displayed.
+
+            *Return type:* `str`
+
+        **Setter:** Sets the banner mode.
+
+            *Accepted values:*
+
+                * ``"large"`` - Long banner.
+                * ``"small"`` - Short banner.
+                * ``"hidden"`` - No banner displayed.
+
+            *Value type:* `str`
         """
 
         return self.__send('getBannerMode')[0]['currentValue']
 
     @banner_mode.setter
     def banner_mode(self, value):
-        """
-        Sets the banner mode.
-
-        :param value: Possible values:
-            "large" - Long banner.
-            "small" - Short banner.
-            "hidden" - No banner displayed.
-        :type value: str
-        :return: None
-        :rtype: None
-        """
-
         self.__send('setBannerMode', value=value)
 
     @property
     def multi_screen_mode(self):
         """
-        Gets the screen mode.
+        Banner mode.
 
-        :return: Possible values:
-            "single" - single screen mode
-            "PIP" - Picture In Picture mode
-            "PAP" - Picture And Picture mode
-            "widgetMode" - Picture and Widget application mode
-            "internetPhoneMode" - Internet Phone application mode
-            "other" - other mode
-        :rtype: str
+        **Getter:** Gets the screen mode.
+
+            *Returns:*
+
+                * ``"single"`` - Single screen mode.
+                * ``"PIP"`` - Picture In Picture mode.
+                * ``"PAP"`` - Picture And Picture mode.
+                * ``"widgetMode"`` - Picture and Widget application mode.
+                * ``"internetPhoneMode"`` - Internet phone application mode.
+                * ``"other"`` - Other mode.
+
+            *Return type:* `str`
+
+        **Setter:** Sets the screen mode.
+
+            *Accepted values:*
+
+                * ``"single"`` - Single screen mode.
+                * ``"PIP"`` - Picture In Picture mode.
+                * ``"PAP"`` - Picture And Picture mode.
+
+            *Value type:* `str`
         """
         return self.__send('getMultiScreenMode')[0]['mode']
 
     @multi_screen_mode.setter
     def multi_screen_mode(self, value):
-        """
-        Sets the screen mode.
-
-        :param value: Possible values:
-            "single" - single screen mode
-            "PIP" - Picture In Picture mode
-            "PAP" - Picture And Picture mode
-
-        :type value: str
-        :return: None
-        :rtype: None
-        """
-
         self.__send('setMultiScreenMode', mode=value)
 
     @property
     def pip_position(self):
         """
-        Gets the PIP screen position.
+        PIP screen position.
 
-        :return: Possible values:
-            "leftTop" - shown in the upper left corner of main screen
-            "leftBottom" - shown in the lower left corner of main screen
-            "rightTop" - shown in the upper right corner of main screen
-            "rightBottom" - shown in the lower right corner of main screen
-            "invalid" - sub screen is not shown. That means the current Multi
-            Screen Mode is not PIP.
+        **Getter:** Gets the PIP screen position.
 
-        :rtype: str
+            *Returns:*
+
+                * ``"leftTop"`` - Upper left corner of main screen.
+                * ``"leftBottom"`` - Lower left corner of main screen.
+                * ``"rightTop"`` - Upper right corner of main screen.
+                * ``"rightBottom"`` - Lower right corner of main screen.
+                * ``"invalid"`` - Current Multi Screen Mode is not PIP.
+
+            *Return type:* `str`
+
+        **Setter:** Sets the PIP screen position.
+
+            *Accepted values:*
+
+                * ``"leftTop"`` - Upper left corner of main screen.
+                * ``"leftBottom"`` - Lower left corner of main screen.
+                * ``"rightTop"`` - Upper right corner of main screen.
+                * ``"rightBottom"`` - Lower right corner of main screen.
+                * ``"invalid"`` - Current Multi Screen Mode is not PIP.
+
+            *Value type:* `str`
         """
         return self.__send('getPipSubScreenPosition')[0]['position']
 
     @pip_position.setter
     def pip_position(self, value):
-        """
-        Sets the PIP screen position.
-
-        :param value: Possible values:
-            "leftTop" - shown in the upper left corner of main screen
-            "leftBottom" - shown in the lower left corner of main screen
-            "rightTop" - shown in the upper right corner of main screen
-            "rightBottom" - shown in the lower right corner of main screen
-
-        :type value: str
-        :return: None
-        :rtype: None
-        """
-
         self.__send('setPipSubScreenPosition', position=value)
 
     @property
     def scene_setting(self):
         """
-        Gets the scene setting.
+        Scene setting.
 
-        :return: Possible values:
-            "auto" - Automatically selects the scene based on the viewing
-            content.
-            "auto24pSync" - Automatically selects "Cinema" for 24Hz signal
-            content. Behaves as "Auto" for all other signals.
-            "general" - Turn off scene select for general content.
-            "cinema" - Optimal picture and sound for watching movies.
-            "sports" - Optimal picture and sound for watching sports.
-            "music" - Optimal sound for listening to music.
-            "animation" - Optimal picture for watching animation.
-            "photo" - Optimal picture for viewing photos.
-            "game" - Optimal picture and sound for playing video games.
-            "graphics" - Optimal picture for viewing tables and characters.
-        :rtype: str
+        **Getter:** Gets the scene setting.
+
+            *Returns:*
+
+                * ``"auto"`` - Automatically selects the scene based on the viewing content.
+                * ``"auto24pSync"`` - Automatically selects "Cinema" for 24Hz signal content. Behaves as "Auto" for all other signals.
+                * ``"general"`` - Turn off scene select for general content.
+                * ``"cinema"`` - Optimal picture and sound for watching movies.
+                * ``"sports"`` - Optimal picture and sound for watching sports.
+                * ``"music"`` - Optimal sound for listening to music.
+                * ``"animation"`` - Optimal picture for watching animation.
+                * ``"photo"`` - Optimal picture for viewing photos.
+                * ``"game"`` - Optimal picture and sound for playing video games.
+                * ``"graphics"`` - Optimal picture for viewing tables and characters.
+
+            *Return type:* `str`
+
+        **Setter:** Sets the scene setting.
+
+            *Accepted values:*
+
+                * ``"auto"`` - Automatically selects the scene based on the viewing content.
+                * ``"auto24pSync"`` - Automatically selects "Cinema" for 24Hz signal content. Behaves as "Auto" for all other signals.
+                * ``"general"`` - Turn off scene select for general content.
+                * ``"cinema"`` - Optimal picture and sound for watching movies.
+                * ``"sports"`` - Optimal picture and sound for watching sports.
+                * ``"music"`` - Optimal sound for listening to music.
+                * ``"animation"`` - Optimal picture for watching animation.
+                * ``"photo"`` - Optimal picture for viewing photos.
+                * ``"game"`` - Optimal picture and sound for playing video games.
+                * ``"graphics"`` - Optimal picture for viewing tables and characters.
+
+            *Value type:* `str`
+
         """
         return self.__send('getPipSubScreenPosition')[0]['currentValue']
 
     @scene_setting.setter
     def scene_setting(self, value):
-        """
-        Sets the scene setting.
-
-        :param value: Possible values:
-            "auto" - Automatically selects the scene based on the viewing
-            content.
-            "auto24pSync" - Automatically selects "Cinema" for 24Hz signal
-            content. Behaves as "Auto" for all other signals.
-            "general" - Turn off scene select for general content.
-            "cinema" - Optimal picture and sound for watching movies.
-            "sports" - Optimal picture and sound for watching sports.
-            "music" - Optimal sound for listening to music.
-            "animation" - Optimal picture for watching animation.
-            "photo" - Optimal picture for viewing photos.
-            "game" - Optimal picture and sound for playing video games.
-            "graphics" - Optimal picture for viewing tables and characters.
-        :type value: str
-        :return: None
-        :rtype: None
-        """
-
         self.__send('setPipSubScreenPosition', value=value)
 
     def pap_screen_size(self, screen, increment):
         """
-        Sets the PAP screen size.
+        PAP screen size.
 
-        :param screen: Possible values:
-            "main" - main screen
-            "sub" - sub screen
-        :type screen: str
+        :param str screen:
+            *Accepted values:*
 
-        :param increment: The increment can be + or -. This number is the
-        number of changes to take place. so if yo9u do a +1 it will increase
-        the size by one and a +2 will be increasing the size 2 steps.
-        Same deal with - except making the size smaller.
-        :type increment: int
+                * ``"main"`` - Main screen.
+                * ``"sub"`` - Sub screen.
+
+        :param int increment: The increment can be +- number.
+            This number is the number of changes to take place. so if you do
+            a +1 it will increase the size by one and a +2 will be increasing
+            the size 2 steps. Same deal with - except making the size smaller.
 
         :return: None
         :rtype: None

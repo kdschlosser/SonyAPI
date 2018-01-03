@@ -28,6 +28,8 @@ ideas and insight on how to use some of the methods.
 aparraga / braviarc
 alanreid / bravia
 
+
+
 """
 
 from __future__ import absolute_import
@@ -67,7 +69,6 @@ from .utils import (
 )
 from .exception import NoSuchMethodError
 
-
 from .api_const import (
     GUID,
     VOLUME_EVENT,
@@ -87,11 +88,11 @@ from .api_const import (
     PY30_31
 )
 
+
 try:
     __builtin__ = __import__('__builtin__')
 except ImportError:
     __builtin__ = __import__('builtins')
-
 
 SERVICE_MAPPINGS = dict(
     guide=['guide', guide.Guide],
@@ -114,15 +115,14 @@ SERVICE_MAPPINGS = dict(
 
 
 def _build_command_list(device_url):
-
     methods = dict()
 
     url = device_url + '/guide'
     json_data = json.dumps({
-        "id": 1,
-        "method": "getSupportedApiInfo",
+        "id":      1,
+        "method":  "getSupportedApiInfo",
         "version": "1.0",
-        "params": [{"service": []}]
+        "params":  [{"service": []}]
     }).encode('UTF-8')
 
     response = requests.post(
@@ -193,6 +193,7 @@ def _build_command_list(device_url):
 def discover(timeout=30.0):
     from xml.etree import cElementTree
 
+
     start_time = time.time()
     found_addresses = []
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -218,6 +219,8 @@ def discover(timeout=30.0):
                 url = line[location + 9:].strip()
                 xml_data = requests.get(url).content
                 from io import StringIO
+
+
                 xml = StringIO(xml_data)
 
                 namespaces = dict([
@@ -247,6 +250,7 @@ def discover(timeout=30.0):
 def device(url):
     services = _build_command_list(url)
 
+
     class SonyAPI(SonyAPIBase):
         __metaclass__ = singleton.Singleton
         __services = services
@@ -256,8 +260,10 @@ def device(url):
     for service_name, methods in services.items():
         service_name, service = SERVICE_MAPPINGS[service_name]
 
+
         class Service(service):
             __name__ = service.__name__
+
 
         for method in methods:
             method_name, method = Service.METHOD_MAPPINGS[method]
@@ -276,6 +282,7 @@ def device(url):
 
 
 class SonyAPIBase(object):
+    __name__ = 'SonyAPI'
 
     def __init__(
         self,
@@ -296,7 +303,7 @@ class SonyAPIBase(object):
             display_addresses = ''
             self._ip_address = None
 
-            ip_addresses = SonyAPI.discover(ssdp_timeout)
+            ip_addresses = discover(ssdp_timeout)
             _get_mac_addresses(ip_addresses)
             _LOGGER.debug('||', ip_addresses=ip_addresses)
 
@@ -345,6 +352,7 @@ class SonyAPIBase(object):
         self._event_threads = []
         self._pin_timer = None
         self._timeout_event = None
+        self.device_type = None
 
         self._psk = psk
         if psk:
@@ -356,6 +364,7 @@ class SonyAPIBase(object):
 
     def run_tests(self, enable_debugging=False):
         from . import test
+
 
         tmp_debug = _LOGGER.file_writer
         if enable_debugging:
@@ -384,6 +393,17 @@ class SonyAPIBase(object):
             _LOGGER.file_writer = None
 
     @property
+    def audio(self):
+        """
+        Audio Settings.
+
+        *Returns:* `SonyAPI.audio.Audio` instance
+
+        *Return type:* `SonyAPI.audio.Audio`
+        """
+        return audio.Audio(self)
+
+    @property
     def pin(self):
         return self._pin
 
@@ -392,14 +412,14 @@ class SonyAPIBase(object):
         params = [{
             'clientid': self._client_id,
             'nickname': self._nickname,
-            'level': 'private'
+            'level':    'private'
         }]
         params += [[{'value': 'yes', 'function': 'WOL'}]]
         authorization = {
-            'method': 'actRegister',
-            'id': 1,
+            'method':  'actRegister',
+            'id':      1,
             'version': '1.0',
-            'params': params
+            'params':  params
         }
         authorization = json.dumps(authorization).encode('utf-8')
         _LOGGER.debug('||', authorization=authorization)
@@ -461,12 +481,15 @@ class SonyAPIBase(object):
                 pin = input('Enter the pin that is seen on the TV')
 
             if pin and not timed_out:
-                    self.pin = pin
+                self.pin = pin
             else:
                 raise exception.EXCEPTIONS[err_id](err, json_data)
 
         self._cookies = response.cookies
         self._pin = pin
+
+        self.device_type = self.interface_information.product_category
+
         self._build_command_list()
 
     def is_connected(self):
@@ -522,9 +545,9 @@ class SonyAPIBase(object):
             params = [params]
 
         data = {
-            'method': method,
-            'params': params,
-            'id': 1,
+            'method':  method,
+            'params':  params,
+            'id':      1,
             'version': found_version
         }
 
@@ -607,7 +630,7 @@ class SonyAPIBase(object):
 
             self._remote_command_list = dict(list(
                 (command['name'], command['value'])
-                for command in result
+                    for command in result
             ))
         return self._remote_command_list
 

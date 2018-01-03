@@ -20,13 +20,9 @@ from __future__ import absolute_import
 from . import singleton, container
 from .exception import ContentProtectedError
 
-"""
-notifyPlayingContentInfo
-"""
 
 
 class ExternalTerminal(object):
-
     # noinspection PyPep8Naming
     def __init__(
         self,
@@ -1210,14 +1206,29 @@ class SchemeItem(object):
         :rtype: list
         """
 
-        sources = self.__send('getSourceList', scheme=self.name)
         res = []
-        for source in sources:
-            source = source.split(':')[1].split('?')[0]
-            if source not in res:
-                res += [source]
+        interface_info = self.__sony_api.system.interface_information
 
-        return sorted(res)
+        def process_source(src):
+            src = src.split('?')[0]
+            if src not in res:
+                res.append(source)
+
+        if interface_info.product_category == 'tv':
+            sources = self.__send('getSourceList', scheme=self.name)[0]
+            for source in sources:
+                _, source = source['source'].split(':')
+                process_source(source)
+
+        elif interface_info.product_category != 'camera':
+            res = []
+            terminals = self.__send('getCurrentExternalTerminalsStatus')[0]
+            for terminal in terminals:
+                scheme, source = terminal['uri'].split(':')
+                if self.name == scheme:
+                    process_source(source)
+
+        return res
 
     def __getattr__(self, item):
         if item in self.__dict__:
@@ -1237,6 +1248,37 @@ class SchemeItem(object):
 class SourceItem(object):
     __metaclass__ = singleton.Singleton
 
+    def __init__(self, source, sony_api, name):
+        self.__sony_api = sony_api
+        self.__name = name
+        self.__source = source
+
+        self.__name__ = ''
+
+        for item in name.split('='):
+            self.__name__ += item[0].upper() + item[1:]
+
+        if self.__sony_api.device_type in ('tv', 'camera'):
+            self.__available_outputs = None
+
+            'scheme:source'
+
+        else:
+            self.__available_outputs = []
+            terminals = self.__send('getCurrentExternalTerminalsStatus')[0]
+            for terminal in terminals:
+
+                uri = terminal['uri'].split('?')
+
+                if len(uri) == 1:
+                    continue
+                if uri[1]
+
+
+
+class Source(object):
+    __metaclass__ = singleton.Singleton
+
     def __init__(self, scheme, sony_api, name):
         self.__sony_api = sony_api
         self.__name = name.replace('_', '-')
@@ -1246,6 +1288,15 @@ class SourceItem(object):
         self.__name__ = ''
         for item in name.split('_'):
             self.__name__ += item[0] + item[1:]
+
+
+
+
+
+
+
+
+
 
     @property
     def uri(self):
@@ -1276,8 +1327,20 @@ class SourceItem(object):
         return self.__send('getContentCount', source=self.uri)[0]['count']
 
     @property
+    def output(self):
+        if self.__sony_api.device_type in ('tv', 'camera'):
+            raise AttributeError
+        return self.__output
+
+    @output.setter
+    def output(self, value):
+        if self.__sony_api.device_type in ('tv', 'camera'):
+            raise AttributeError
+
+
+    @property
     def playing_content(self):
-        if self.__sony_api.interface_information.product_category == 'tv':
+        if self.__sony_api.idevice_type == 'tv':
             return ContentItem(
                 self,
                 self.__sony_api, **self.__send('getPlayingContentInfo')[0]
@@ -1338,13 +1401,21 @@ class SourceItem(object):
 
 
 class AVContent(object):
+
     def __init__(self, sony_api):
         self.__sony_api = sony_api
         self.__parental_ratings = None
         self.__tuner = None
+        self.__playback_mode = None
 
     def __send(self, method, **params):
         return self.__sony_api.send('avContent', method, **params)
+
+    @property
+    def playback_mode(self):
+        if self.__playback_mode is None:
+            self.__playback_mode = PlaybackMode(self.__sony_api)
+        return self.__playback_mode
 
     @property
     def tuner(self):
@@ -1376,7 +1447,19 @@ class AVContent(object):
             "hdrl" - HDRL resources
         :rtype: list
         """
-        return self.__send('getSchemeList')[0]
+        interface_info = self.__sony_api.system.interface_information
+
+        if interface_info.product_category == 'tv':
+            return self.__send('getSchemeList')[0]
+
+        elif interface_info.product_category != 'camera':
+            res = []
+            terminals = self.__send('getCurrentExternalTerminalsStatus')[0]
+            for terminal in terminals:
+                scheme = terminal['uri'].split(':')[0]
+                if scheme not in res:
+                    res += [scheme]
+            return res
 
     @property
     def parental_ratings(self):
@@ -1401,19 +1484,8 @@ class AVContent(object):
             return self.__dict__[item]
 
         if not item.startswith('_'):
-            interface_info = self.__sony_api.system.interface_information
-
-            if interface_info.product_category == 'tv':
-                if item.replace('_', '-') in self.__schemes:
-                    return SchemeItem(self.__sony_api, item)
-            elif interface_info.product_category != 'camera':
-                terminals = self.__send('getCurrentExternalTerminalsStatus')[0]
-                for terminal in terminals:
-                    if terminal['uri'].endswith(item.replace('_', '-')):
-                        return ExternalTerminal(
-                            self.__sony_api,
-                            terminal['uri']
-                        )
+            if item.replace('_', '-') in self.__schemes:
+                return SchemeItem(self.__sony_api, item)
 
         raise AttributeError
 

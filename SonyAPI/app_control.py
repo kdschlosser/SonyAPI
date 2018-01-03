@@ -18,14 +18,13 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+
 from __future__ import absolute_import
 from .utils import get_icon
 from . import singleton, encryption
 import requests
 
-
 class AppControl(object):
-
     def __init__(self, sony_api):
 
         self.__sony_api = sony_api
